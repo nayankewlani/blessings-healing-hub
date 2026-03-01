@@ -1,0 +1,709 @@
+;!function(){try { var e="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof global?global:"undefined"!=typeof window?window:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&((e._debugIds|| (e._debugIds={}))[n]="b06e7ec8-d907-917b-df5e-3b4f795ad15b")}catch(e){}}();
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,641326,e=>{"use strict";var t,a,i,n=((t={}).NotFound="NOT_FOUND",t.ParseError="PARSE_ERROR",t.Disconnected="DISCONNECTED",t.Unknown="UNKOWN_ERROR",t),r=((a={}).ChannelClosed="CHANNEL_CLOSED",a.JSONParseError="JSON_PARSE_ERROR",a.NotFound="NOT_FOUND",a.TOMLParseError="TOML_PARSE_ERROR",a.OpType="OP_TYPE",a.CouldNotWrite="COULD_NOT_WRITE",a.ReadLine="COULD_NOT_READ_LINE",a.Unknown="UNKNOWN_ERROR",a),o=((i={}).CHANGE="CHANGE",i.CHANNEL_OPENED="CHANNEL_OPENED",i);e.s(["DotReplitErrors",()=>n,"DotReplitUpdateErrors",()=>r,"Events",()=>o])},827420,e=>{"use strict";var t=e.i(389959),a=e.i(993796),i=e.i(299798);function n(e){return e.title??e.id}function r(e,t){let a,i=0;for(let n of e){let e=n.previewPath??"/"+n.id+"/";t.startsWith(e)&&e.length>i&&(a=n,i=e.length)}return a}function o(e,t){if(!e||0===e.length)return;let a=r(e,t);return a||(1===e.length?e[0]:void 0)}function s(){let[e,n]=(0,t.useState)([]),[r,o]=(0,t.useState)(!1),s=(0,a.useFlag)({controlName:"flag-everything-everywhere",default:!1});return(0,i.usePid2)(async(e,{signal:t})=>{if(!s)return void o(!0);let{resReadable:a}=e.artifact.subscribeList.subscribe({},{signal:t});for await(let e of a){if(!e.ok)break;n(e.payload.artifacts),o(!0)}},[s]),{artifacts:e,hasArtifacts:e.length>0,hasLoaded:r}}e.s(["findArtifactByUrl",()=>r,"getArtifactDisplayName",()=>n,"getCurrentArtifactForUrl",()=>o,"useArtifacts",()=>s])},311106,e=>{"use strict";var t=e.i(830675);function a({error:e,context:a,extras:i,isDeploymentsPane:n=!0}){return t.withScope(r=>{r.setTag("deployments-pane",n),r.setTag("context",a),i&&r.setExtras(i),t.captureException(e)}),e}e.s(["sendSentryError",()=>a])},850834,196127,e=>{"use strict";var t=e.i(973245),a=e.i(951262);let i={},n=t.gql`
+    fragment WorkspaceNeonDatabase on NeonDatabase {
+  id
+  type
+  databaseId
+  databaseName
+  projectId
+  connectionString
+  isFrozen
+  frozenReason
+  isEphemeral
+  scheduledFreezeTime
+  scheduledDeletionTime
+  quotaLogicalSizeBytes
+  minComputeUnits
+  maxComputeUnits
+  historyRetentionSeconds
+  timeCreated
+}
+    `,r=t.gql`
+    mutation DeleteNeonDatabase($input: DeleteNeonDatabaseInput!) {
+  deleteNeonDatabase(input: $input) {
+    __typename
+    ... on UserError {
+      message
+    }
+    ... on UnauthorizedError {
+      message
+    }
+    ... on DeleteNeonDatabaseResult {
+      success
+    }
+  }
+}
+    `;function o(e){let t={...i,...e};return a.useMutation(r,t)}let s=t.gql`
+    mutation UnfreezeNeonDatabase($input: UnfreezeNeonDatabaseInput!) {
+  unfreezeNeonDatabase(input: $input) {
+    ... on UnfreezeNeonDatabaseResult {
+      success
+    }
+  }
+}
+    `;function u(e){let t={...i,...e};return a.useMutation(s,t)}e.s(["WorkspaceNeonDatabaseFragmentDoc",0,n,"useDeleteNeonDatabaseMutation",()=>o,"useUnfreezeNeonDatabaseMutation",()=>u],196127);var l=e.i(304277);e.i(566901);let d={},c=t.gql`
+    query GetNeonDatabases($input: GetNeonDatabasesInput!) {
+  getNeonDatabases(input: $input) {
+    __typename
+    ... on UserError {
+      message
+    }
+    ... on UnauthorizedError {
+      message
+    }
+    ... on GetNeonDatabasesResult {
+      databases {
+        id
+        ...WorkspaceNeonDatabase
+      }
+    }
+  }
+}
+    ${n}`;function p(e){let t={...d,...e};return l.useQuery(c,t)}e.s(["GetNeonDatabasesDocument",0,c,"useGetNeonDatabasesQuery",()=>p],850834)},492267,409116,e=>{"use strict";var t=e.i(973245),a=e.i(304277);e.i(566901);let i={},n=t.gql`
+    query IsAgentStackRepl($replId: String!) {
+  getRepl(id: $replId) {
+    ... on Repl {
+      id
+      config {
+        isAgentStack
+      }
+    }
+  }
+}
+    `;function r(e){let t={...i,...e};return a.useQuery(n,t)}e.s(["IsAgentStackReplDocument",0,n,"useIsAgentStackReplQuery",()=>r],409116);var o=e.i(207237);function s(){let{data:e,loading:t,refetch:a}=r({variables:{replId:(0,o.default)()}});return{isAgentStackRepl:e?.getRepl?.__typename==="Repl"&&(e.getRepl.config?.isAgentStack??!1),loading:t,refetch:a}}e.s(["useIsAgentStackRepl",()=>s],492267)},423111,e=>{"use strict";var t=e.i(389959),a=e.i(541793),i=e.i(814563),n=e.i(826771),r=e.i(207237),o=e.i(282453),s=e.i(852819);let u=(0,i.createJSONStorage)(()=>({getItem:e=>o.default.get(e,"string"),setItem:(e,t)=>o.default.set(e,t),removeItem:e=>o.default.remove(e)})),l=(0,i.atomWithStorage)("areHiddenFilesVisible",!1,u);function d(){return(0,s.useValue)(l)}function c(){return(0,s.useSet)(l)}let p=(0,a.atom)(null);function m(){return(0,s.useGet)(p)}function g(){return(0,s.useSet)(p)}let f=(0,a.atom)((0,n.observableValue)(!1));function y(){return(0,s.useValue)(f)}let S=(0,a.atom)(!1);function A(){return(0,s.useValue)(S)}function b(){return(0,s.useSet)(S)}function v(){let e=(0,r.default)(),a=e?`auth-blueprint-approved:${e}`:null;return[!!a&&"true"===o.default.get(a,"string"),(0,t.useCallback)(e=>{a&&o.default.set(a,e?"true":"false")},[a])]}(0,a.atom)([]);let D=(0,a.atom)(!1),h=(0,a.atom)(!1),T=(0,a.atom)(!1),C=(0,a.atom)(!1);function E(){return(0,s.useSet)(D)}function P(){return(0,s.useValue)(D)}function x(){return(0,s.useSet)(h)}function B(){return(0,s.useValue)(h)}function R(){return(0,s.useValue)(T)}function M(){return(0,s.useSet)(T)}function k(){return(0,s.useValue)(C)}function w(){return(0,s.useGet)(C)}function I(){return(0,s.useSet)(C)}let N=(0,a.atom)(!1);function _(){return(0,s.useValue)(N)}function H(){return(0,s.useSet)(N)}e.s(["useAreHiddenFilesVisible",()=>d,"useAuthBlueprint",()=>v,"useCookieWarningBannerDismissed",()=>A,"useGetFileRenameInProgress",()=>m,"useGetHasCommitData",()=>w,"useHasCommitData",()=>k,"useInProgressMockupToAppGraduation",()=>_,"useIsFirstCheckpointCompleted",()=>R,"useIsPublishClickedCompleted",()=>P,"useSetAreHiddenFilesVisible",()=>c,"useSetCookieWarningBannerDismissed",()=>b,"useSetFileRenameInProgress",()=>g,"useSetHasCommitData",()=>I,"useSetInProgressMockupToAppGraduation",()=>H,"useSetIsFirstCheckpointCompleted",()=>M,"useSetPublishClickedCompleted",()=>E,"useSetShouldShowRandomCheckpointSurvey",()=>x,"useShouldShowRandomCheckpointSurvey",()=>B,"useWebviewPortOpenedObservable",()=>y])},351981,745383,861644,e=>{"use strict";e.i(221042);var t=e.i(715463),a=e.i(940879),i=e.i(389959),n=e.i(971131);let r=i.default.createContext(null);e.s(["default",0,r],745383);var o=function(e){return e.scrollTop};e.s(["forceReflow",()=>o],861644);var s="unmounted",u="exited",l="entering",d="entered",c="exiting",p=function(e){function p(t,a){var i,n=e.call(this,t,a)||this,r=a&&!a.isMounting?t.enter:t.appear;return n.appearStatus=null,t.in?r?(i=u,n.appearStatus=l):i=d:i=t.unmountOnExit||t.mountOnEnter?s:u,n.state={status:i},n.nextCallback=null,n}(0,a.default)(p,e),p.getDerivedStateFromProps=function(e,t){return e.in&&t.status===s?{status:u}:null};var m=p.prototype;return m.componentDidMount=function(){this.updateStatus(!0,this.appearStatus)},m.componentDidUpdate=function(e){var t=null;if(e!==this.props){var a=this.state.status;this.props.in?a!==l&&a!==d&&(t=l):(a===l||a===d)&&(t=c)}this.updateStatus(!1,t)},m.componentWillUnmount=function(){this.cancelNextCallback()},m.getTimeouts=function(){var e,t,a,i=this.props.timeout;return e=t=a=i,null!=i&&"number"!=typeof i&&(e=i.exit,t=i.enter,a=void 0!==i.appear?i.appear:t),{exit:e,enter:t,appear:a}},m.updateStatus=function(e,t){if(void 0===e&&(e=!1),null!==t)if(this.cancelNextCallback(),t===l){if(this.props.unmountOnExit||this.props.mountOnEnter){var a=this.props.nodeRef?this.props.nodeRef.current:n.default.findDOMNode(this);a&&o(a)}this.performEnter(e)}else this.performExit();else this.props.unmountOnExit&&this.state.status===u&&this.setState({status:s})},m.performEnter=function(e){var t=this,a=this.props.enter,i=this.context?this.context.isMounting:e,r=this.props.nodeRef?[i]:[n.default.findDOMNode(this),i],o=r[0],s=r[1],u=this.getTimeouts(),c=i?u.appear:u.enter;(e||a)&&1?(this.props.onEnter(o,s),this.safeSetState({status:l},function(){t.props.onEntering(o,s),t.onTransitionEnd(c,function(){t.safeSetState({status:d},function(){t.props.onEntered(o,s)})})})):this.safeSetState({status:d},function(){t.props.onEntered(o)})},m.performExit=function(){var e=this,t=this.props.exit,a=this.getTimeouts(),i=this.props.nodeRef?void 0:n.default.findDOMNode(this);t?(this.props.onExit(i),this.safeSetState({status:c},function(){e.props.onExiting(i),e.onTransitionEnd(a.exit,function(){e.safeSetState({status:u},function(){e.props.onExited(i)})})})):this.safeSetState({status:u},function(){e.props.onExited(i)})},m.cancelNextCallback=function(){null!==this.nextCallback&&(this.nextCallback.cancel(),this.nextCallback=null)},m.safeSetState=function(e,t){t=this.setNextCallback(t),this.setState(e,t)},m.setNextCallback=function(e){var t=this,a=!0;return this.nextCallback=function(i){a&&(a=!1,t.nextCallback=null,e(i))},this.nextCallback.cancel=function(){a=!1},this.nextCallback},m.onTransitionEnd=function(e,t){this.setNextCallback(t);var a=this.props.nodeRef?this.props.nodeRef.current:n.default.findDOMNode(this),i=null==e&&!this.props.addEndListener;if(!a||i)return void setTimeout(this.nextCallback,0);if(this.props.addEndListener){var r=this.props.nodeRef?[this.nextCallback]:[a,this.nextCallback],o=r[0],s=r[1];this.props.addEndListener(o,s)}null!=e&&setTimeout(this.nextCallback,e)},m.render=function(){var e=this.state.status;if(e===s)return null;var a=this.props,n=a.children,o=(a.in,a.mountOnEnter,a.unmountOnExit,a.appear,a.enter,a.exit,a.timeout,a.addEndListener,a.onEnter,a.onEntering,a.onEntered,a.onExit,a.onExiting,a.onExited,a.nodeRef,(0,t.default)(a,["children","in","mountOnEnter","unmountOnExit","appear","enter","exit","timeout","addEndListener","onEnter","onEntering","onEntered","onExit","onExiting","onExited","nodeRef"]));return i.default.createElement(r.Provider,{value:null},"function"==typeof n?n(e,o):i.default.cloneElement(i.default.Children.only(n),o))},p}(i.default.Component);function m(){}p.contextType=r,p.propTypes={},p.defaultProps={in:!1,mountOnEnter:!1,unmountOnExit:!1,appear:!1,enter:!0,exit:!0,onEnter:m,onEntering:m,onEntered:m,onExit:m,onExiting:m,onExited:m},p.UNMOUNTED=s,p.EXITED=u,p.ENTERING=l,p.ENTERED=d,p.EXITING=c,e.s(["ENTERED",()=>d,"ENTERING",()=>l,"EXITING",()=>c,"default",0,p],351981)},379334,11176,e=>{"use strict";let t=[{value:"AUS Central Standard Time",abbr:"ACST",offset:9.5,isdst:!1,text:"(UTC+09:30) Darwin",utc:["Australia/Darwin"]},{value:"Atlantic Standard Time",abbr:"AST",offset:-3,isdst:!0,text:"(UTC-04:00) Atlantic Time (Canada)",utc:["America/Glace_Bay","America/Goose_Bay","America/Halifax","America/Moncton","America/Thule","Atlantic/Bermuda"]},{value:"Azores Standard Time",abbr:"AZOST",offset:0,isdst:!0,text:"(UTC-01:00) Azores",utc:["America/Scoresbysund","Atlantic/Azores"]},{value:"Azerbaijan Standard Time",abbr:"AZT",offset:5,isdst:!0,text:"(UTC+04:00) Baku",utc:["Asia/Baku"]},{value:"AUS Eastern Standard Time",abbr:"AEST",offset:10,isdst:!1,text:"(UTC+10:00) Canberra, Melbourne, Sydney",utc:["Australia/Melbourne","Australia/Sydney"]},{value:"Alaskan Standard Time",abbr:"AKST",offset:-8,isdst:!0,text:"(UTC-09:00) Alaska",utc:["America/Anchorage","America/Juneau","America/Nome","America/Sitka","America/Yakutat"]},{value:"Argentina Standard Time",abbr:"ART",offset:-3,isdst:!1,text:"(UTC-03:00) Buenos Aires",utc:["America/Argentina/Buenos_Aires","America/Argentina/Catamarca","America/Argentina/Cordoba","America/Argentina/Jujuy","America/Argentina/La_Rioja","America/Argentina/Mendoza","America/Argentina/Rio_Gallegos","America/Argentina/Salta","America/Argentina/San_Juan","America/Argentina/San_Luis","America/Argentina/Tucuman","America/Argentina/Ushuaia","America/Buenos_Aires","America/Catamarca","America/Cordoba","America/Jujuy","America/Mendoza"]},{value:"Arabic Standard Time",abbr:"AST",offset:3,isdst:!1,text:"(UTC+03:00) Baghdad",utc:["Asia/Baghdad"]},{value:"Arab Standard Time",abbr:"ARST",offset:3,isdst:!1,text:"(UTC+03:00) Kuwait, Riyadh",utc:["Asia/Aden","Asia/Bahrain","Asia/Kuwait","Asia/Qatar","Asia/Riyadh"]},{value:"Arabian Standard Time",abbr:"AST",offset:4,isdst:!1,text:"(UTC+04:00) Abu Dhabi, Muscat",utc:["Asia/Dubai","Asia/Muscat","Etc/GMT-4"]},{value:"Afghanistan Standard Time",abbr:"AFT",offset:4.5,isdst:!1,text:"(UTC+04:30) Kabul",utc:["Asia/Kabul"]},{value:"Bahia Standard Time",abbr:"BST",offset:-3,isdst:!1,text:"(UTC-03:00) Salvador",utc:["America/Bahia"]},{value:"Bangladesh Standard Time",abbr:"BST",offset:6,isdst:!1,text:"(UTC+06:00) Dhaka",utc:["Asia/Dhaka","Asia/Thimphu"]},{value:"Galapagos Time",abbr:"GALT",offset:-6,isdst:!1,text:"(UTC-06:00) Central America",utc:["Etc/GMT+6","Pacific/Galapagos"]},{value:"Central Asia Standard Time",abbr:"CAST",offset:6,isdst:!1,text:"(UTC+06:00) Nur-Sultan (Astana)",utc:["Antarctica/Vostok","Asia/Almaty","Asia/Bishkek","Asia/Qyzylorda","Asia/Urumqi","Etc/GMT-6","Indian/Chagos"]},{value:"Cen. Australia Standard Time",abbr:"CAST",offset:9.5,isdst:!1,text:"(UTC+09:30) Adelaide",utc:["Australia/Adelaide","Australia/Broken_Hill"]},{value:"Central Brazilian Standard Time",abbr:"CBST",offset:-4,isdst:!1,text:"(UTC-04:00) Cuiaba",utc:["America/Campo_Grande","America/Cuiaba"]},{value:"Canada Central Standard Time",abbr:"CCST",offset:-6,isdst:!1,text:"(UTC-06:00) Saskatchewan",utc:["America/Regina","America/Swift_Current"]},{value:"Central Standard Time",abbr:"CST",offset:-5,isdst:!0,text:"(UTC-06:00) Central Time (US & Canada)",utc:["America/Belize","America/Costa_Rica","America/Chicago","America/El_Salvador","America/Guatemala","America/Indiana/Knox","America/Indiana/Tell_City","America/Managua","America/Matamoros","America/Menominee","America/North_Dakota/Beulah","America/North_Dakota/Center","America/North_Dakota/New_Salem","America/Rainy_River","America/Rankin_Inlet","America/Resolute","America/Santa_Isabel","America/Tegucigalpa","America/Winnipeg","CST6CDT"]},{value:"Central Standard Time (Mexico)",abbr:"CDT",offset:-5,isdst:!0,text:"(UTC-06:00) Guadalajara, Mexico City, Monterrey",utc:["America/Bahia_Banderas","America/Cancun","America/Merida","America/Mexico_City","America/Monterrey"]},{value:"Central Europe Standard Time",abbr:"CEST",offset:2,isdst:!0,text:"(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",utc:["Europe/Belgrade","Europe/Bratislava","Europe/Budapest","Europe/Ljubljana","Europe/Podgorica","Europe/Prague","Europe/Tirane"]},{value:"Central European Standard Time",abbr:"CEST",offset:2,isdst:!0,text:"(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb",utc:["Europe/Sarajevo","Europe/Skopje","Europe/Warsaw","Europe/Zagreb"]},{value:"Central Pacific Standard Time",abbr:"CPST",offset:11,isdst:!1,text:"(UTC+11:00) Solomon Is., New Caledonia",utc:["Antarctica/Macquarie","Etc/GMT-11","Pacific/Efate","Pacific/Guadalcanal","Pacific/Kosrae","Pacific/Noumea","Pacific/Ponape"]},{value:"Caucasus Standard Time",abbr:"CST",offset:4,isdst:!1,text:"(UTC+04:00) Yerevan",utc:["Asia/Yerevan"]},{value:"China Standard Time",abbr:"CST",offset:8,isdst:!1,text:"(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi",utc:["Asia/Hong_Kong","Asia/Macau","Asia/Shanghai"]},{value:"Cape Verde Standard Time",abbr:"CVST",offset:-1,isdst:!1,text:"(UTC-01:00) Cape Verde Is.",utc:["Atlantic/Cape_Verde","Etc/GMT+1"]},{value:"Dateline Standard Time",abbr:"DST",offset:-12,isdst:!1,text:"(UTC-12:00) International Date Line West",utc:["Etc/GMT+12"]},{value:"E. Africa Standard Time",abbr:"EAST",offset:3,isdst:!1,text:"(UTC+03:00) Nairobi",utc:["Africa/Addis_Ababa","Africa/Asmera","Africa/Dar_es_Salaam","Africa/Djibouti","Africa/Juba","Africa/Kampala","Africa/Khartoum","Africa/Mogadishu","Africa/Nairobi","Antarctica/Syowa","Etc/GMT-3","Indian/Antananarivo","Indian/Comoro","Indian/Mayotte"]},{value:"E. Australia Standard Time",abbr:"EAST",offset:10,isdst:!1,text:"(UTC+10:00) Brisbane",utc:["Australia/Brisbane","Australia/Lindeman"]},{value:"E. South America Standard Time",abbr:"ESAST",offset:-3,isdst:!1,text:"(UTC-03:00) Brasilia",utc:["America/Sao_Paulo"]},{value:"Eastern Standard Time",abbr:"EST",offset:-5,isdst:!1,text:"(UTC-05:00) Eastern Time (US & Canada)",utc:["America/Detroit","America/Havana","America/Indiana/Petersburg","America/Indiana/Vincennes","America/Indiana/Winamac","America/Iqaluit","America/Kentucky/Monticello","America/Louisville","America/Montreal","America/Nassau","America/New_York","America/Nipigon","America/Pangnirtung","America/Port-au-Prince","America/Thunder_Bay","America/Toronto"]},{value:"Egypt Standard Time",abbr:"EST",offset:2,isdst:!1,text:"(UTC+02:00) Cairo",utc:["Africa/Cairo"]},{value:"FLE Standard Time",abbr:"FDT",offset:3,isdst:!0,text:"(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",utc:["Europe/Helsinki","Europe/Kyiv","Europe/Mariehamn","Europe/Riga","Europe/Sofia","Europe/Tallinn","Europe/Uzhgorod","Europe/Vilnius","Europe/Zaporozhye"]},{value:"Fiji Standard Time",abbr:"FST",offset:12,isdst:!1,text:"(UTC+12:00) Fiji",utc:["Pacific/Fiji"]},{value:"Greenland Standard Time",abbr:"GDT",offset:-3,isdst:!0,text:"(UTC-03:00) Greenland",utc:["America/Godthab"]},{value:"Greenwich Daylight Savings Time",abbr:"GDT",offset:1,isdst:!0,text:"(UTC) Dublin, Lisbon",utc:["Atlantic/Canary","Atlantic/Faeroe","Atlantic/Madeira","Europe/Dublin","Europe/Lisbon"]},{value:"GTB Standard Time",abbr:"GDT",offset:3,isdst:!0,text:"(UTC+02:00) Athens, Bucharest",utc:["Asia/Nicosia","Europe/Athens","Europe/Bucharest","Europe/Chisinau"]},{value:"Georgian Standard Time",abbr:"GET",offset:4,isdst:!1,text:"(UTC+04:00) Tbilisi",utc:["Asia/Tbilisi"]},{value:"Greenwich Mean Time",abbr:"GMT",offset:0,isdst:!1,text:"(UTC) Edinburgh, London",utc:["Europe/Isle_of_Man","Europe/Guernsey","Europe/Jersey","Europe/London"]},{value:"Greenwich Standard Time",abbr:"GST",offset:0,isdst:!1,text:"(UTC) Monrovia, Reykjavik",utc:["Africa/Abidjan","Africa/Accra","Africa/Bamako","Africa/Banjul","Africa/Bissau","Africa/Conakry","Africa/Dakar","Africa/Freetown","Africa/Lome","Africa/Monrovia","Africa/Nouakchott","Africa/Ouagadougou","Africa/Sao_Tome","Atlantic/Reykjavik","Atlantic/St_Helena"]},{value:"Hawaiian Standard Time",abbr:"HST",offset:-10,isdst:!1,text:"(UTC-10:00) Hawaii",utc:["Etc/GMT+10","Pacific/Honolulu","Pacific/Johnston","Pacific/Rarotonga","Pacific/Tahiti"]},{value:"Iran Standard Time",abbr:"IDT",offset:4.5,isdst:!0,text:"(UTC+03:30) Tehran",utc:["Asia/Tehran"]},{value:"India Standard Time",abbr:"IST",offset:5.5,isdst:!1,text:"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi",utc:["Asia/Kolkata","Asia/Calcutta"]},{value:"Israel Standard Time",abbr:"IDT",offset:3,isdst:!0,text:"(UTC+02:00) Jerusalem",utc:["Asia/Jerusalem"]},{value:"Jordan Standard Time",abbr:"JST",offset:3,isdst:!1,text:"(UTC+03:00) Amman",utc:["Asia/Amman"]},{value:"Japan Standard Time",abbr:"JST",offset:9,isdst:!1,text:"(UTC+09:00) Osaka, Sapporo, Tokyo",utc:["Asia/Dili","Asia/Jayapura","Asia/Tokyo","Etc/GMT-9","Pacific/Palau"]},{value:"Kaliningrad Standard Time",abbr:"KST",offset:3,isdst:!1,text:"(UTC+02:00) Kaliningrad",utc:["Europe/Kaliningrad"]},{value:"Korea Standard Time",abbr:"KST",offset:9,isdst:!1,text:"(UTC+09:00) Seoul",utc:["Asia/Pyongyang","Asia/Seoul"]},{value:"Libya Standard Time",abbr:"LST",offset:2,isdst:!1,text:"(UTC+02:00) Tripoli",utc:["Africa/Tripoli"]},{value:"Mountain Standard Time (Mexico)",abbr:"MDT",offset:-6,isdst:!0,text:"(UTC-07:00) Chihuahua, La Paz, Mazatlan",utc:["America/Chihuahua","America/Mazatlan"]},{value:"Mountain Standard Time",abbr:"MDT",offset:-6,isdst:!0,text:"(UTC-07:00) Mountain Time (US & Canada)",utc:["America/Boise","America/Cambridge_Bay","America/Denver","America/Edmonton","America/Inuvik","America/Ojinaga","America/Yellowknife","MST7MDT"]},{value:"Mid-Atlantic Standard Time",abbr:"MDT",offset:-1,isdst:!0,text:"(UTC-02:00) Mid-Atlantic - Old",utc:[]},{value:"Morocco Standard Time",abbr:"MDT",offset:1,isdst:!0,text:"(UTC) Casablanca",utc:["Africa/Casablanca","Africa/El_Aaiun"]},{value:"Middle East Standard Time",abbr:"MEDT",offset:3,isdst:!0,text:"(UTC+02:00) Beirut",utc:["Asia/Beirut"]},{value:"Singapore Standard Time",abbr:"SST",offset:8,isdst:!1,text:"(UTC+08:00) Kuala Lumpur, Singapore",utc:["Asia/Brunei","Asia/Kuala_Lumpur","Asia/Kuching","Asia/Makassar","Asia/Manila","Asia/Singapore","Etc/GMT-8"]},{value:"Moscow Standard Time",abbr:"MSK",offset:3,isdst:!1,text:"(UTC+03:00) Moscow, St. Petersburg, Volgograd, Minsk",utc:["Europe/Kirov","Europe/Moscow","Europe/Simferopol","Europe/Volgograd","Europe/Minsk"]},{value:"Montevideo Standard Time",abbr:"MST",offset:-3,isdst:!1,text:"(UTC-03:00) Montevideo",utc:["America/Montevideo"]},{value:"Mauritius Standard Time",abbr:"MST",offset:4,isdst:!1,text:"(UTC+04:00) Port Louis",utc:["Indian/Mahe","Indian/Mauritius","Indian/Reunion"]},{value:"Myanmar Standard Time",abbr:"MST",offset:6.5,isdst:!1,text:"(UTC+06:30) Yangon (Rangoon)",utc:["Asia/Rangoon","Indian/Cocos"]},{value:"Magadan Standard Time",abbr:"MST",offset:12,isdst:!1,text:"(UTC+12:00) Magadan",utc:["Asia/Anadyr","Asia/Kamchatka","Asia/Magadan","Asia/Srednekolymsk"]},{value:"North Asia East Standard Time",abbr:"NAEST",offset:8,isdst:!1,text:"(UTC+08:00) Irkutsk",utc:["Asia/Irkutsk"]},{value:"North Asia Standard Time",abbr:"NAST",offset:8,isdst:!1,text:"(UTC+08:00) Krasnoyarsk",utc:["Asia/Krasnoyarsk"]},{value:"N. Central Asia Standard Time",abbr:"NCAST",offset:7,isdst:!1,text:"(UTC+07:00) Novosibirsk",utc:["Asia/Novokuznetsk","Asia/Novosibirsk","Asia/Omsk"]},{value:"Newfoundland Standard Time",abbr:"NDT",offset:-2.5,isdst:!0,text:"(UTC-03:30) Newfoundland",utc:["America/St_Johns"]},{value:"Namibia Standard Time",abbr:"NST",offset:1,isdst:!1,text:"(UTC+01:00) Windhoek",utc:["Africa/Windhoek"]},{value:"Nepal Standard Time",abbr:"NST",offset:5.75,isdst:!1,text:"(UTC+05:45) Kathmandu",utc:["Asia/Kathmandu"]},{value:"New Zealand Standard Time",abbr:"NZST",offset:12,isdst:!1,text:"(UTC+12:00) Auckland, Wellington",utc:["Antarctica/McMurdo","Pacific/Auckland"]},{value:"Pakistan Standard Time",abbr:"PKT",offset:5,isdst:!1,text:"(UTC+05:00) Islamabad, Karachi",utc:["Asia/Karachi"]},{value:"Chile Standard Time",abbr:"CLT",offset:-4,isdst:!1,text:"(UTC-04:00) Santiago",utc:["America/Santiago"]},{value:"Pacific Standard Time",abbr:"PST",offset:-8,isdst:!1,text:"(UTC-08:00) Pacific Standard Time (US & Canada) California",utc:["America/Los_Angeles","America/Tijuana","America/Vancouver","PST8PDT"]},{value:"Paraguay Standard Time",abbr:"PYT",offset:-4,isdst:!1,text:"(UTC-04:00) Asuncion",utc:["America/Asuncion"]},{value:"Romance Standard Time",abbr:"RDT",offset:2,isdst:!0,text:"(UTC+01:00) Brussels, Copenhagen, Madrid, Paris",utc:["Africa/Ceuta","Europe/Brussels","Europe/Copenhagen","Europe/Madrid","Europe/Paris"]},{value:"Samara Time",abbr:"SAMT",offset:4,isdst:!1,text:"(UTC+04:00) Samara, Ulyanovsk, Saratov",utc:["Europe/Astrakhan","Europe/Samara","Europe/Ulyanovsk"]},{value:"South Africa Standard Time",abbr:"SAST",offset:2,isdst:!1,text:"(UTC+02:00) Harare, Pretoria",utc:["Africa/Blantyre","Africa/Bujumbura","Africa/Gaborone","Africa/Harare","Africa/Johannesburg","Africa/Kigali","Africa/Lubumbashi","Africa/Lusaka","Africa/Maputo","Africa/Maseru","Africa/Mbabane","Etc/GMT-2"]},{value:"SE Asia Standard Time",abbr:"SEAST",offset:7,isdst:!1,text:"(UTC+07:00) Bangkok, Hanoi, Jakarta",utc:["Antarctica/Davis","Asia/Bangkok","Asia/Hovd","Asia/Jakarta","Asia/Phnom_Penh","Asia/Pontianak","Asia/Saigon","Asia/Vientiane","Etc/GMT-7","Indian/Christmas"]},{value:"Syria Standard Time",abbr:"SDT",offset:3,isdst:!0,text:"(UTC+02:00) Damascus",utc:["Asia/Damascus"]},{value:"SA Eastern Standard Time",abbr:"SEST",offset:-3,isdst:!1,text:"(UTC-03:00) Cayenne, Fortaleza",utc:["America/Araguaina","America/Belem","America/Cayenne","America/Fortaleza","America/Maceio","America/Paramaribo","America/Recife","America/Santarem","Antarctica/Rothera","Atlantic/Stanley","Etc/GMT+3"]},{value:"Sri Lanka Standard Time",abbr:"SLST",offset:5.5,isdst:!1,text:"(UTC+05:30) Sri Jayawardenepura",utc:["Asia/Colombo"]},{value:"SA Pacific Standard Time",abbr:"SPST",offset:-5,isdst:!1,text:"(UTC-05:00) Bogota, Lima, Quito",utc:["America/Bogota","America/Cayman","America/Coral_Harbour","America/Eirunepe","America/Guayaquil","America/Jamaica","America/Lima","America/Panama","America/Rio_Branco","Etc/GMT+5"]},{value:"Samoa Standard Time",abbr:"SST",offset:13,isdst:!1,text:"(UTC+13:00) Samoa",utc:["Pacific/Apia"]},{value:"SA Western Standard Time",abbr:"SWST",offset:-4,isdst:!1,text:"(UTC-04:00) Georgetown, La Paz, Manaus, San Juan",utc:["America/Anguilla","America/Antigua","America/Aruba","America/Barbados","America/Blanc-Sablon","America/Boa_Vista","America/Curacao","America/Dominica","America/Grand_Turk","America/Grenada","America/Guadeloupe","America/Guyana","America/Kralendijk","America/La_Paz","America/Lower_Princes","America/Manaus","America/Marigot","America/Martinique","America/Montserrat","America/Port_of_Spain","America/Porto_Velho","America/Puerto_Rico","America/Santo_Domingo","America/St_Barthelemy","America/St_Kitts","America/St_Lucia","America/St_Thomas","America/St_Vincent","America/Tortola","Etc/GMT+4"]},{value:"Turkey Standard Time",abbr:"TRT",offset:3,isdst:!1,text:"(UTC+03:00) Istanbul",utc:["Europe/Istanbul"]},{value:"Taipei Standard Time",abbr:"TST",offset:8,isdst:!1,text:"(UTC+08:00) Taipei",utc:["Asia/Taipei"]},{value:"Tasmania Standard Time",abbr:"TST",offset:10,isdst:!1,text:"(UTC+10:00) Hobart",utc:["Australia/Currie","Australia/Hobart"]},{value:"Tonga Standard Time",abbr:"TST",offset:13,isdst:!1,text:"(UTC+13:00) Nuku'alofa",utc:["Etc/GMT-13","Pacific/Enderbury","Pacific/Fakaofo","Pacific/Tongatapu"]},{value:"UTC-11",abbr:"UTC-11",offset:-11,isdst:!1,text:"(UTC-11:00) Coordinated Universal Time-11",utc:["Etc/GMT+11","Pacific/Midway","Pacific/Niue","Pacific/Pago_Pago"]},{value:"UTC-02",abbr:"UTC-2",offset:-2,isdst:!1,text:"(UTC-02:00) Coordinated Universal Time-02",utc:["America/Noronha","Atlantic/South_Georgia","Etc/GMT+2"]},{value:"UTC+12",abbr:"UTC+12",offset:12,isdst:!1,text:"(UTC+12:00) Coordinated Universal Time+12",utc:["Etc/GMT-12","Pacific/Funafuti","Pacific/Kwajalein","Pacific/Majuro","Pacific/Nauru","Pacific/Tarawa","Pacific/Wake","Pacific/Wallis"]},{value:"US Eastern Standard Time",abbr:"UEDT",offset:-5,isdst:!1,text:"(UTC-05:00) Indiana (East)",utc:["America/Indiana/Marengo","America/Indiana/Vevay","America/Indianapolis"]},{value:"US Mountain Standard Time",abbr:"UMST",offset:-7,isdst:!1,text:"(UTC-07:00) Arizona",utc:["America/Creston","America/Dawson","America/Dawson_Creek","America/Hermosillo","America/Phoenix","America/Whitehorse","Etc/GMT+7"]},{value:"Ulaanbaatar Standard Time",abbr:"UST",offset:8,isdst:!1,text:"(UTC+08:00) Ulaanbaatar",utc:["Asia/Choibalsan","Asia/Ulaanbaatar"]},{value:"Coordinated Universal Time",abbr:"UTC",offset:0,isdst:!1,text:"(UTC) Coordinated Universal Time",utc:["America/Danmarkshavn","Etc/GMT"]},{value:"Venezuela Standard Time",abbr:"VST",offset:-4.5,isdst:!1,text:"(UTC-04:30) Caracas",utc:["America/Caracas"]},{value:"Vladivostok Standard Time",abbr:"VLAT",offset:11,isdst:!1,text:"(UTC+11:00) Vladivostok",utc:["Asia/Sakhalin","Asia/Ust-Nera","Asia/Vladivostok"]},{value:"West Asia Standard Time",abbr:"WAST",offset:5,isdst:!1,text:"(UTC+05:00) Ashgabat, Tashkent",utc:["Antarctica/Mawson","Asia/Aqtau","Asia/Aqtobe","Asia/Ashgabat","Asia/Dushanbe","Asia/Oral","Asia/Samarkand","Asia/Tashkent","Etc/GMT-5","Indian/Kerguelen","Indian/Maldives"]},{value:"W. Australia Standard Time",abbr:"AWST",offset:8,isdst:!1,text:"(UTC+08:00) Perth",utc:["Antarctica/Casey","Australia/Perth"]},{value:"W. Central Africa Standard Time",abbr:"WCAST",offset:1,isdst:!1,text:"(UTC+01:00) West Central Africa",utc:["Africa/Algiers","Africa/Bangui","Africa/Brazzaville","Africa/Douala","Africa/Kinshasa","Africa/Lagos","Africa/Libreville","Africa/Luanda","Africa/Malabo","Africa/Ndjamena","Africa/Niamey","Africa/Porto-Novo","Africa/Tunis","Etc/GMT-1"]},{value:"W. Europe Standard Time",abbr:"WEDT",offset:2,isdst:!0,text:"(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",utc:["Arctic/Longyearbyen","Europe/Amsterdam","Europe/Andorra","Europe/Berlin","Europe/Busingen","Europe/Gibraltar","Europe/Luxembourg","Europe/Malta","Europe/Monaco","Europe/Oslo","Europe/Rome","Europe/San_Marino","Europe/Stockholm","Europe/Vaduz","Europe/Vatican","Europe/Vienna","Europe/Zurich"]},{value:"West Pacific Standard Time",abbr:"WPST",offset:10,isdst:!1,text:"(UTC+10:00) Guam, Port Moresby",utc:["Antarctica/DumontDUrville","Etc/GMT-10","Pacific/Guam","Pacific/Port_Moresby","Pacific/Saipan","Pacific/Truk"]},{value:"Yekaterinburg Time",abbr:"YEKT",offset:5,isdst:!1,text:"(UTC+05:00) Yekaterinburg",utc:["Asia/Yekaterinburg"]},{value:"Yakutsk Standard Time",abbr:"YST",offset:9,isdst:!1,text:"(UTC+09:00) Yakutsk",utc:["Asia/Chita","Asia/Khandyga","Asia/Yakutsk"]}];e.s(["validSchedulerTimezones",0,t],11176);let a=new Date(2025,3,17);function i(e){switch(e){case"0.25 vCPU / 1 GiB RAM":return"e2-micro";case"0.5 vCPU / 2 GiB RAM":return"e2-small";case"1 vCPU / 4 GiB RAM":return"e2-medium";case"Dedicated 1 vCPU / 4 GiB RAM":return"n1-custom-1-4096";case"Dedicated 2 vCPU / 8 GiB RAM":return"e2-standard-2";case"Dedicated 4 vCPU / 16 GiB RAM":return"e2-standard-4";case"Dedicated 8 vCPU / 32 GiB RAM":return"c3d-standard-8";case"Dedicated 16 vCPU / 64 GiB RAM":return"c3d-standard-16";default:return null}}function n(e){switch(e){case"Dedicated 2 vCPU / 16 GiB RAM":return"Standard_E2_v5";case"Dedicated 4 vCPU / 32 GiB RAM":return"Standard_E4_v5";case"Dedicated 8 vCPU / 64 GiB RAM":return"Standard_E8_v5";default:return null}}function r(e){switch(e){case"1 vCPU / 2 GiB RAM":return"aca-1-2";case"2 vCPU / 4 GiB RAM":return"aca-2-4";case"4 vCPU / 8 GiB RAM":return"aca-4-8";default:return null}}function o(e){return -1!==t.findIndex(t=>t.utc.includes(e))}["ghsa-9qr9-h5gf-34mp","cve-2025-55182","ghsa-2m3v-v2m8-q956","cve-2025-55184","ghsa-7gmr-mq3h-m5h9","cve-2025-67779"].map(e=>e.toLowerCase()),e.s(["AZURE_CONTAINER_APP_DEFAULT_MACHINE_CONFIGURATION_SLUG",0,"aca-1-2","AZURE_DEPLOYMENTS_DEFAULT_DOMAIN",0,"az.replit.app","AZURE_DEPLOYMENTS_DEFAULT_STAGING_DOMAIN",0,"staging-az.replit.app","AZURE_VM_DEFAULT_MACHINE_CONFIGURATION_SLUG",0,"Standard_E2_v5","DELETED_USER_DISPLAY_NAME",0,"Unknown","DEPLOYMENTS_DEFAULT_DOMAIN",0,"replit.app","RVM_DEFAULT_MACHINE_CONFIGURATION_SLUG",0,"e2-small","SYNCING_SECRETS_ROLLOUT_DATE",0,a,"UBBFailureGracePeriodDays",0,30,"flagClerkWhitelabelAuth",0,"flag-clerk-whitelabel-auth","flagEnableStandByBuilds",0,"flag-enable-standby-builds","flagHasAgentCheckpointDatabaseRollbacks",0,"flag-swimming-otter","flagHasReplShares",0,"flag-cooking-dreams","flagNeonRegionsExcludedFromRollback",0,"flag-otter-exclusion-zone","flagShowOnlyAzureDeployments",0,"flag-deployments-switch-to-azure","getConfigurationSlugForAzureContainerAppLabel",()=>r,"getConfigurationSlugForAzureVmLabel",()=>n,"getConfigurationSlugForReservedVmLabel",()=>i,"isValidTimezone",()=>o,"providerProductName",0,{gce:"Reserved VM",cloud_run:"Autoscale",extension:"Extension",static:"Static",cron:"Scheduled",azure_vm:"Reserved VM",azure_container_app:"Autoscale"}],379334)},963084,e=>{"use strict";var t=e.i(973245);let a=t.gql`
+    fragment DeploymentLink on HostingDeployment {
+  id
+  replitAppSubdomain
+  domains2 {
+    id
+    domain
+    state
+  }
+  currentBuild {
+    id
+    provider
+  }
+}
+    `;var i=e.i(279042);let n=t.gql`
+    fragment BuildDebugSummary on HostingDebugSummary {
+  id
+  sessionId
+  eventId
+  type
+}
+    `,r=t.gql`
+    fragment ReplDomain2 on Domain {
+  id
+  hosting_deployment_id
+  domain
+  state
+}
+    `,o=t.gql`
+    fragment CustomDomain on Domain {
+  ...ReplDomain2
+}
+    ${r}`,s=t.gql`
+    fragment TargetHostingDeployment on HostingDeployment {
+  id
+  replitAppSubdomain
+  timeCreated
+  securityScanEnabled
+  agentInboxEnabled
+  agentInboxConfig {
+    position
+    logoSrc
+    bgColor
+  }
+  replitBadgeEnabled
+  scheduledDeletionTime
+  latestBuildStatus
+}
+    `,u=t.gql`
+    fragment MachineConfiguration on HostingMachineConfiguration {
+  id
+  label
+  vcpu
+  memory
+  slug
+}
+    `,l=t.gql`
+    fragment HostingBuildArtifactFields on HostingBuildArtifact {
+  id
+  name
+  type
+  folderName
+  services {
+    id
+    name
+    paths
+    hasRunCommand
+  }
+}
+    `,d=t.gql`
+    fragment CurrentBuild2 on HostingBuild {
+  id
+  description
+  status
+  hasDeployLogs
+  suspendedReason
+  timeCreated
+  hasImageTag
+  envVars {
+    name
+    value
+  }
+  debugSummary {
+    ...BuildDebugSummary
+  }
+  repl {
+    id
+    slug
+    apexProxy
+    domains {
+      ... on Domain {
+        ...CustomDomain
+      }
+    }
+    org {
+      id
+    }
+    owner {
+      ... on Team {
+        id
+        username
+      }
+      ... on User {
+        id
+        username
+      }
+    }
+    hostingDeployment {
+      ... on HostingDeployment {
+        ...TargetHostingDeployment
+        ...DeploymentLink
+      }
+    }
+  }
+  provider
+  machineConfiguration {
+    ...MachineConfiguration
+  }
+  maxMachineInstances
+  machineJob {
+    timezone
+    crontab
+  }
+  user {
+    id
+    displayName
+    username
+    image
+    fullName
+  }
+  isPrivate
+  hasPrivatePassword
+  rollbackSourceBuildId
+  isStandby
+  artifacts {
+    ...HostingBuildArtifactFields
+  }
+}
+    ${n}
+${o}
+${s}
+${a}
+${u}
+${l}`,c=t.gql`
+    fragment DeploymentStatus on HostingDeployment {
+  id
+  currentBuild {
+    id
+    status
+    suspendedReason
+    timeCreated
+    user {
+      id
+      displayName
+    }
+    provider
+  }
+  inProgressBuild {
+    id
+  }
+  latestBuildStatus
+}
+    `,p=t.gql`
+    fragment DeploymentItem on HostingDeployment {
+  id
+  replitAppSubdomain
+  domains2 {
+    id
+    domain
+    state
+  }
+  repl {
+    id
+    title
+    iconUrl
+    config {
+      isAgentStack
+    }
+    ...ReplLinkRepl
+  }
+  ...DeploymentLink
+  ...DeploymentStatus
+}
+    ${i.ReplLinkReplFragmentDoc}
+${a}
+${c}`;e.s(["BuildDebugSummaryFragmentDoc",0,n,"CurrentBuild2FragmentDoc",0,d,"DeploymentItemFragmentDoc",0,p,"HostingBuildArtifactFieldsFragmentDoc",0,l,"MachineConfigurationFragmentDoc",0,u,"TargetHostingDeploymentFragmentDoc",0,s],963084)},255444,e=>{"use strict";e.s(["createCompileCommandOp",0,e=>({op:"add",path:"compile",value:JSON.stringify(e)}),"createDeploymentPublicDirOp",0,e=>({path:"deployment/publicDir",op:"add",value:JSON.stringify(e)}),"createDeploymentTargetOp",0,e=>({path:"deployment/deploymentTarget",op:"add",value:JSON.stringify(e)}),"createDeploymentsBuildCommandOp",0,e=>({path:"deployment/build",op:"add",value:JSON.stringify(["sh","-c",e])}),"createDeploymentsIgnorePortsOp",0,e=>({path:"deployment/ignorePorts",op:"add",value:e.toString()}),"createDeploymentsRunCommandOp",0,e=>({path:"deployment/run",op:"add",value:JSON.stringify(["sh","-c",e])}),"createRunCommandOp",0,e=>({op:"add",path:"run",value:JSON.stringify(e)}),"enableAuthButtonOp",0,e=>({op:"add",path:"auth/buttonEnabled",value:JSON.stringify(e)}),"enableAuthPageOp",0,e=>({op:"add",path:"auth/pageEnabled",value:JSON.stringify(e)}),"removeFieldOp",0,e=>({op:"remove",path:"string"==typeof e?e:e.join("/"),value:""}),"setObjectStorageDefaultBucketId",0,e=>({path:"objectStorage/defaultBucketID",op:"add",value:JSON.stringify(e)})])},611159,(e,t,a)=>{"use strict";var i=e.e&&e.e.__assign||function(){return(i=Object.assign||function(e){for(var t,a=1,i=arguments.length;a<i;a++)for(var n in t=arguments[a])Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n]);return e}).apply(this,arguments)};Object.defineProperty(a,"__esModule",{value:!0}),a.isValidCron=void 0;var n=function(e){return/^\d+$/.test(e)?Number(e):NaN},r=function(e){return"?"===e},o=function(e,t,a){return e>=t&&e<=a},s=function(e,t,a){var i=e.split("-");switch(i.length){case 1:return"*"===e||o(n(e),t,a);case 2:var r=i.map(function(e){return n(e)}),s=r[0],u=r[1];return s<=u&&o(s,t,a)&&o(u,t,a);default:return!1}},u=function(e,t,a){return -1===e.search(/[^\d-,\/*]/)&&e.split(",").every(function(e){var i=e.split("/");if(e.trim().endsWith("/")||i.length>2)return!1;var r=i[0],o=i[1];return s(r,t,a)&&(void 0===o||-1===o.search(/[^\d]/)&&n(o)>0)})},l={jan:"1",feb:"2",mar:"3",apr:"4",may:"5",jun:"6",jul:"7",aug:"8",sep:"9",oct:"10",nov:"11",dec:"12"},d={sun:"0",mon:"1",tue:"2",wed:"3",thu:"4",fri:"5",sat:"6"},c={alias:!1,seconds:!1,allowBlankDay:!1,allowSevenAsSunday:!1};a.isValidCron=function(e,t){t=i(i({},c),t);var a,n,o,s,p=e.trim().split(/\s+/);if(p.length>(t.seconds?6:5)||p.length<5)return!1;var m=[];if(6===p.length){var g=p.shift();g&&m.push(u(g,0,59))}var f=p[0],y=p[1],S=p[2],A=p[3],b=p[4];return m.push(u(f,0,59)),m.push(u(y,0,23)),m.push(t.allowBlankDay&&r(S)||u(S,1,31)),m.push((a=t.alias,-1===A.search(/\/[a-zA-Z]/)&&(a?u(A.toLowerCase().replace(/[a-z]{3}/g,function(e){return void 0===l[e]?e:l[e]}),1,12):u(A,1,12)))),m.push((n=t.alias,o=t.allowBlankDay,s=t.allowSevenAsSunday,!!(o&&r(b))||!(!o&&r(b))&&-1===b.search(/\/[a-zA-Z]/)&&(n?u(b.toLowerCase().replace(/[a-z]{3}/g,function(e){return void 0===d[e]?e:d[e]}),0,s?7:6):u(b,0,s?7:6)))),m.push(!(t.allowBlankDay&&r(S)&&r(b))),m.every(Boolean)}},403934,e=>{"use strict";var t=e.i(973245),a=e.i(963084),i=e.i(196127);e.i(304277);var n=e.i(566901),r=e.i(613141),o=e.i(951262);let s={},u=t.gql`
+    fragment DeploymentSessionCurrentUser on CurrentUser {
+  id
+  isSubscribed
+}
+    `,l=t.gql`
+    fragment DeploymentSessionOrg on Org {
+  id
+  type
+}
+    `,d=t.gql`
+    fragment DeploymentSessionHostingDeployment on HostingDeployment {
+  ...TargetHostingDeployment
+  currentBuild {
+    ...CurrentBuild2
+  }
+  inProgressBuild {
+    ...CurrentBuild2
+  }
+}
+    ${a.TargetHostingDeploymentFragmentDoc}
+${a.CurrentBuild2FragmentDoc}`,c=t.gql`
+    fragment DeploymentAuthorization on ReplAuthorization {
+  isAuthorized
+  code
+  message
+}
+    `,p=t.gql`
+    fragment DeploymentAuthorizations on Repl {
+  id
+  authorizations {
+    createAutoscaleDeployment: createDeployment(
+      provider: cloud_run
+      isPrivate: false
+    ) {
+      ...DeploymentAuthorization
+    }
+    createAutoscaleDeploymentPrivate: createDeployment(
+      provider: cloud_run
+      isPrivate: true
+    ) {
+      ...DeploymentAuthorization
+    }
+    createRvmDeployment: createDeployment(provider: gce, isPrivate: false) {
+      ...DeploymentAuthorization
+    }
+    createRvmDeploymentPrivate: createDeployment(provider: gce, isPrivate: true) {
+      ...DeploymentAuthorization
+    }
+    createScheduledDeployment: createDeployment(provider: cron, isPrivate: false) {
+      ...DeploymentAuthorization
+    }
+    createStaticDeployment: createDeployment(provider: static, isPrivate: false) {
+      ...DeploymentAuthorization
+    }
+    createStaticDeploymentPrivate: createDeployment(
+      provider: static
+      isPrivate: true
+    ) {
+      ...DeploymentAuthorization
+    }
+    redeployAutoscaleDeployment: redeployDeployment(
+      provider: cloud_run
+      isPrivate: false
+    ) {
+      ...DeploymentAuthorization
+    }
+    redeployAutoscaleDeploymentPrivate: redeployDeployment(
+      provider: cloud_run
+      isPrivate: true
+    ) {
+      ...DeploymentAuthorization
+    }
+    redeployRvmDeployment: redeployDeployment(provider: gce, isPrivate: false) {
+      ...DeploymentAuthorization
+    }
+    redeployRvmDeploymentPrivate: redeployDeployment(provider: gce, isPrivate: true) {
+      ...DeploymentAuthorization
+    }
+    redeployScheduledDeployment: redeployDeployment(
+      provider: cron
+      isPrivate: false
+    ) {
+      ...DeploymentAuthorization
+    }
+    redeployStaticDeployment: redeployDeployment(provider: static, isPrivate: false) {
+      ...DeploymentAuthorization
+    }
+    redeployStaticDeploymentPrivate: redeployDeployment(
+      provider: static
+      isPrivate: true
+    ) {
+      ...DeploymentAuthorization
+    }
+    useDeploymentDebugSummaries {
+      ...DeploymentAuthorization
+    }
+    useFreeTierCloudServices {
+      ...DeploymentAuthorization
+    }
+  }
+}
+    ${c}`,m=t.gql`
+    fragment DeploymentSessionRepl on Repl {
+  id
+  __typename
+  slug
+  lastUsedSubdomain
+  suggestedUniqueSubdomain
+  config {
+    isVnc
+  }
+  source {
+    release {
+      repl {
+        title
+      }
+    }
+  }
+  org {
+    ...DeploymentSessionOrg
+  }
+  owner {
+    __typename
+    ... on User {
+      id
+      username
+    }
+    ... on Team {
+      id
+      username
+    }
+  }
+  hostingDeployment {
+    ... on HostingDeployment {
+      ...DeploymentSessionHostingDeployment
+    }
+    ... on Error {
+      message
+    }
+  }
+  hostingDeploymentPermissions {
+    hasNeonProductionDatabasesEnabled
+  }
+  ...DeploymentAuthorizations
+}
+    ${l}
+${d}
+${p}`,g=t.gql`
+    query DeploymentSession($replId: String!) {
+  getRepl(id: $replId) {
+    ... on Repl {
+      id
+      ...DeploymentSessionRepl
+    }
+    ... on Error {
+      message
+    }
+  }
+  currentUser {
+    ...DeploymentSessionCurrentUser
+  }
+}
+    ${m}
+${u}`;function f(e){let t={...s,...e};return n.useLazyQuery(g,t)}let y=t.gql`
+    subscription DeploymentSessionBuildDeployActionUpdates($input: HostingBuildDeployActionUpdatesInput!) {
+  hostingBuildDeployActionUpdates(input: $input) {
+    ... on HostingBuildDeployLogAction {
+      log
+    }
+    ... on HostingBuildDeployStatusAction {
+      status
+      message
+      debugSummary {
+        ...BuildDebugSummary
+      }
+      build {
+        id
+        artifacts {
+          ...HostingBuildArtifactFields
+        }
+      }
+    }
+  }
+}
+    ${a.BuildDebugSummaryFragmentDoc}
+${a.HostingBuildArtifactFieldsFragmentDoc}`;function S(e){let t={...s,...e};return r.useSubscription(y,t)}let A=t.gql`
+    mutation DeploymentSessionDeployBuild($input: DeployHostingBuild2Input!) {
+  deployHostingBuild2(input: $input) {
+    ... on DeployHostingBuild2Result {
+      build {
+        ...CurrentBuild2
+      }
+      targetDeployment {
+        ...TargetHostingDeployment
+      }
+      targetDatabase {
+        ...WorkspaceNeonDatabase
+      }
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    ${a.CurrentBuild2FragmentDoc}
+${a.TargetHostingDeploymentFragmentDoc}
+${i.WorkspaceNeonDatabaseFragmentDoc}`;function b(e){let t={...s,...e};return o.useMutation(A,t)}let v=t.gql`
+    mutation DeploymentSessionSendDeploymentLifecycleCommand($input: SendDeploymentLifecycleCommandInput!) {
+  sendDeploymentLifecycleCommand(input: $input) {
+    ... on SendDeploymentLifecycleCommandResult {
+      repl {
+        id
+        isFreeUserWithStaticDeployment
+        hostingDeployment {
+          ... on HostingDeployment {
+            ...DeploymentSessionHostingDeployment
+          }
+        }
+      }
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    ${d}`,D=t.gql`
+    mutation DeploymentSessionCancelInProgressDeploymentsBuild($input: FailHostingBuildInput!) {
+  failHostingBuild(input: $input) {
+    ... on FailHostingBuildResult {
+      build {
+        ...CurrentBuild2
+      }
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    ${a.CurrentBuild2FragmentDoc}`,h=t.gql`
+    query DeploymentGetIgnoredSecretsHostingDeployment($replId: String!) {
+  getRepl(id: $replId) {
+    ... on Repl {
+      id
+      hostingDeployment {
+        ... on HostingDeployment {
+          id
+          ignoredSecrets
+        }
+        ... on Error {
+          message
+        }
+      }
+    }
+  }
+}
+    `;function T(e){let t={...s,...e};return n.useLazyQuery(h,t)}let C=t.gql`
+    query DeploymentGetEnvVarsHostingDeployment($replId: String!) {
+  getRepl(id: $replId) {
+    ... on Repl {
+      id
+      hostingDeployment {
+        ... on HostingDeployment {
+          id
+          currentBuild {
+            id
+            envVars {
+              name
+            }
+          }
+        }
+        ... on Error {
+          message
+        }
+      }
+    }
+  }
+}
+    `;e.s(["DeploymentGetEnvVarsHostingDeploymentDocument",0,C,"DeploymentGetIgnoredSecretsHostingDeploymentDocument",0,h,"DeploymentSessionCancelInProgressDeploymentsBuildDocument",0,D,"DeploymentSessionDocument",0,g,"DeploymentSessionSendDeploymentLifecycleCommandDocument",0,v,"useDeploymentGetIgnoredSecretsHostingDeploymentLazyQuery",()=>T,"useDeploymentSessionBuildDeployActionUpdatesSubscription",()=>S,"useDeploymentSessionDeployBuildMutation",()=>b,"useDeploymentSessionLazyQuery",()=>f])},91503,(e,t,a)=>{var i,n,r=1/0,o=/[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g,s=/[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g,u="\\ud800-\\udfff",l="\\u2700-\\u27bf",d="a-z\\xdf-\\xf6\\xf8-\\xff",c="A-Z\\xc0-\\xd6\\xd8-\\xde",p="\\xac\\xb1\\xd7\\xf7\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf\\u2000-\\u206f \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000",m="['’]",g="["+p+"]",f="[\\u0300-\\u036f\\ufe20-\\ufe23\\u20d0-\\u20f0]",y="["+d+"]",S="[^"+u+p+"\\d+"+l+d+c+"]",A="(?:\\ud83c[\\udde6-\\uddff]){2}",b="[\\ud800-\\udbff][\\udc00-\\udfff]",v="["+c+"]",D="(?:"+y+"|"+S+")",h="(?:"+v+"|"+S+")",T="(?:"+m+"(?:d|ll|m|re|s|t|ve))?",C="(?:"+m+"(?:D|LL|M|RE|S|T|VE))?",E="(?:"+f+"|\\ud83c[\\udffb-\\udfff])?",P="[\\ufe0e\\ufe0f]?",x="(?:\\u200d(?:"+["[^"+u+"]",A,b].join("|")+")"+P+E+")*",B="(?:"+["["+l+"]",A,b].join("|")+")"+(P+E+x),R=RegExp(m,"g"),M=RegExp(f,"g"),k=RegExp([v+"?"+y+"+"+T+"(?="+[g,v,"$"].join("|")+")",h+"+"+C+"(?="+[g,v+D,"$"].join("|")+")",v+"?"+D+"+"+T,v+"+"+C,"\\d+",B].join("|"),"g"),w=/[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/,I=e.g&&e.g.Object===Object&&e.g,N="object"==typeof self&&self&&self.Object===Object&&self,_=I||N||Function("return this")(),H=(i={À:"A",Á:"A",Â:"A",Ã:"A",Ä:"A",Å:"A",à:"a",á:"a",â:"a",ã:"a",ä:"a",å:"a",Ç:"C",ç:"c",Ð:"D",ð:"d",È:"E",É:"E",Ê:"E",Ë:"E",è:"e",é:"e",ê:"e",ë:"e",Ì:"I",Í:"I",Î:"I",Ï:"I",ì:"i",í:"i",î:"i",ï:"i",Ñ:"N",ñ:"n",Ò:"O",Ó:"O",Ô:"O",Õ:"O",Ö:"O",Ø:"O",ò:"o",ó:"o",ô:"o",õ:"o",ö:"o",ø:"o",Ù:"U",Ú:"U",Û:"U",Ü:"U",ù:"u",ú:"u",û:"u",ü:"u",Ý:"Y",ý:"y",ÿ:"y",Æ:"Ae",æ:"ae",Þ:"Th",þ:"th",ß:"ss",Ā:"A",Ă:"A",Ą:"A",ā:"a",ă:"a",ą:"a",Ć:"C",Ĉ:"C",Ċ:"C",Č:"C",ć:"c",ĉ:"c",ċ:"c",č:"c",Ď:"D",Đ:"D",ď:"d",đ:"d",Ē:"E",Ĕ:"E",Ė:"E",Ę:"E",Ě:"E",ē:"e",ĕ:"e",ė:"e",ę:"e",ě:"e",Ĝ:"G",Ğ:"G",Ġ:"G",Ģ:"G",ĝ:"g",ğ:"g",ġ:"g",ģ:"g",Ĥ:"H",Ħ:"H",ĥ:"h",ħ:"h",Ĩ:"I",Ī:"I",Ĭ:"I",Į:"I",İ:"I",ĩ:"i",ī:"i",ĭ:"i",į:"i",ı:"i",Ĵ:"J",ĵ:"j",Ķ:"K",ķ:"k",ĸ:"k",Ĺ:"L",Ļ:"L",Ľ:"L",Ŀ:"L",Ł:"L",ĺ:"l",ļ:"l",ľ:"l",ŀ:"l",ł:"l",Ń:"N",Ņ:"N",Ň:"N",Ŋ:"N",ń:"n",ņ:"n",ň:"n",ŋ:"n",Ō:"O",Ŏ:"O",Ő:"O",ō:"o",ŏ:"o",ő:"o",Ŕ:"R",Ŗ:"R",Ř:"R",ŕ:"r",ŗ:"r",ř:"r",Ś:"S",Ŝ:"S",Ş:"S",Š:"S",ś:"s",ŝ:"s",ş:"s",š:"s",Ţ:"T",Ť:"T",Ŧ:"T",ţ:"t",ť:"t",ŧ:"t",Ũ:"U",Ū:"U",Ŭ:"U",Ů:"U",Ű:"U",Ų:"U",ũ:"u",ū:"u",ŭ:"u",ů:"u",ű:"u",ų:"u",Ŵ:"W",ŵ:"w",Ŷ:"Y",ŷ:"y",Ÿ:"Y",Ź:"Z",Ż:"Z",Ž:"Z",ź:"z",ż:"z",ž:"z",Ĳ:"IJ",ĳ:"ij",Œ:"Oe",œ:"oe",ŉ:"'n",ſ:"ss"},function(e){return null==i?void 0:i[e]}),U=Object.prototype.toString,L=_.Symbol,O=L?L.prototype:void 0,V=O?O.toString:void 0;function F(e){return null==e?"":function(e){if("string"==typeof e)return e;if(function(e){return"symbol"==typeof e||!!e&&"object"==typeof e&&"[object Symbol]"==U.call(e)}(e))return V?V.call(e):"";var t=e+"";return"0"==t&&1/e==-r?"-0":t}(e)}t.exports=(n=function(e,t,a){return e+(a?"-":"")+t.toLowerCase()},function(e){var t;return function(e,t,a,i){for(var n=-1,r=e?e.length:0;++n<r;)a=t(a,e[n],n,e);return a}(function(e,t,a){if(e=F(e),void 0===t){var i;return(i=e,w.test(i))?e.match(k)||[]:e.match(o)||[]}return e.match(t)||[]}(((t=F(t=e))&&t.replace(s,H).replace(M,"")).replace(R,"")),n,"")})},165349,967963,424746,633042,e=>{"use strict";var t=e.i(973245),a=e.i(963084),i=e.i(304277);e.i(566901);var n=e.i(951262),r=e.i(613141);let o={},s=t.gql`
+    fragment HostingActivityLogBuild on HostingBuild {
+  id
+  status
+  hasDeployLogs
+  provider
+  timeCreated
+  user {
+    id
+    displayName
+    username
+    fullName
+    image
+  }
+  debugSummary {
+    ...BuildDebugSummary
+  }
+  rollbackSourceBuildId
+  envVars {
+    name
+    value
+  }
+}
+    ${a.BuildDebugSummaryFragmentDoc}`,u=t.gql`
+    fragment HostingActivityLogLine2 on HostingActivityLog {
+  id
+  build {
+    ...HostingActivityLogBuild
+  }
+  type
+  user {
+    id
+    displayName
+  }
+  timeCreated
+  isRollbackCandidate
+}
+    ${s}`,l=t.gql`
+    fragment ExpoLaunchDetailsForHistory on ExpoLaunchDetails {
+  id
+  platform
+  status
+  isFinished
+  startedAt
+  finishedAt
+  appId
+  appBuildVersion
+  authedDashboardUrl
+}
+    `,d=t.gql`
+    query HostingDeploymentActivityLogs2($replId: String!, $after: String, $count: Int!) {
+  getRepl(id: $replId) {
+    ... on Repl {
+      id
+      hostingDeployment {
+        ... on HostingDeployment {
+          id
+          currentBuild {
+            id
+            rollbackSourceBuildId
+            envVars {
+              name
+              value
+            }
+          }
+          activityLogs(after: $after, count: $count) {
+            items {
+              ...HostingActivityLogLine2
+            }
+            pageInfo {
+              hasNextPage
+              nextCursor
+            }
+          }
+        }
+        ... on Error {
+          message
+        }
+      }
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    ${u}`;function c(e){let t={...o,...e};return i.useQuery(d,t)}let p=t.gql`
+    query HostingActivityLogBuildHistory($input: HostingBuildDeployActionHistoryInput!) {
+  hostingBuildDeployActionHistory(input: $input) {
+    ... on HostingBuildDeployActionHistoryResults {
+      results {
+        ... on HostingBuildDeployStatusAction {
+          status
+          message
+        }
+        ... on HostingBuildDeployLogAction {
+          log
+        }
+      }
+    }
+  }
+}
+    `;function m(e){let t={...o,...e};return i.useQuery(p,t)}let g=t.gql`
+    mutation RollbackHostingBuild($input: RollbackHostingBuildInput!) {
+  rollbackHostingBuild(input: $input) {
+    ... on RollbackHostingBuildResult {
+      build {
+        ...CurrentBuild2
+      }
+      targetDeployment {
+        ...TargetHostingDeployment
+      }
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    ${a.CurrentBuild2FragmentDoc}
+${a.TargetHostingDeploymentFragmentDoc}`;function f(e){let t={...o,...e};return n.useMutation(g,t)}let y=t.gql`
+    subscription ExpoLaunchStatusForHistory($replId: String!, $hostingBuildId: String!) {
+  expoLaunchStatus(replId: $replId, hostingBuildId: $hostingBuildId) {
+    status
+    hostingBuildId
+    errorMessage
+  }
+}
+    `;function S(e){let t={...o,...e};return r.useSubscription(y,t)}let A=t.gql`
+    query ExpoLaunchHistoryForTimeline($replId: String!, $count: Int!) {
+  getRepl(id: $replId) {
+    ... on Repl {
+      id
+      expoLaunchHistory(count: $count) {
+        ... on ExpoLaunchHistoryConnectionV2 {
+          sessions {
+            id
+            hostingBuildId
+            launches {
+              ios {
+                ...ExpoLaunchDetailsForHistory
+              }
+            }
+          }
+        }
+      }
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    ${l}`;function b(e){let t={...o,...e};return i.useQuery(A,t)}e.s(["HostingActivityLogLine2FragmentDoc",0,u,"useExpoLaunchHistoryForTimelineQuery",()=>b,"useExpoLaunchStatusForHistorySubscription",()=>S,"useHostingActivityLogBuildHistoryQuery",()=>m,"useHostingDeploymentActivityLogs2Query",()=>c,"useRollbackHostingBuildMutation",()=>f],165349),e.i(221042),e.i(91503),e.i(761201),e.s(["hasCommand",0,e=>"string"==typeof e&&""!==e.trim(),"hasInvalidRunCommand",0,e=>e.includes("pane to configure your run command. For more info, see:"),"isValidEnvVar",0,e=>"object"==typeof e&&"string"==typeof e.name&&"string"==typeof e.value&&""!==e.name],967963);var v=e.i(850834),D=e.i(207237);let h=e=>null!=e.connectionString&&null!=e.databaseId&&null!=e.databaseName&&null!=e.projectId;function T(e){return e?.getNeonDatabases.__typename==="GetNeonDatabasesResult"&&e.getNeonDatabases.databases.filter(h)||[]}function C({fetchPolicy:e="cache-first",skip:t,type:a,onDatabasesLoaded:i}){let n=(0,D.default)(),{data:r,loading:o,error:s,refetch:u}=(0,v.useGetNeonDatabasesQuery)({variables:{input:{replId:n}},..."cache-first"===e?{fetchPolicy:"cache-first"}:{fetchPolicy:"network-only",ssr:!0},skip:t,onCompleted:e=>{T(e).length>0&&i?.()}});return{database:T(r).find(e=>e.type===a),loading:o,error:s,refetch:u}}function E(e){let{refetch:t}=C({fetchPolicy:"network-only",skip:!0,type:e});return{refetch:t}}function P(e){return C({type:"development",onDatabasesLoaded:e})}function x(e){return C({type:"production",onDatabasesLoaded:e})}e.s(["useNeonDevelopmentDatabase",()=>P,"useNeonProductionDatabase",()=>x,"useRefetchDatabasesLazy",()=>E],424746);var B=e.i(389959),R=e.i(927158);function M(){let{database:e,loading:t,heliumMigrationState:a,getTableCount:i,getPgVersion:n,refetchHeliumState:r}=function(){let[e,t]=(0,B.useState)(!0),[a,i]=(0,B.useState)(void 0),[n,r]=(0,B.useState)(void 0),o=(0,R.usePid2Callback)(e=>async()=>{t(!0);let a=await e.helium.getHeliumInfo.rpc({});a.ok&&a.payload.isHeliumEnabled&&(r(a.payload.heliumMigrationState),"USING_HELIUM"===a.payload.heliumMigrationState?i({kind:"helium",connectionString:a.payload.databaseUrl,databaseId:435486,maxSizeBytes:0x500000000}):i(void 0)),t(!1)},[]);(0,B.useEffect)(()=>{o&&o()},[o]);let s=(0,R.usePid2Callback)(e=>async()=>{if(!a)throw Error("No helium development database found");let t=await e.database.getPgMajorVersion.rpc({connectionString:a.connectionString});if(!t.ok)throw Error("Failed to fetch PostgreSQL major version for development database");return t.payload.majorVersion},[a]),u=(0,R.usePid2Callback)(e=>async()=>{if(!a)throw Error("No helium development database found");let t=await e.database.getTables.rpc({connectionString:a.connectionString});if(!t.ok)throw Error("Failed to fetch table count for development database");return t.payload.tables.length},[a]);return{loading:e,database:a,getPgVersion:s,getTableCount:u,heliumMigrationState:n,refetchHeliumState:o}}(),{database:o,loading:s}=P(),{database:u,loading:l}=x(),d=t||s,c=!!e||!!o,p=!!u,m=(0,B.useMemo)(()=>"UNSUPPORTED_DB"===a||"USING_NEON"===a&&!o,[a,o]),g=!e&&!!o?.isFrozen,f=e?.connectionString??o?.connectionString,y=u?.connectionString;return{loading:d||l,developmentLoading:d,productionLoading:l,hasDevelopmentDatabase:c,hasProductionDatabase:p,hasExternalDatabaseUrl:m,isFrozen:g,developmentConnectionString:f,productionConnectionString:y,productionDatabaseId:u?.databaseId,heliumMigrationState:a,shouldCreateProductionDatabase:(0,B.useCallback)(async()=>!!u||!!e&&!o&&!!i&&await i()>0,[u,e,o,i]),getTableCount:i,getPgVersion:n,refetchHeliumState:r,heliumDatabase:e,neonDevelopmentDatabase:o,neonProductionDatabase:u}}e.s(["useDatabaseState",()=>M],633042)},483820,e=>{"use strict";class t extends Error{name="DeploymentNotFoundError";message="Could not find existing deployment"}class a extends Error{name="CurrentBuildNotFoundError";message="Could not find existing current build"}class i extends Error{name="RollbackBuildNotProvidedError";message="Rollback target build not provided"}class n extends Error{name="RunCommandNotFoundError";message="Could not find run command"}class r extends Error{name="InvalidRunCommandError";message="Invalid run command"}class o extends Error{name="SubdomainNotFoundError";message="Could not find subdomain"}class s extends Error{name="AppTypeFoundError";message="Could not find app type"}class u extends Error{name="PublicDirNotFoundError";message="Could not find public directory"}class l extends Error{name="ReplConnectionError";message="An App connection error occurred. App is reconnecting or has been disconnected."}class d extends Error{name="InvalidTimezoneError"}class c extends Error{name="CrontabNotFoundError"}class p extends Error{name="PrivatePasswordError"}function m(e){let t=e.length>=12,a=/[A-Z]/.test(e),i=/[a-z]/.test(e),n=/[0-9]/.test(e),r=/[^A-Za-z0-9]/.test(e),o=[a,i,n,r].filter(Boolean).length,s=o>=3;return{hasMinLength:t,hasUppercase:a,hasLowercase:i,hasDigit:n,hasSpecial:r,categoryCount:o,hasMinCategories:s,isValid:t&&s}}function g(e){let{hasMinLength:t,hasMinCategories:a}=m(e);return t?a?null:"Password must contain characters from at least 3 of: uppercase, lowercase, digits, special characters.":"Password must be at least 12 characters."}e.s(["AppTypeFoundError",()=>s,"CurrentBuildNotFoundError",()=>a,"DeploymentNotFoundError",()=>t,"InvalidCrontabError",()=>c,"InvalidRunCommandError",()=>r,"InvalidTimezoneError",()=>d,"PrivatePasswordError",()=>p,"PublicDirNotFoundError",()=>u,"ReplConnectionError",()=>l,"RollbackBuildNotProvidedError",()=>i,"RunCommandNotFoundError",()=>n,"SubdomainNotFoundError",()=>o,"getDeploymentPasswordError",()=>g,"getDeploymentPasswordRequirements",()=>m])},271047,265957,68893,914279,233693,165550,678317,e=>{"use strict";var t,a,i,n,r=e.i(131141),o=e.i(541793),s=e.i(15053),u=e.i(830597),l=e.i(311106),d=e.i(368964),c=e.i(858248),p=e.i(709485);function m(e,t,a){(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_COMPLETED,{...e,stage:t,...a})}var g=((t={}).FoundDiff="FoundDiff",t.GeneratingDiffStatements="GeneratingDiffStatements",t.ValidatingDiffStatements="ValidatingDiffStatements",t),f=((a={}).Completed="completed",a.Running="running",a.Paused="paused",a.Failed="failed",a),y=((i={}).Building="building",i.Failed="failed",i.Ready="ready",i);function S(e,t){let a=e.get(t);if(a&&a.type===t)return a}let A=(0,o.atom)({id:"",deployOptions:void 0,stages:new Map,focusedStage:"FoundDiff"}),b=(0,o.atom)(null,(e,t,a)=>{var i;let n=(i=e(A),(0,r.produce)(i,e=>{var t,n,r,o,u,g,f,y,A,b,v;switch(a.type){case"INIT":{e.id=(0,s.v4)(),e.deployOptions=a.deployOptions,e.stages=new Map,e.stages.set("FoundDiff",{type:"FoundDiff",status:"completed"}),e.focusedStage="FoundDiff";let t=function({deployInputOptions:e,deployConfig:t,appType:a,org:i}){let n=i&&("team"===i.type||"personal"===i.type)?i?.type==="team"?d.OrgType.Team:d.OrgType.Personal:void 0,r=!!e.targetDeploymentId;return{provider:e.provider??"unknown",build:e.commands?.build??void 0,run:e.commands?.run??void 0,redeploy:r,env_var_count:e.envVars?.length??0,ignore_ports:null===t.ignorePorts?void 0:t.ignorePorts,context:"workspace",app_type:a,machineJob:e.machineJob?{crontab:e.machineJob.crontab,timezone:e.machineJob.timezone}:void 0,orgType:n,hasAgentSession:e.hasAgentSession??!1}}({deployInputOptions:a.deployOptions.deployInputOptions,deployConfig:a.deployOptions.deployConfig,appType:a.deployOptions.appType,org:a.deployOptions.org});e.trackingProperties=t,(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_STARTED,{...t});break}case"CANCEL":e.id="",e.deployOptions=void 0,e.stages.clear(),e.focusedStage="FoundDiff",i.trackingProperties&&(t=i.trackingProperties,(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_CANCELLED,{...t}),e.trackingProperties=void 0);break;case"SET_STAGE":{let t=e.stages.get(a.stageState.type);(t?.status!=="completed"||"running"!==a.stageState.status)&&e.stages.set(a.stageState.type,a.stageState);break}case"STAGE_ERROR":{let t=e.stages.get(a.stage);t&&(t.status="failed",t.errorMessage=a.errorMessage,e.focusedStage=a.stage,i.trackingProperties&&(n=i.trackingProperties,r=a.stage,(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_STAGE_ERROR,{...n,stage:r}))),(0,l.sendSentryError)({error:Error(a.errorMessage),context:"prepareDatabase"});break}case"CONFLICT_PROMPT":{let t=e.stages.get("GeneratingDiffStatements");if(t&&"GeneratingDiffStatements"===t.type){let n={type:"GeneratingDiffStatements",status:"paused",conflictPrompt:a.conflictPrompt};e.stages.set(t.type,n),e.focusedStage="GeneratingDiffStatements",i.trackingProperties&&(o=i.trackingProperties,u={kind:a.conflictPrompt.$kind,optionsCount:a.conflictPrompt.result.options.length},(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_CONFLICT_PROMPT,{...o,...u}))}break}case"COMPLETED":{let t=S(e.stages,"GeneratingDiffStatements"),n=S(e.stages,"ValidatingDiffStatements");if(t&&"statementsToExecute"in a&&a.statementsToExecute){let n={type:"GeneratingDiffStatements",status:"completed",statementsToExecute:a.statementsToExecute,shouldAskForApprove:a.shouldAskForApprove,maybeNonBackwardsCompatible:a.maybeNonBackwardsCompatible,infoToPrint:a.infoToPrint};e.stages.set(t.type,n),e.focusedStage="GeneratingDiffStatements",i.trackingProperties&&m(i.trackingProperties,a.stage,{shouldAskForApproval:a.shouldAskForApprove,maybeNonBackwardsCompatible:a.maybeNonBackwardsCompatible,infoToPrintCount:a.infoToPrint.length,statementsCount:a.statementsToExecute.length})}if(n&&"previewId"in n&&n.previewId){let t={type:"ValidatingDiffStatements",status:"completed",previewId:n.previewId};e.stages.set(n.type,t),e.focusedStage="ValidatingDiffStatements",i.trackingProperties&&m(i.trackingProperties,a.stage)}break}case"MIGRATION_VALIDATION_ERROR":{let t=S(e.stages,"ValidatingDiffStatements");if(t&&"previewId"in t&&t.previewId){let n={type:"ValidatingDiffStatements",status:"paused",previewId:t.previewId,statementError:a.statementError};e.stages.set(t.type,n),e.focusedStage="ValidatingDiffStatements",i.trackingProperties&&(g=i.trackingProperties,(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_VALIDATION_ERROR,{...g}))}break}case"SET_PREVIEW_DEPLOY":{let t=S(e.stages,"ValidatingDiffStatements");t?.status==="completed"&&(t.preview=a.preview,i.trackingProperties&&(f=i.trackingProperties,y=a.preview.status,(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_PREVIEW_DEPLOY,{...f,status:y})));break}case"APPROVE_AND_DEPLOY":{let t=S(e.stages,"ValidatingDiffStatements"),n=S(e.stages,"GeneratingDiffStatements");n?.status==="completed"&&((t?.status==="completed"||t?.status==="paused")&&(t.approved=!0),i.trackingProperties&&(A=i.trackingProperties,b=a.approved,v={shouldAskForApproval:n.shouldAskForApprove,maybeNonBackwardsCompatible:n.maybeNonBackwardsCompatible,infoToPrintCount:n.infoToPrint.length,statementsCount:n.statementsToExecute.length},(0,c.track)(p.events.DEPLOYMENT_MIGRATION_PREPARATION_APPROVED,{...A,approved:b,...v})))}}}));t(A,n)});function v(){return{state:(0,u.useValue)(A),dispatch:(0,u.useSet)(b),getState:(0,u.useGet)(A)}}e.s(["PrepareDatabaseBaseStageStateStatus",()=>f,"PrepareDatabasePreviewDeployStatus",()=>y,"PrepareDatabaseStageType",()=>g,"getStageByType",()=>S,"usePrepareDatabaseState",()=>v],265957);var D=e.i(389959),h=((n={}).Loading="Loading",n.Ready="Ready",n.Preparing="Preparing",n.PreparingDatabase="PreparingDatabase",n.Deploying="Deploying",n.ProcessingLifecycleCommand="ProcessingLifecycleCommand",n.Suspended="Paused",n);e.s(["DeploymentMode",()=>h],68893);let T=(0,o.atom)(h.Loading);function C(){return(0,u.useValue)(T)}function E(){let e=(0,u.useSet)(T);return(0,D.useCallback)(t=>{e(t)},[e])}e.s(["deploymentModeAtom",0,T,"useDeploymentMode",()=>C,"useSetDeploymentMode",()=>E],914279);var P=e.i(927158);function x(){let{dispatch:e}=v(),t=(0,u.useSet)(T);return{requiresDatabasePreparation:(0,P.usePid2Callback)(a=>async({heliumDevelopmentDatabase:i,neonDevelopmentDatabase:n,neonProductionDatabase:r,hasExternalDatabaseUrl:o,deployConfig:s,deployInputOptions:u,context:l,appType:d,org:c})=>{if(o)throw Error("External database detected. Remove DATABASE_URL from Secrets to use Replit database features.");if(!n&&!i)throw Error("Could not find development database.");let p=i?i.connectionString:n?.connectionString;if(!p)throw Error("Development database connection string not found.");let m=await a.prepareDatabaseMigrations.hasDiff.rpc({sourceConnectionString:p,targetConnectionString:r?.connectionString});if(!m.ok)throw Error(`Failed to check for database diff: ${m.payload.message}`);if(m.payload.hasDiff)return t(h.PreparingDatabase),e({type:"INIT",deployOptions:{deployConfig:s,deployInputOptions:u,context:l,appType:d,org:c}}),!0},[t,e])}}e.s(["useHostingBuildRequiresDatabasePreparation",()=>x],271047);var B=e.i(403934),R=e.i(173738);async function M({command:e,replId:t,buildId:a,machineConfigurationId:i,maxMachineInstances:n,replitBadgeEnabled:r}){if(!R.apolloClient)throw Error("expected apolloClient to be initialized");let o=await R.apolloClient.mutate({mutation:B.DeploymentSessionSendDeploymentLifecycleCommandDocument,variables:{input:{command:e,replId:t,buildId:a,machineConfigurationId:i,maxMachineInstances:n,replitBadgeEnabled:r}}});if(o.errors?.length)throw Error(o.errors.map(e=>e.message).join(", "));if(o.data?.sendDeploymentLifecycleCommand?.__typename!=="SendDeploymentLifecycleCommandResult")throw Error(o.data?.sendDeploymentLifecycleCommand?.message||"An unexpected error occurred while sending command. Please try again or contact support.")}async function k({buildId:e,targetDeploymentId:t}){if(!R.apolloClient)throw Error("expected apolloClient to be initialized");let a=await R.apolloClient.mutate({mutation:B.DeploymentSessionCancelInProgressDeploymentsBuildDocument,variables:{input:{buildId:e,targetDeploymentId:t}}});if(a.errors?.length)throw Error(a.errors.map(e=>e.message).join(", "));if(a.data?.failHostingBuild?.__typename!=="FailHostingBuildResult")throw Error(a.data?.failHostingBuild?.message||"An unexpected error occurred while trying to cancel. Please try again or contact support.")}async function w({apolloClient:e,replId:t}){let{data:a}=await e.query({query:B.DeploymentGetIgnoredSecretsHostingDeploymentDocument,variables:{replId:t}});return"Repl"===a.getRepl.__typename&&a.getRepl.hostingDeployment?.__typename==="HostingDeployment"?a.getRepl.hostingDeployment.ignoredSecrets:[]}async function I({apolloClient:e,replId:t}){let{data:a}=await e.query({query:B.DeploymentGetEnvVarsHostingDeploymentDocument,variables:{replId:t}});return"Repl"===a.getRepl.__typename&&a.getRepl.hostingDeployment?.__typename==="HostingDeployment"?a.getRepl.hostingDeployment.currentBuild.envVars.map(e=>({name:e.name})):[]}e.s(["cancelInProgressDeploymentsBuildMutation",()=>k,"getDeploymentEnvVars",()=>I,"getDeploymentIgnoredSecrets",()=>w,"sendDeploymentLifecycleCommandMutation",()=>M],233693);var N=e.i(569910);function _(e){switch(e){case d.HostingBuildStatus.Failed:case d.HostingBuildStatus.Success:case d.HostingBuildStatus.BuiltAndBundled:return h.Ready;case d.HostingBuildStatus.Suspended:return h.Suspended;case d.HostingBuildStatus.Suspending:case d.HostingBuildStatus.Resuming:case d.HostingBuildStatus.UpdatingTier:return h.ProcessingLifecycleCommand;case d.HostingBuildStatus.Pending:case d.HostingBuildStatus.SecurityScanning:case d.HostingBuildStatus.Building:case d.HostingBuildStatus.Running:case d.HostingBuildStatus.Promoting:return h.Deploying;default:(0,N.default)(e)}}function H(e){switch(e){case d.SendDeploymentLifecycleCommandType.Destroy:return null;case d.SendDeploymentLifecycleCommandType.UpdateMachineConfiguration:return d.HostingBuildStatus.UpdatingTier;case d.SendDeploymentLifecycleCommandType.Suspend:return d.HostingBuildStatus.Suspending;case d.SendDeploymentLifecycleCommandType.Resume:case d.SendDeploymentLifecycleCommandType.UpdateDeploymentFeatureConfig:return d.HostingBuildStatus.Resuming;default:(0,N.default)(e)}}let U={[h.Loading]:"loading",[h.Preparing]:"preparing",[h.PreparingDatabase]:"preparing database",[h.Ready]:"ready",[h.Suspended]:"suspended",[h.Deploying]:"deploying",[h.ProcessingLifecycleCommand]:"processing a request"};function L(e){let t=U[e];return void 0===t?"":t}e.s(["getBuildStatusFromLifecycleCommandType",()=>H,"getDeploymentModeFromBuildStatus",()=>_,"getReadableMode",()=>L],165550),e.i(966983),e.s(["execToString",0,e=>{if(!e)return"";if("string"==typeof e)return e;let t=Array.isArray(e)?e:e.args;return t&&0!==t.length?(t.length>=3&&"sh"===t[0]&&"-c"===t[1]?t.slice(2):t).join(" "):""}],678317)},729678,e=>{"use strict";var t=e.i(389959),a=e.i(368964),i=e.i(678420),n=e.i(403934),r=e.i(251278),o=e.i(966983),s=e.i(967963),u=e.i(678317),l=e.i(255444),d=e.i(641326),c=e.i(903381),p=e.i(483820);function m({secrets:e,replId:a}){let[r]=(0,i.useWorkspaceAndReplLinkedSecretsLazyQuery)(),[o]=(0,n.useDeploymentGetIgnoredSecretsHostingDeploymentLazyQuery)();return(0,t.useCallback)(async()=>{let{data:t}=await r({variables:{replId:a}}),{data:i}=await o({variables:{replId:a}}),n=new Map,s=i?.getRepl.__typename==="Repl"&&i?.getRepl.hostingDeployment?.__typename==="HostingDeployment"?i.getRepl.hostingDeployment.ignoredSecrets:[];if(t?.getRepl.__typename==="Repl"&&t.getRepl.sharedSecretLinks&&t.currentUser?.secrets.__typename==="SharedSecretConnection"){let e=t.currentUser.secrets.items;for(let a of t.getRepl.sharedSecretLinks){let t=e.find(e=>e.id===a.secret.id);n.set(a.alias,t?.value??"")}}for(let[t,a]of(await e.read()).entries())s.includes(t)||n.set(t,a);return Array.from(n,([e,t])=>({name:e,value:t}))},[e,o,r,a])}async function g(e){let{config:t,error:a}=await e.getConfig();if(a!==d.DotReplitErrors.NotFound){if(a)throw Error("Failed to get .replit config with Error: "+a);return t}}async function f(e){let t=null,i=null,n=null,r=null,s=null,l=null,d=await g(e);if(!d)return{buildCommand:t,runCommand:i,ignorePorts:n,appType:r,publicDir:s,providerFromTarget:l};if(d.deployment){let{build:e,run:c,ignorePorts:p,target:m,publicDir:g}=d.deployment;switch(e&&(t=(0,u.execToString)(e)),c&&(i=(0,u.execToString)(c)),null!=p&&(n=p),m){case o.api.DeploymentConfig.Target.VM:case o.api.DeploymentConfig.Target.GCE:l=a.HostingBuildProvider.Gce,r=n?a.DeployHostingBuildAppType.Worker:a.DeployHostingBuildAppType.Server;break;case o.api.DeploymentConfig.Target.AUTOSCALE:case o.api.DeploymentConfig.Target.CLOUDRUN:l=a.HostingBuildProvider.CloudRun,r=a.DeployHostingBuildAppType.CloudRun;break;case o.api.DeploymentConfig.Target.STATIC:l=a.HostingBuildProvider.Static,r=a.DeployHostingBuildAppType.Static;break;case o.api.DeploymentConfig.Target.SCHEDULED:l=a.HostingBuildProvider.Cron,r=a.DeployHostingBuildAppType.Cron}g&&(s=g)}else{let a=await e.getRunConfig();d.compile&&(t=(0,u.execToString)(d.compile)),a.run?i=(0,u.execToString)(a.run.run):d.run&&(i=(0,u.execToString)(a.run))}return{buildCommand:t,runCommand:i,ignorePorts:n,appType:r,publicDir:s,providerFromTarget:l}}let y={buildCommand:{delete:()=>(0,l.removeFieldOp)("deployment/build"),create:e=>(0,l.createDeploymentsBuildCommandOp)(e.toString())},runCommand:{delete:()=>(0,l.removeFieldOp)("deployment/run"),create:e=>(0,l.createDeploymentsRunCommandOp)(e.toString())},ignorePorts:{delete:()=>(0,l.removeFieldOp)("deployment/ignorePorts"),create:e=>(0,l.createDeploymentsIgnorePortsOp)(!!e)},appType:{delete:()=>(0,l.removeFieldOp)("deployment/deploymentTarget"),create:e=>{let t=null;switch(e){case a.DeployHostingBuildAppType.Server:case a.DeployHostingBuildAppType.Worker:t="gce";break;case a.DeployHostingBuildAppType.CloudRun:t="cloudrun";break;case a.DeployHostingBuildAppType.Static:t="static";break;case a.DeployHostingBuildAppType.Cron:t="scheduled"}return t?(0,l.createDeploymentTargetOp)(t):null}},publicDir:{delete:()=>(0,l.removeFieldOp)("deployment/publicDir"),create:e=>(0,l.createDeploymentPublicDirOp)(e.toString())},providerFromTarget:{delete:()=>(0,l.removeFieldOp)("deployment/deploymentTarget"),create:e=>{let t=null;switch(e){case a.HostingBuildProvider.Gce:t="gce";break;case a.HostingBuildProvider.CloudRun:t="cloudrun";break;case a.HostingBuildProvider.Static:t="static";break;case a.HostingBuildProvider.Cron:t="scheduled";break;case a.HostingBuildProvider.Extension:case a.HostingBuildProvider.AzureContainerApp:case a.HostingBuildProvider.AzureVm:return null}return t?(0,l.createDeploymentTargetOp)(t):null}}};async function S(e,t,{fs:a,container:i,dotReplit:n}){let o=[];for(let a of Object.keys(e)){let i=e[a],n=t[a],r=y[a];if(i!==n)if("string"==typeof i&&(0,s.hasCommand)(i)||"boolean"==typeof i&&i){let e=r.create(i);e&&o.push(e)}else o.push(r.delete())}if(i.getConnectionState()!==r.ConnectionState.CONNECTED)throw new p.ReplConnectionError;if(o.length){let{error:e}=await n.updateDotReplit(o);if(e)throw Error(e)}let u=null;await new Promise(e=>{a.getStatus()!==c.FsStatus.Syncing&&e(!0),u=setInterval(()=>{a.getStatus()!==c.FsStatus.Syncing&&e(!0)},1e3)}),u&&clearInterval(u)}e.s(["getDotReplitDeploymentConfig",()=>f,"setDotReplitDeploymentConfig",()=>S,"useGetSecretsAsDeploymentEntries",()=>m])},266797,e=>{"use strict";var t=e.i(973245),a=e.i(963084),i=e.i(304277);e.i(566901);let n={},r=t.gql`
+    query AutoscaleMachineConfigurations {
+  hostingMachineConfigurations(input: {provider: cloud_run}) {
+    __typename
+    ... on HostingMachineConfigurationsResults {
+      results {
+        ...MachineConfiguration
+      }
+    }
+    ... on UnauthorizedError {
+      message
+    }
+  }
+}
+    ${a.MachineConfigurationFragmentDoc}`;function o(e){let t={...n,...e};return i.useQuery(r,t)}e.s(["AutoscaleMachineConfigurationsDocument",0,r,"useAutoscaleMachineConfigurationsQuery",()=>o])},589910,107129,241703,522029,198992,32995,686631,936239,e=>{"use strict";e.s(["AutoscaleMachineConfiguration",()=>eD,"getMachineConfigurationBySlug",()=>eb,"useAutoscaleConfigurations",()=>ev],589910);var t,a,i,n=e.i(276385),r=e.i(389959),o=e.i(266797),s=e.i(752539),u=e.i(761201),l=e.i(399344),d=e.i(914279),c=e.i(830597),p=e.i(68893),m=e.i(858248),g=e.i(709485);let f=({context:e})=>{(0,m.track)(g.events.DEPLOYMENT_SECTION_VIEWED,{context:e})};e.s(["trackDebugSummaryUsed",0,(e,t)=>{(0,m.track)(g.events.DEPLOYMENT_DEBUG_SUMMARY_USED,{action:e,context:t})},"trackDeploymentAddSecretClicked",0,e=>{(0,m.track)(g.events.DEPLOYMENT_ADD_SECRET_CLICKED,{context:e})},"trackDeploymentSectionViewed",0,f],107129);var y=((t={}).Intro="intro",t.Deployment="deployment",t.DeploymentInProgress="deployment_in_progress",t.Analytics="analytics",t.Logs="logs",t.Settings="settings",t.Schedule="schedule",t.ResourceMonitoring="resource_monitoring",t.Domains="domains",t.ReservedVMTierSelection="reserved_vm_tier_selection",t.AutoscaleMachineConfiguration="autoscale_machine_configuration",t),S=((a={}).SendDeploymentLifecycleCommand="send_deployment_lifecycle_command",a.ChangeView="change_view",a.OpenPane="open_pane",a);e.s(["ViewActionType",()=>S,"Views",()=>y],241703);var A=e.i(957789),b=e.i(541793),v=e.i(967629),D=e.i(480028);let h=[1,2,3,4,5,6,7,8,9,10],T=h.length-1,C=1/(2*T),E=(0,b.atom)(2),P=(0,b.atom)(e=>h[e(E)]),x=(0,b.atom)(e=>(e(A.totalCostAtom)*e(P)).toFixed(6)),B=(0,b.atom)(e=>e(A.totalComputeUnitsAtom)*e(P)),R=(0,b.atom)(0),M=(0,b.atom)(e=>{let t=0/T,a=h.length-1/T,i=0,n=0;return e(R)<t&&(i=(t-e(R))/C,n=t-C),e(R)>a&&(i=(e(R)-a)/C,n=a+C),{overage:i,point:n}});var k=((i={}).None="0ms",i.Normal="120ms",i);let w=["ArrowLeft","ArrowRight","Home","End"],I=(0,v.css)({position:"relative",height:"16px",width:"100%",touchAction:"none"}),N=(0,v.css)({position:"absolute",zIndex:2,top:"0",width:"16px",height:"16px",backgroundColor:D.tokens.white,borderRadius:"100%",outline:"none",cursor:"pointer",willChange:"left, transition",boxShadow:"0 0 8px rgba(0,0,0,0.15)",":focus":{outline:`2px solid ${D.tokens.accentPrimaryDefault}`,":not(:focus-visible)":{outlineColor:"transparent"}}});e.s(["MAX_MAX_INSTANCES_INDEX",0,T,"SCRUBBING_KEYS",0,w,"TransitionTime",()=>k,"maxInstancesComputeUnitsAtom",0,B,"maxInstancesCostAtom",0,x,"maxInstancesIndexAtom",0,E,"maxInstancesMulAtom",0,R,"maxInstancesRangeOverageAtom",0,M,"maxInstancesValueAtom",0,P,"maxInstancesValues",0,h,"scrubberCss",0,I,"thumbCss",0,N],522029);var _=e.i(351981),_=_,H=e.i(446530),U=e.i(613355),L=e.i(625484);let O=U.container.min(600),V=(0,H.cssRecord)({maxWidth:{width:"100%",maxWidth:600,alignSelf:"center"},hiddenOnMobile:[U.rcss.display.none,{[O]:U.rcss.display.flex}],hiddenOnDesktop:[U.rcss.display.flex,{[O]:U.rcss.display.none}]});function F({children:e,render:t,timeout:a=300,initialHeight:i}){let o=(0,r.useRef)(null),s=(0,r.useRef)(null),u=function(e){let[t,a]=(0,r.useState)(0);return(0,r.useEffect)(()=>{if(!e.current)return;let t=new ResizeObserver(e=>{for(let t of e)a(t.borderBoxSize[0].blockSize)});return t.observe(e.current),()=>t.disconnect()},[t,e]),t}(s),l=u>0?u:i,d={transition:a+"ms ease-out",transitionProperty:"height, opacity",opacity:0,height:0,visibility:"hidden"},c={entering:{opacity:1,height:l},entered:{transitionProperty:"opacity",opacity:1,height:l,visibility:"visible"},exiting:{opacity:0,height:0,visibility:"visible"},exited:{opacity:0,height:0,visibility:"hidden"}};return(0,n.jsx)(_.default,{nodeRef:o,timeout:a,in:t,children:t=>(0,n.jsx)(L.View,{innerRef:o,style:{...d,...c[t]},children:(0,n.jsx)(L.View,{innerRef:s,children:e})})})}e.s(["TimelineTransition",()=>F,"mobileWidthContainerQuery",0,O,"sharedCss",0,V],198992);let G=[U.rcss.width("100%"),U.rcss.p(8)],z=[U.rcss.py(32),U.rcss.minHeight("100%"),U.rcss.center],j=({children:e,centered:t,maxWidth:a,...i})=>{let r=[G,t&&z,a&&V.maxWidth].filter(Boolean);return(0,n.jsx)(L.View,{...i,css:r,children:e})};e.s(["PaneSection",0,j],32995);var $=e.i(138716),q=e.i(269848),W=e.i(416298),K=e.i(136540),Y=e.i(396776);let J=[U.rcss.p(8),U.rcss.center],Q=(0,H.cssRecord)({error:[U.rcss.flex.grow(0),U.rcss.mt(0)]}),Z=({onBack:e})=>(0,n.jsx)(L.View,{row:!0,align:"center",children:(0,n.jsx)(K.IconButton,{alt:"Back",tooltipBehavior:"hidden",onClick:e,children:(0,n.jsx)($.default,{})})});e.s(["ViewBack",0,Z,"ViewError",0,({text:e,...t})=>(0,n.jsx)(j,{css:Q.error,...t,children:(0,n.jsx)(Y.StatusBanner,{colorway:"warning",icon:(0,n.jsx)(W.default,{}),text:e})}),"ViewLoading",0,()=>(0,n.jsx)(L.View,{css:J,children:(0,n.jsx)(q.default,{size:24})})],686631);var X=e.i(92189),ee=e.i(917736),et=e.i(416746),ea=e.i(549115);let ei=(0,r.forwardRef)(function(e,t){let a=(0,c.useValue)(P),i=(0,r.useRef)(null);return(0,r.useImperativeHandle)(t,()=>i.current),a&&i.current&&(i.current.setAttribute("aria-valuemin",String(h[0])),i.current.setAttribute("aria-valuemax",String(h[h.length-1])),i.current.setAttribute("aria-valuenow",String(a))),(0,r.useMemo)(()=>(0,n.jsx)("div",{ref:i,role:"slider",tabIndex:0,css:[N,{left:"calc((100% - 16px) * var(--max-instances-progress, 0))",transition:"left var(--max-instances-transition-time, 100ms) ease-out"}]}),[])});var en=e.i(337761);let er="min(var(--point), var(--position))",eo="max(var(--point), var(--position))",es=(0,r.forwardRef)(function(e,t){let{overage:a,point:i}=(0,c.useValue)(M),o=(0,c.useValue)(R),s=(0,r.useRef)(null);return(0,r.useEffect)(()=>{(0,en.styleSet)(s,"--opacity",String(a))},[a]),(0,r.useEffect)(()=>{(0,en.styleSet)(s,"--point",String(100*i)+"%")},[i]),(0,r.useEffect)(()=>{(0,en.styleSet)(s,"--position",String(100*o)+"%")},[o]),(0,r.useMemo)(()=>(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)("div",{ref:t,"aria-hidden":!0,css:{position:"relative",top:"0",width:"100%",height:"16px",margin:"0",cursor:"pointer"}}),(0,n.jsx)("div",{"aria-hidden":!0,css:{position:"absolute",top:"5px",left:"0",width:"100%",height:"6px",margin:"0",overflow:"hidden",pointerEvents:"none",backgroundColor:D.tokens.interactiveBorder,borderRadius:"2px"},children:(0,n.jsx)("div",{ref:s,"aria-hidden":!0,css:{"--opacity":0,"--point":0,"--position":0,backgroundImage:`
+                linear-gradient(
+                  to right, transparent ${er}, 
+                  ${D.tokens.interactiveBorderHover} ${er}, 
+                  ${D.tokens.interactiveBorderHover} ${eo}, 
+                  transparent ${eo} 
+                )`,opacity:"var(--opacity)",width:"100%",height:"100%"}})})]}),[t])});var eu=e.i(546284),el=e.i(960178),ed=e.i(751273);function ec({setAttrs:e}){let t=(0,c.useValue)(E),a=(0,c.useSet)(E),[i,o]=(0,r.useState)(!1),s=(0,r.useRef)(null),u=(0,r.useRef)(null),l=(0,r.useRef)(null),d=(0,r.useCallback)(t=>{e.setTransitionTime(t)},[e]),p=(0,r.useCallback)(t=>{e.setProgress(t)},[e]);return void 0===t||i||(p(t/T),d(k.Normal)),(0,r.useEffect)(()=>{if(void 0===t||!u.current||!l.current||i)return;let e=u.current,n=l.current,r=t=>{if(0!==t.button)return;o(!0),n.focus();let i=e.getBoundingClientRect(),r=n.getBoundingClientRect(),s=i.width,u=r.width,l=t.target===e?u/2:t.clientX-r.left,c=null,m=e=>{let t=Math.max(0,Math.min(1,(e-i.left-l)/(s-u)));t!==c&&(c=t,p(t),a(Math.round(t*T)))};m(t.clientX);let g=e=>{d(k.None),m(e.clientX),e.preventDefault(),e.stopPropagation()},f=()=>{window.removeEventListener("pointermove",g),window.removeEventListener("pointerup",f),window.removeEventListener("pointercancel",f),d(k.Normal),o(!1)};window.addEventListener("pointermove",g),window.addEventListener("pointerup",f),window.addEventListener("pointercancel",f),t.preventDefault(),t.stopPropagation()};return e.addEventListener("pointerdown",r),n.addEventListener("pointerdown",r),()=>{e.removeEventListener("pointerdown",r),n.removeEventListener("pointerdown",r)}},[t,i,a,p,d]),(0,r.useEffect)(()=>{if(void 0===t||!l.current||i)return;let e=l.current,n=e=>{if(void 0===t||!w.includes(e.key))return;let i=Math.max(0,t-1),n=Math.min(T,t+1),r=null;switch(e.key){case"ArrowLeft":r=i;break;case"ArrowRight":r=n;break;case"Home":r=0;break;case"End":r=T}null!==r&&(a(r),e.preventDefault(),e.stopPropagation())};return e.addEventListener("keydown",n),()=>{e.removeEventListener("keydown",n)}},[i,t,a]),(0,r.useMemo)(()=>(0,n.jsx)(L.View,{gap:8,children:(0,n.jsxs)(L.View,{innerRef:s,css:I,children:[(0,n.jsx)(es,{ref:u}),(0,n.jsx)(ei,{ref:l})]})}),[])}function ep({setAttrs:e}){let t=(0,c.useValue)(P),a=(0,c.useValue)(x),i=(0,c.useValue)(B);return(0,n.jsxs)(L.View,{css:ea.builderCss.container,children:[(0,n.jsxs)(L.View,{css:ea.builderCss.label,children:[(0,n.jsxs)(el.Text,{css:ea.builderCss.resource,multiline:!1,children:[t," ",(0,eu.default)("machine",t)]}),(0,n.jsxs)(L.View,{shrink:!0,align:"center",row:!0,gap:4,children:[(0,n.jsxs)(L.View,{css:ea.builderCss.cost,children:[(0,n.jsxs)(el.Text,{multiline:!1,children:[i," compute units"]}),(0,n.jsx)(el.Text,{color:"dimmer",variant:"small",multiline:!1,children:"/s at max traffic"})]}),(0,n.jsx)(ed.Tooltip,{tooltip:(0,n.jsxs)(L.View,{css:ea.builderCss.cost,children:[(0,n.jsxs)(el.Text,{multiline:!1,children:["$",a]}),(0,n.jsx)(el.Text,{variant:"small",color:"dimmest",multiline:!1,children:"/s"})]}),children:(0,n.jsx)(et.default,{color:D.tokens.foregroundDimmest})})]})]}),(0,n.jsx)(ec,{setAttrs:e})]})}var em=e.i(173703);let eg=[U.rcss.colWithGap(12),U.rcss.borderRadius("container"),U.rcss.p(16)],ef=(0,H.cssRecord)({container:[eg],disabled:[eg,{opacity:.5,pointerEvents:"none"}],builder:[U.rcss.position.relative,{"--max-instances-transition-time":k.Normal,"--max-instances":1," *":{transitionTimingFunction:"ease"}}]});function ey({initialMaxMachineInstances:e,maxMachineInstances:t,disabled:a,onError:i}){let o=(0,r.useRef)(null),s=(0,c.useSet)(R),u=(0,c.useSet)(E);return(0,r.useEffect)(()=>{let a=t||e;if(a){let e=h.indexOf(a);if(-1===e)return void i("An error occurred while setting selected max machine instances.");u(e)}},[e,t,u,i]),(0,n.jsxs)(em.ShadesSurface,{css:a?ef.disabled:ef.container,children:[(0,n.jsxs)(L.View,{gap:4,children:[(0,n.jsxs)(L.View,{row:!0,gap:4,align:"center",children:[(0,n.jsx)(ee.default,{}),(0,n.jsx)(el.Text,{variant:"subheadDefault",multiline:!1,children:"Max number of machines"})]}),(0,n.jsx)(el.Text,{multiline:!0,variant:"small",color:"dimmer",children:"The most machines that should ever spin up to handle your highest traffic. More machines means a faster experience for your users."})]}),(0,n.jsx)(L.View,{css:ef.builder,gap:8,innerRef:o,children:(0,n.jsx)(ep,{setAttrs:{setTransitionTime:e=>{(0,en.styleSet)(o,"--max-instances-transition-time",e)},setProgress:e=>{(0,en.styleSet)(o,"--max-instances-progress",e.toString()),s(e)}}})})]})}function eS({initialMachineConfiguration:e,machineConfiguration:t,initialMaxMachineInstances:a,maxMachineInstances:i,disabled:r=!1,toggleEditable:o=!0,onError:s}){return(0,n.jsxs)(L.View,{gap:16,children:[(0,n.jsxs)(L.View,{gap:4,children:[(0,n.jsx)(el.Text,{variant:"subheadBig",children:"Autoscale machine configuration"}),(0,n.jsx)(el.Text,{variant:"small",color:"dimmer",children:"Autoscale apps spin up enough machines to meet demand at any point in time. You are billed for the total number of compute units across all machines."})]}),(0,n.jsxs)(L.View,{gap:16,children:[(0,n.jsx)(X.default,{initialMachineConfiguration:e,machineConfiguration:t,disabled:r,toggleEditable:o}),(0,n.jsx)(ey,{initialMaxMachineInstances:a,maxMachineInstances:i,disabled:r,onError:s})]})]})}e.s(["AutoscaleConfigurationBuilder",()=>eS],936239);var eA=e.i(140487);function eb({slug:e,machineConfigurations:t}){if(e&&t)return t.find(t=>t.slug===e)}function ev({isAzureDeployment:e,isFreeUser:t,onError:a}){let{data:i,loading:n}=(0,o.useAutoscaleMachineConfigurationsQuery)({onCompleted:e=>{"HostingMachineConfigurationsResults"!==e.hostingMachineConfigurations.__typename&&a("Something went wrong")},onError:e=>a(e.message)}),s=i?.hostingMachineConfigurations.__typename==="HostingMachineConfigurationsResults"?i.hostingMachineConfigurations.results:null,u=(0,c.useValue)(A.cpuValueAtom),l=(0,c.useValue)(A.ramValueAtom),d=(0,c.useValue)(P),p=(0,r.useMemo)(()=>(function({autoscaleCpuValue:e,autoscaleRamValue:t,maxInstances:a,autoscaleConfigurations:i}){if(!i)return;let n=i.find(({vcpu:a,memory:i})=>e.toString()===a&&t.toString()===i);if(!n)return;let{id:r,slug:o,label:s}=n;return{configurationId:r,configurationLabel:s,configurationSlug:o,maxInstances:a}})({autoscaleCpuValue:u,autoscaleRamValue:l,maxInstances:d,autoscaleConfigurations:s}),[u,l,d,s]),m=(0,r.useMemo)(()=>(function({selectedMachineConfiguration:e,machineConfigurations:t,isAzureDeployment:a,isFreeUser:i}){if(a){let e=t?.find(({slug:e})=>"cr-4-8"===e);if(!e)return;return{configurationId:e.id,configurationLabel:e.label,configurationSlug:e.slug,maxInstances:2}}if(i){let e=t?.find(({slug:e})=>"cr-2-4"===e);if(!e)return;return{configurationId:e.id,configurationLabel:e.label,configurationSlug:e.slug,maxInstances:1}}return e})({selectedMachineConfiguration:p,machineConfigurations:s,isAzureDeployment:e,isFreeUser:t}),[p,s,e,t]);return{defaultMachineConfiguration:m,selectedMachineConfiguration:e||t?m:p,machineConfigurations:s,loading:n}}let eD=({type:e,fetching:t,onError:a,onConfirm:i,onBack:o})=>{let c=(0,d.useDeploymentMode)(),m=(0,l.useDeploymentId)(),g=(0,l.useDeploymentCurrentBuild)(),S=(0,l.useDeploymentInProgressBuild)(),A=(0,l.useFreeTierCloudServices)(),b=void 0!==S,v=!b&&"string"!=typeof m,D="azure_container_app"===e,{defaultMachineConfiguration:h,selectedMachineConfiguration:T,machineConfigurations:C,loading:E}=ev({isAzureDeployment:D,isFreeUser:A,onError:a});(0,r.useEffect)(()=>{f({context:y.AutoscaleMachineConfiguration})},[]);let P=(0,r.useCallback)(()=>{T?i(T):a("An error occurred trying to validate selected machine configuration")},[T,a,i]),x=E||t||b||c!==p.DeploymentMode.Ready||D||A,{initialMachineConfiguration:B,initialMaxMachineInstances:R}=(0,r.useMemo)(()=>D?{initialMachineConfiguration:eb({slug:h?.configurationSlug,machineConfigurations:C}),initialMaxMachineInstances:h?.maxInstances}:{initialMachineConfiguration:void 0,initialMaxMachineInstances:void 0},[h,C,D]);return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(j,{maxWidth:!0,children:(0,n.jsx)(Z,{onBack:()=>{o()}})}),(0,n.jsx)(j,{maxWidth:!0,children:(0,n.jsxs)(L.View,{gap:16,children:[(0,n.jsx)(eS,{initialMachineConfiguration:B,machineConfiguration:g?.machineConfiguration,initialMaxMachineInstances:R,maxMachineInstances:g?.maxMachineInstances,disabled:x,onError:a}),(0,n.jsxs)(L.View,{gap:8,pt:8,children:[(0,n.jsx)(eA.Button,{colorway:"primary",text:v?"Approve and configure build settings":"Approve and update",iconRight:(0,n.jsx)(s.default,{}),onClick:P,loading:E}),(0,n.jsxs)(el.Text,{color:"dimmest",children:["Your published app will utilize any available monthly free allotment before charging for additional resource usage."," ",(0,n.jsx)("a",{href:u.LINKS_DOCS.ABOUT_USAGE_BASED_BILLING,target:"_blank",rel:"noopener",children:"Learn more"})]})]})]})})]})}},293265,e=>{"use strict";var t=e.i(597103),a=e.i(207237);function i(){let{data:e,loading:i,refetch:n}=(0,t.useReplConfigAgentStackPlatformTypeQuery)({variables:{replId:(0,a.default)()}});return{agentStackPlatformType:e?.getRepl?.__typename==="Repl"&&e.getRepl.config.agentStackPlatformType,loading:i,refetch:n}}e.s(["useAgentStackPlatformType",()=>i])},399344,e=>{"use strict";e.s(["Init",()=>eZ,"claimedFreeDomainAtom",()=>ea,"containerAtom",()=>O,"determineIgnoredSecretKeys",()=>L,"dotReplitAtom",()=>G,"fsAtom",()=>V,"getAppType",()=>e3,"getPrivacyMode",()=>e9,"hideFreeDomainClaimSectionAtom",()=>et,"mergeEnvironmentVariables",()=>U,"portsAtom",()=>z,"secretsAtom",()=>F,"useActiveBuildAction",()=>eK,"useAgentInboxState",()=>eL,"useAvailableDeploymentProviders",()=>eA,"useCancelInProgressDeploymentsBuild",()=>te,"useDeployBuild",()=>e4,"useDeploymentCostDetails",()=>eS,"useDeploymentCurrentBuild",()=>eD,"useDeploymentCurrentBuildArtifacts",()=>eT,"useDeploymentDeployability",()=>ef,"useDeploymentError",()=>eR,"useDeploymentErrorGetter",()=>eM,"useDeploymentFailedBuild",()=>ex,"useDeploymentId",()=>ee,"useDeploymentInProgressBuild",()=>eE,"useDeploymentProvider",()=>eb,"useDeploymentScheduledDeletionTime",()=>eo,"useDeploymentSecurityScanState",()=>eI,"useDeploymentSessionOrg",()=>J,"useDeploymentSessionUser",()=>Z,"useDeploymentSubdomain",()=>el,"useDeploymentTimeCreated",()=>en,"useDotReplitService",()=>q,"useFreeTierCloudServices",()=>eg,"useFsService",()=>j,"useIsMaybeVncRepl",()=>ec,"useLatestBuildActionUpdate",()=>eY,"usePortsService",()=>W,"usePostDeployModal",()=>ta,"useRefetchDeployment",()=>eX,"useReplitBadgeState",()=>eV,"useSecretsService",()=>$,"useSendDeploymentLifecycleCommand",()=>e7,"useSetDeploymentSecurityScanEnabled",()=>ew,"useSetDeploymentTriggerSource",()=>tt]);var t=e.i(389959),a=e.i(611159),i=e.i(131141),n=e.i(541793),r=e.i(442121),o=e.i(403934),s=e.i(165349),u=e.i(368964),l=e.i(569910),d=e.i(379334),c=e.i(967963),p=e.i(424746),m=e.i(633042),g=e.i(483820),f=e.i(271047),y=e.i(233693),S=e.i(265957),A=e.i(914279),b=e.i(830597),v=e.i(68893),D=e.i(165550),h=e.i(729678),T=e.i(589910),C=e.i(311106),E=e.i(508775),P=e.i(968783),x=e.i(993796),B=e.i(98816),R=e.i(574203),M=e.i(325990),k=e.i(207237);e.i(653863);var w=e.i(973519),I=e.i(492267),N=e.i(293265),_=e.i(827420),H=e.i(423111);function U({currentBuildVars:e,workspaceSecrets:t,ignoredSecretKeys:a}){let i=new Map(e?.map(({name:e,value:t})=>[e,t])||[]);return t&&t.forEach(({name:e,value:t})=>{a.includes(e)||i.set(e,t)}),Array.from(i.entries()).map(([e,t])=>({name:e,value:t}))}async function L({deploymentTimeCreated:e,buildTimeCreated:t,ignoreSecretsUntil:a,replId:i,apolloClient:n}){return e&&t&&a>new Date(e)&&a>new Date(t)?(0,y.getDeploymentEnvVars)({replId:i,apolloClient:n}).then(e=>e.map(e=>e.name)):(0,y.getDeploymentIgnoredSecrets)({replId:i,apolloClient:n})}let O=(0,n.atom)({}),V=(0,n.atom)({}),F=(0,n.atom)({}),G=(0,n.atom)({}),z=(0,n.atom)({});function j(){return(0,b.useValue)(V)}function $(){return(0,b.useValue)(F)}function q(){return(0,b.useValue)(G)}function W(){return(0,b.useValue)(z)}let K=(0,n.atom)(void 0),Y=(0,n.atom)(void 0);function J(){return(0,b.useValue)(Y)}let Q=(0,n.atom)(void 0);function Z(){return(0,b.useValue)(Q)}let X=(0,n.atom)(void 0);function ee(){return(0,b.useValue)(X)}let et=(0,n.atom)(!1),ea=(0,n.atom)(null),ei=(0,n.atom)(void 0);function en(){return(0,b.useValue)(ei)}let er=(0,n.atom)(void 0);function eo(){return(0,b.useValue)(er)}let es=(0,n.atom)(void 0),eu=(0,n.atom)(void 0);function el(){return(0,b.useValue)(eu)}let ed=(0,n.atom)(void 0);function ec(){return(0,b.useValue)(ed)}let ep=(0,n.atom)(!1),em=(0,n.atom)(void 0);function eg(){let e=(0,b.useValue)(em);return e?.useFreeTierCloudServices?.isAuthorized??!1}function ef(){let e=(0,b.useValue)(K),t=(0,b.useValue)(em),a=(0,b.useValue)(ev),i=(0,b.useSet)(ez),n=(0,b.useSet)(e0),[r]=(0,o.useDeploymentSessionLazyQuery)({fetchPolicy:"no-cache",onCompleted:i,onError(e){n(e.message)}}),s=(e,a)=>{if(!e||!t)return{deploy:{__typename:"ReplAuthorization",isAuthorized:!1,code:u.ReplAuthorizationCode.InsufficientPermissions,message:"Loading"},redeploy:{__typename:"ReplAuthorization",isAuthorized:!1,code:u.ReplAuthorizationCode.InsufficientPermissions,message:"Loading"},isIncludedInSubscription:!1};let{createAutoscaleDeployment:i,createAutoscaleDeploymentPrivate:n,createRvmDeployment:r,createRvmDeploymentPrivate:o,createScheduledDeployment:s,createStaticDeployment:d,createStaticDeploymentPrivate:c,redeployAutoscaleDeployment:p,redeployAutoscaleDeploymentPrivate:m,redeployRvmDeployment:g,redeployRvmDeploymentPrivate:f,redeployScheduledDeployment:y,redeployStaticDeployment:S,redeployStaticDeploymentPrivate:A}=t;switch(e){case u.HostingBuildProvider.Static:return{deploy:a?c:d,redeploy:a?A:S,isIncludedInSubscription:!1};case u.HostingBuildProvider.Cron:return{deploy:s,redeploy:y,isIncludedInSubscription:!1};case u.HostingBuildProvider.AzureContainerApp:case u.HostingBuildProvider.CloudRun:return{deploy:a?n:i,redeploy:a?m:p,isIncludedInSubscription:!1};case u.HostingBuildProvider.AzureVm:case u.HostingBuildProvider.Gce:return{deploy:a?o:r,redeploy:a?f:g,isIncludedInSubscription:!1};case u.HostingBuildProvider.Extension:throw Error("Found unexpected provider");default:(0,l.default)(e)}};return{deployability:s(a?.provider,a?.isPrivate??void 0),getDeployabilityByProvider:s,refetch:()=>{if(e)return r({variables:{replId:e.id}})},hasDebugSummariesAuthorization:t?.useDeploymentDebugSummaries?.isAuthorized??!1}}let ey=(0,n.atom)(E.defaultDeploymentCostDetails);function eS(){let e=(0,b.useValue)(ey),a=(0,t.useCallback)(t=>(0,E.getMachineConfigurationCostDetails)(t,e),[e]);return{...e,getMachineConfigurationCostDetailsBySlug:a}}function eA(){let e=J(),a=(0,M.useOrgFlag)({controlName:d.flagShowOnlyAzureDeployments,default:!1}),i=(0,x.useFlag)({controlName:d.flagShowOnlyAzureDeployments,default:!1}),n=e?a:i,r=(0,t.useCallback)(e=>{switch(e){case u.DeployHostingBuildAppType.CloudRun:return n?u.HostingBuildProvider.AzureContainerApp:u.HostingBuildProvider.CloudRun;case u.DeployHostingBuildAppType.Worker:case u.DeployHostingBuildAppType.Server:if(n)return u.HostingBuildProvider.AzureVm;return u.HostingBuildProvider.Gce;case u.DeployHostingBuildAppType.Cron:if(n)throw Error("Azure deployments are not supported for Cron jobs");return u.HostingBuildProvider.Cron;case u.DeployHostingBuildAppType.Static:if(n)throw Error("Azure deployments are not supported for Static sites");return u.HostingBuildProvider.Static;default:(0,l.default)(e)}},[n]),{deploymentProviders:o,defaultDeploymentProvider:s}=function({hasFlagShowOnlyAzureDeployments:e}){return e?{deploymentProviders:[u.HostingBuildProvider.AzureContainerApp,u.HostingBuildProvider.AzureVm],defaultDeploymentProvider:u.HostingBuildProvider.AzureContainerApp}:{deploymentProviders:[u.HostingBuildProvider.Gce,u.HostingBuildProvider.CloudRun,u.HostingBuildProvider.Static,u.HostingBuildProvider.Cron],defaultDeploymentProvider:u.HostingBuildProvider.CloudRun}}({hasFlagShowOnlyAzureDeployments:n});return{deploymentProviders:o,defaultDeploymentProvider:s,getProviderFromAppType:r}}function eb({onError:e}){let a=q(),[i,n]=(0,t.useState)(!0),[r,o]=(0,t.useState)(void 0),[s,l]=(0,t.useState)(void 0),{defaultDeploymentProvider:d,getProviderFromAppType:c}=eA(),{isAgentStackRepl:p}=(0,I.useIsAgentStackRepl)();return(0,t.useEffect)(()=>{!async function(){try{if(d===u.HostingBuildProvider.AzureContainerApp){o(d),l(d);return}if(p){let e=c(u.DeployHostingBuildAppType.CloudRun);o(e),l(e);return}let e=await (0,h.getDotReplitDeploymentConfig)(a);if(null===e.appType){o(d),l(d);return}let t=c(e.appType);o(t),l(t)}catch{e("Something went wrong")}finally{n(!1)}}()},[e,a,d,c,p]),{loading:i,activeProvider:r,setActiveProvider:o,recommendedProvider:s}}let ev=(0,n.atom)(void 0);function eD(){return(0,b.useValue)(ev)}let eh=(0,n.atom)([]);function eT(){return(0,b.useValue)(eh)}let eC=(0,n.atom)(void 0);function eE(){return(0,b.useValue)(eC)}let eP=(0,n.atom)(void 0);function ex(){return(0,b.useValue)(eP)}let eB=(0,n.atom)(void 0);function eR(){return(0,b.useValue)(eB)}function eM(){return(0,b.useGet)(eB)}let ek=(0,n.atom)(!1);function ew(){return(0,b.useSet)(ek)}function eI(){let e=(0,b.useValue)(ek),a=ew(),{orgId:i}=(0,P.useCurrentUserStoredOrgContext)(),{requireSecurityScanOnDeployment:n,adminOnlySecurityScanOnDeploymentBypass:r,isAdmin:o}=(0,R.default)(i),s=(0,t.useMemo)(()=>!!i&&(!!n||!!r&&!o),[i,n,r,o]),u=!s,l=s||e,d=(0,t.useMemo)(()=>{if(s){if(n)return"required";if(r&&!o)return"admin-only-bypass"}},[s,n,r,o]);return{enabled:l,userCanControl:u,isOrgEnforced:s,enforcementReason:d,setDeploymentSecurityScanEnabled:a}}let eN=(0,n.atom)(!1),e_=(0,n.atom)("bottom-right"),eH=(0,n.atom)(null),eU=(0,n.atom)(null);function eL(){return{enabled:(0,b.useValue)(eN),setAgentInboxEnabled:(0,b.useSet)(eN),position:(0,b.useValue)(e_),setAgentInboxPosition:(0,b.useSet)(e_),bgColor:(0,b.useValue)(eH),setBgColor:(0,b.useSet)(eH),logoSrc:(0,b.useValue)(eU),setLogoSrc:(0,b.useSet)(eU)}}let eO=(0,n.atom)(null);function eV(){return{enabled:(0,b.useValue)(eO),setReplitBadgeEnabled:(0,b.useSet)(eO)}}let eF=(0,n.atom)(void 0),eG=(0,n.atom)(null,(e,t)=>{t(X,void 0),t(ei,void 0),t(eu,void 0),t(ev,void 0),t(eh,[]),t(eC,void 0),t(A.deploymentModeAtom,v.DeploymentMode.Ready)}),ez=(0,n.atom)(null,(e,t,a)=>{let i="Repl"===a.getRepl.__typename?a.getRepl:null,n=a.currentUser?.__typename==="CurrentUser"?a.currentUser:null;i&&n&&t(em,i.authorizations)}),ej=(0,n.atom)(null,(e,t,a)=>{let i="Repl"===a.getRepl.__typename?a.getRepl:null,n=a.currentUser?.__typename==="CurrentUser"?a.currentUser:null;if(!i||!n)return;t(K,i),t(Y,i.org??void 0),t(Q,n),t(ez,a),t(ey,(0,E.getDeploymentCostDetails)()),t(ed,!!i.config.isVnc);let{hostingDeployment:r}=i;if(r){if("HostingDeployment"!==r.__typename)return t(eB,`Unexpected hosting deployment typename: ${r.__typename}`);if(t(X,r.id),t(ei,r.timeCreated),t(ev,r.currentBuild),t(eh,r.currentBuild.artifacts??[]),t(er,r.scheduledDeletionTime||void 0),t(ek,r.securityScanEnabled),t(eN,r.agentInboxEnabled??!1),t(e_,r.agentInboxConfig?.position??"bottom-right"),t(eH,r.agentInboxConfig?.bgColor??null),t(eU,r.agentInboxConfig?.logoSrc??null),t(eO,r.replitBadgeEnabled??null),t(es,r.latestBuildStatus??void 0),t(eu,r.replitAppSubdomain||i.suggestedUniqueSubdomain||""),r.inProgressBuild){t(eC,r.inProgressBuild),t(A.deploymentModeAtom,v.DeploymentMode.Deploying);return}return void t(A.deploymentModeAtom,(0,D.getDeploymentModeFromBuildStatus)(r.currentBuild.status))}t(eu,i.suggestedUniqueSubdomain||""),t(A.deploymentModeAtom,v.DeploymentMode.Ready)});function e$(){let e=(0,b.useSet)(ej),t=(0,b.useSet)(e0),[a]=(0,o.useDeploymentSessionLazyQuery)({fetchPolicy:"no-cache",onCompleted:e,onError(e){t(e.message)}});return a}let eq=(0,n.atom)(null,(e,t,a)=>{if("HostingBuildDeployStatusAction"!==a.__typename)return;let n=e(A.deploymentModeAtom),r=e(eC),o=e(ev),s=a.status;if(n===v.DeploymentMode.Deploying){if(!r)return void t(e0,"No deployment in progress found");t(eC,(0,i.produce)(r,e=>{e.status=s})),(s===u.HostingBuildStatus.Success||s===u.HostingBuildStatus.Failed)&&(s===u.HostingBuildStatus.Failed&&t(eP,(0,i.produce)(r,e=>{e.status=s})),t(eC,void 0),s!==u.HostingBuildStatus.Success&&o||(t(ev,(0,i.produce)(r,e=>{e.status=s,e.hasImageTag=r.provider!==u.HostingBuildProvider.Static&&s===u.HostingBuildStatus.Success})),t(eh,a.build.artifacts??[])))}else if(n===v.DeploymentMode.ProcessingLifecycleCommand){if(!o)return void t(e0,"No current build found");t(ev,(0,i.produce)(o,e=>{e.status=s}))}t(A.deploymentModeAtom,(0,D.getDeploymentModeFromBuildStatus)(s)),a.message&&s===u.HostingBuildStatus.Failed&&t(e0,a.message)}),eW=(0,n.atom)(null);function eK(){return(0,b.useValue)(eW)}function eY(e){let a=(0,b.useObservableValue)(eW),i=(0,B.default)(e);(0,t.useEffect)(()=>a.subscribe(e=>{e&&i.current(e)}),[a,i])}let eJ=(0,n.atom)(e=>{switch(e(A.deploymentModeAtom)){case v.DeploymentMode.Deploying:return e(eC)?.id;case v.DeploymentMode.ProcessingLifecycleCommand:return e(ev)?.id;default:return}}),eQ=(0,n.atom)(null,async(e,t,{data:{data:a}})=>{a&&(t(eq,a.hostingBuildDeployActionUpdates),t(eW,a.hostingBuildDeployActionUpdates))});function eZ({replId:e}){let a,i,n,r;return a=e$(),i=(0,b.useSet)(eQ),n=(0,b.useSet)(e0),(0,t.useEffect)(()=>{a({variables:{replId:e}})},[a,e]),r=(0,b.useValue)(eJ),(0,o.useDeploymentSessionBuildDeployActionUpdatesSubscription)({variables:{input:{buildId:r??""}},skip:!r,onData:i,onError(e){n(e.message)}}),null}function eX(){let e=(0,k.default)(),a=e$(),i=(0,b.useSet)(A.deploymentModeAtom);return(0,t.useCallback)(()=>(i(v.DeploymentMode.Loading),a({variables:{replId:e}})),[a,i,e])}let e0=(0,n.atom)(null,(e,t,a)=>{t(eB,a)}),e1=(0,n.atom)(null,(e,t,{deployHostingBuild2:a})=>{if(a){if("DeployHostingBuild2Result"!==a.__typename)return void t(e0,a.message);t(eB,void 0),t(eC,a.build),t(X,a.targetDeployment.id),t(ei,a.targetDeployment.timeCreated),t(eu,a.targetDeployment.replitAppSubdomain??void 0),t(A.deploymentModeAtom,v.DeploymentMode.Deploying)}}),e2=(0,n.atom)(null,(e,t,{rollbackHostingBuild:a})=>{if(a){if("RollbackHostingBuildResult"!==a.__typename)return void t(e0,a.message);t(eC,a.build),t(X,a.targetDeployment.id),t(ei,a.targetDeployment.timeCreated),t(eu,a.targetDeployment.replitAppSubdomain??void 0),t(A.deploymentModeAtom,v.DeploymentMode.Deploying)}});function e3({provider:e,ignorePorts:t}){switch(e){case u.HostingBuildProvider.Static:return u.DeployHostingBuildAppType.Static;case u.HostingBuildProvider.CloudRun:case u.HostingBuildProvider.AzureContainerApp:return u.DeployHostingBuildAppType.CloudRun;case u.HostingBuildProvider.Cron:return u.DeployHostingBuildAppType.Cron;case u.HostingBuildProvider.Gce:case u.HostingBuildProvider.AzureVm:case u.HostingBuildProvider.Extension:case void 0:return t?u.DeployHostingBuildAppType.Worker:u.DeployHostingBuildAppType.Server;default:(0,l.default)(e)}}function e9({isPrivate:e,hasPrivatePassword:t}){return e&&t?u.DeployHostingBuildPrivacyMode.Password:e?u.DeployHostingBuildPrivacyMode.Private:u.DeployHostingBuildPrivacyMode.Public}function e6({selectedPrivacyMode:e,shouldRequirePrivateDeployments:t,shouldDisablePasswordProtectedDeployments:a}){return t&&e===u.DeployHostingBuildPrivacyMode.Public||a&&e===u.DeployHostingBuildPrivacyMode.Password?u.DeployHostingBuildPrivacyMode.Private:e}function e4({openDeploymentsPane:e}={}){let i=(0,k.default)(),n=J(),y=(0,r.useApolloClient)(),D=ee(),E=en(),P=q(),B=(0,b.useValue)(O),M=j(),w=$(),I=eg(),[N]=(0,o.useDeploymentSessionDeployBuildMutation)(),V=(0,b.useSet)(e1),F=(0,b.useSet)(e0),G=(0,b.useSet)(e2),z=(0,b.useSet)(A.deploymentModeAtom),W=(0,b.useGet)(eC),K=(0,b.useSet)(eP),Y=(0,b.useGet)(eF),{enabled:Q}=eI(),{enabled:Z,position:X,bgColor:et,logoSrc:ea}=eL(),{enabled:ei}=eV(),er=eD(),[eo]=(0,s.useRollbackHostingBuildMutation)(),{loading:es,heliumDatabase:eu,neonDevelopmentDatabase:el,neonProductionDatabase:ed,hasExternalDatabaseUrl:ec,getPgVersion:em,shouldCreateProductionDatabase:ef}=(0,m.useDatabaseState)(),{state:ey,dispatch:eS}=(0,S.usePrepareDatabaseState)(),{requiresDatabasePreparation:eA}=(0,f.useHostingBuildRequiresDatabasePreparation)(),{refetch:eb}=(0,p.useRefetchDatabasesLazy)("production"),{requirePrivateDeployments:ev,adminOnlyPublicDeployments:eh,disablePasswordProtectedDeployments:eT,adminOnlyPasswordProtectedDeploymentsBypass:eE,isAdmin:ex}=(0,R.default)(n?.id),eB=(0,H.useSetPublishClickedCompleted)(),{hasArtifacts:eR}=(0,_.useArtifacts)(),eM=ev||!ex&&eh,ek=eT||!ex&&eE,ew=(0,t.useCallback)((e,t)=>{if(V(e),t&&!ed&&eb(),e.deployHostingBuild2?.__typename!=="DeployHostingBuild2Result")throw Error(e.deployHostingBuild2?.message??"Unknown error")},[V,ed,eb]),eN=(0,x.useFlag)({controlName:d.flagEnableStandByBuilds,default:!1}),e_=(0,t.useCallback)(async({envVars:t,subdomain:r,machineConfigurationId:o,maxMachineInstances:s,config:p,machineJob:m,privacyMode:f,privatePassword:y,grantWorkspaceViewerAccess:S,hasAgentSession:A,ignoredSecrets:b,createNeonProductionDatabase:T,pushDevelopmentDatabaseObjects:C,syncStripe:E,enableSecurityScan:x,agentInboxEnabled:R,agentInboxConfig:k,replitBadgeEnabled:w,provider:I,purchaseDomain:_})=>{if(eB(!0),K(void 0),W())return void F("Deployment already in progress");try{let H,{buildCommand:U,runCommand:L,publicDir:O,ignorePorts:V}=p,F=I?e3({provider:I,ignorePorts:!!V}):p.appType;if(!F)throw new g.AppTypeFoundError;if(!r)throw new g.SubdomainNotFoundError;switch(F){case u.DeployHostingBuildAppType.Static:if(!(0,c.hasCommand)(O))throw new g.PublicDirNotFoundError;break;case u.DeployHostingBuildAppType.Worker:case u.DeployHostingBuildAppType.Server:case u.DeployHostingBuildAppType.CloudRun:case u.DeployHostingBuildAppType.Cron:if(!eR){if(!(0,c.hasCommand)(L))throw new g.RunCommandNotFoundError;if((0,c.hasInvalidRunCommand)(L))throw new g.InvalidRunCommandError}if(F===u.DeployHostingBuildAppType.Cron){if(!m?.crontab||""===m.crontab)throw new g.InvalidCrontabError("Schedule cannot be empty.");if(!(0,a.isValidCron)(m.crontab))throw new g.InvalidCrontabError("Invalid schedule. Must be a valid cron expression.");if(!m?.timezone||""===m.timezone)throw new g.InvalidTimezoneError("Timezone cannot be empty.");if(!(0,d.isValidTimezone)(m.timezone))throw new g.InvalidTimezoneError("Invalid timezone. Must be valid a timezone abbreviation.")}break;default:(0,l.default)(F)}let G=e6({selectedPrivacyMode:f,shouldRequirePrivateDeployments:eM,shouldDisablePasswordProtectedDeployments:ek});if(void 0!==y&&G===u.DeployHostingBuildPrivacyMode.Password){if(""===y.trim())throw new g.PrivatePasswordError("Password cannot be empty.");let e=(0,g.getDeploymentPasswordError)(y);if(e)throw new g.PrivatePasswordError(e)}if(eu&&em){let e=await em();H={connectionString:eu.connectionString,pgVersion:e}}null===T&&((T=await ef())||(C=null)),z(v.DeploymentMode.Preparing);let j=Y(),$=w??ei,q={replId:i,targetDeploymentId:D,targetMachineConfigurationId:o,maxMachineInstances:s,commands:{build:U,run:L||""},envVars:t,subdomain:r,provider:I,appType:F,context:"workspace",machineJob:m,privacyMode:G,privatePassword:y,grantWorkspaceViewerAccess:S,hasAgentSession:A,ignoredSecretKeys:b,createNeonProductionDatabase:T,pushDevelopmentDatabaseObjects:C,syncStripe:E,enableSecurityScan:x,agentInboxEnabled:R,agentInboxConfig:k,replitBadgeEnabled:$,heliumDevelopmentDatabase:H,triggerSource:j,purchaseDomain:_};if(!C&&T&&eA&&await eA({heliumDevelopmentDatabase:H,neonDevelopmentDatabase:el,neonProductionDatabase:ed,hasExternalDatabaseUrl:ec,deployInputOptions:q,deployConfig:p,context:"deployBuild",appType:F,org:n})){e&&e();return}let W=await (0,h.getDotReplitDeploymentConfig)(P);await (0,h.setDotReplitDeploymentConfig)({buildCommand:U,runCommand:L,appType:F,publicDir:O,ignorePorts:V},W,{dotReplit:P,fs:M,container:B}),await N({variables:{input:q},onCompleted:e=>ew(e,T??!1)})}catch(e){throw z(v.DeploymentMode.Ready),e}},[N,F,z,W,eA,ew,e,em,eu,ec,ef,D,i,ed,el,B,M,P,eM,ek,n,eB,K,Y,ei,eR]),eH=(0,t.useCallback)(async({envVars:e,subdomain:t,machineConfigurationId:n,maxMachineInstances:r,config:o,machineJob:s,privacyMode:p,privatePassword:m,grantWorkspaceViewerAccess:f,hasAgentSession:y,ignoredSecrets:S,syncStripe:A,enableSecurityScan:b,provider:v,purchaseDomain:h,replitBadgeEnabled:T})=>{if(!eN)throw Error("Standby builds are not enabled");(0,C.sendSentryError)({error:Error("Start standby build"),context:"kickOffStandbyBuild",isDeploymentsPane:!1});let{buildCommand:E,runCommand:P,publicDir:x,ignorePorts:B}=o;if(v===u.HostingBuildProvider.AzureVm||v===u.HostingBuildProvider.AzureContainerApp)throw Error("Standby builds are not enabled for azure deployments");let R=v?e3({provider:v,ignorePorts:!!B}):o.appType;if(!R)throw new g.AppTypeFoundError;switch(R){case u.DeployHostingBuildAppType.Static:if(!(0,c.hasCommand)(x))throw new g.PublicDirNotFoundError;break;case u.DeployHostingBuildAppType.Worker:case u.DeployHostingBuildAppType.Server:case u.DeployHostingBuildAppType.CloudRun:case u.DeployHostingBuildAppType.Cron:if(!eR){if(!(0,c.hasCommand)(P))throw new g.RunCommandNotFoundError;if((0,c.hasInvalidRunCommand)(P))throw new g.InvalidRunCommandError}if(R===u.DeployHostingBuildAppType.Cron){if(!s?.crontab||""===s.crontab)throw new g.InvalidCrontabError("Schedule cannot be empty.");if(!(0,a.isValidCron)(s.crontab))throw new g.InvalidCrontabError("Invalid schedule. Must be a valid cron expression.");if(!s?.timezone||""===s.timezone)throw new g.InvalidTimezoneError("Timezone cannot be empty.");if(!(0,d.isValidTimezone)(s.timezone))throw new g.InvalidTimezoneError("Invalid timezone. Must be valid a timezone abbreviation.")}break;default:(0,l.default)(R)}let M=e6({selectedPrivacyMode:p,shouldRequirePrivateDeployments:eM});if(void 0!==m&&M===u.DeployHostingBuildPrivacyMode.Password){if(""===m.trim())throw new g.PrivatePasswordError("Password cannot be empty.");let e=(0,g.getDeploymentPasswordError)(m);if(e)throw new g.PrivatePasswordError(e)}let k=Y(),w=T??ei;(0,C.sendSentryError)({error:Error("Call deploy mutation for standby build"),context:"kickOffStandbyBuild",isDeploymentsPane:!1}),await N({variables:{input:{replId:i,targetDeploymentId:D,targetMachineConfigurationId:n,maxMachineInstances:r,commands:{build:E,run:P||""},envVars:e,subdomain:t,provider:v,appType:R,context:"workspace",machineJob:s,privacyMode:M,grantWorkspaceViewerAccess:f,hasAgentSession:y,ignoredSecretKeys:S,syncStripe:A,enableSecurityScan:b,replitBadgeEnabled:w,triggerSource:k,purchaseDomain:h,skipDeploy:!0}}})},[eN,N,D,i,Y,eM,ei,eR]),eU=(0,h.useGetSecretsAsDeploymentEntries)({secrets:w,replId:i}),{defaultMachineConfiguration:eO}=(0,T.useAutoscaleConfigurations)({isAzureDeployment:!1,isFreeUser:I,onError:()=>{}}),eG=(0,b.useGet)(ep),ez=(0,t.useCallback)(async({hasAgentSession:t,purchaseDomain:a})=>{if(K(void 0),W())return void F("Deployment already in progress");let r=t=>{z(v.DeploymentMode.Ready),F(t.message),e&&e()};try{let o,s;z(v.DeploymentMode.Preparing);let p=await eU(),m=await L({deploymentTimeCreated:E,buildTimeCreated:er?.timeCreated,ignoreSecretsUntil:d.SYNCING_SECRETS_ROLLOUT_DATE,replId:i,apolloClient:y}),f=U({currentBuildVars:er?.envVars,workspaceSecrets:p,ignoredSecretKeys:m}),S=await (0,h.getDotReplitDeploymentConfig)(P),{buildCommand:A,runCommand:b,publicDir:T,ignorePorts:C,providerFromTarget:x}=S;if(!D)return void r(new g.DeploymentNotFoundError);if(!er)return void r(new g.CurrentBuildNotFoundError);let B=er.provider;er.provider===u.HostingBuildProvider.Static&&x===u.HostingBuildProvider.CloudRun&&(B=u.HostingBuildProvider.CloudRun,o=eO?.configurationId),(er.provider===u.HostingBuildProvider.CloudRun||er.provider===u.HostingBuildProvider.Gce)&&x===u.HostingBuildProvider.Static&&(B=u.HostingBuildProvider.Static,o=void 0);let R=e3({provider:B,ignorePorts:!!C});if(!R)return void r(new g.AppTypeFoundError);switch(R){case u.DeployHostingBuildAppType.Static:if(!(0,c.hasCommand)(T))return void r(new g.PublicDirNotFoundError);break;case u.DeployHostingBuildAppType.Worker:case u.DeployHostingBuildAppType.Server:case u.DeployHostingBuildAppType.CloudRun:case u.DeployHostingBuildAppType.Cron:if(!eR&&!(0,c.hasCommand)(b))return void r(new g.RunCommandNotFoundError);break;default:(0,l.default)(R)}if(eu&&em){let e=await em();s={connectionString:eu.connectionString,pgVersion:e}}let M=await ef(),k=e9({isPrivate:er.isPrivate,hasPrivatePassword:er.hasPrivatePassword}),w=Y(),I=eG(),_={replId:i,targetDeploymentId:D,commands:{build:A,run:b||""},provider:B,targetMachineConfigurationId:o,appType:R,envVars:f,context:"workspace",privacyMode:k,hasAgentSession:t,ignoredSecretKeys:m,createNeonProductionDatabase:M,enableSecurityScan:Q,agentInboxEnabled:Z,agentInboxConfig:Z?{position:X,logoSrc:ea,bgColor:et}:void 0,replitBadgeEnabled:ei,heliumDevelopmentDatabase:s,triggerSource:w,syncStripe:I,purchaseDomain:a};if(M&&eA&&await eA({heliumDevelopmentDatabase:s,neonDevelopmentDatabase:el,neonProductionDatabase:ed,hasExternalDatabaseUrl:ec,deployConfig:S,deployInputOptions:_,context:"redeployWithNoNewOptions",appType:R,org:n})){e&&e();return}await N({variables:{input:_},onCompleted:e=>{e.deployHostingBuild2?.__typename==="UserError"?r(Error(e.deployHostingBuild2.message)):ew(e,M)}})}catch(e){r(e)}},[N,F,z,W,Q,Z,X,et,ea,ei,eU,eA,ew,e,em,ef,K,eu,ec,D,i,ed,el,P,er,E,y,n,Y,eO?.configurationId,eG,eR]),ej=(0,t.useCallback)(async({prepareDatabaseStateId:e,sqlStatementsToExecute:t,pushDevelopmentDatabaseObjects:a})=>{if(!t&&!a)return void F("No SQL statements or push development database objects found");if(ey.id!==e)return void F("Preparing database state ID does not match current preparing database state ID");let{deployOptions:i}=ey;if(!i)return void F("No deploy option found in preparing database state");if(W())return void F("Deployment already in progress");let{deployConfig:n,deployInputOptions:r,context:o}=i,s=r;if(t&&(eS({type:"APPROVE_AND_DEPLOY",approved:"sqlStatementsToExecute"}),s={...r,sqlStatementsToExecute:t}),a&&(eS({type:"APPROVE_AND_DEPLOY",approved:a}),s={...r,pushDevelopmentDatabaseObjects:a}),"deployBuild"===o){let e=await (0,h.getDotReplitDeploymentConfig)(P);await (0,h.setDotReplitDeploymentConfig)(n,e,{dotReplit:P,fs:M,container:B})}try{await N({variables:{input:s},onCompleted:e=>ew(e,!0)})}catch(e){throw z(v.DeploymentMode.Ready),e}},[N,z,W,eS,F,ew,B,P,M,ey]),e$=(0,t.useCallback)(async({rollbackCandidateBuildId:e,envVars:t})=>{if(W())return void F("Deployment already in progress");try{if(!e)throw new g.RollbackBuildNotProvidedError;if(!D)throw new g.DeploymentNotFoundError;z(v.DeploymentMode.Preparing),await eo({variables:{input:{targetDeploymentId:D,rollbackCandidateBuildId:e,replId:i,envVars:t}},onCompleted:G})}catch(e){throw z(v.DeploymentMode.Ready),e}},[eo,G,F,z,D,i,W]);return{deployBuild:e_,kickOffStandbyBuild:eH,redeployWithNoNewOptions:ez,approveAndDeployDatabaseChanges:ej,rollbackToPreviousBuild:e$,databaseLoading:es}}let e5=(0,n.atom)(null,async(e,t,{args:a,replId:n})=>{let r,{command:o}=a;if(o===u.SendDeploymentLifecycleCommandType.UpdateMachineConfiguration){let n=e(ev);if(!n)return void t(e0,"No current build found");let{machineConfigurationId:r}=a;if(!r)return void t(e0,"No machine configuration found");let s=(0,D.getBuildStatusFromLifecycleCommandType)(o);s&&(t(ev,(0,i.produce)(n,e=>{e.status=s})),t(A.deploymentModeAtom,(0,D.getDeploymentModeFromBuildStatus)(s)))}if(o===u.SendDeploymentLifecycleCommandType.Resume||o===u.SendDeploymentLifecycleCommandType.Suspend){let a=e(ev);if(!a)return void t(e0,"No current build found");r=a.id;let n=(0,D.getBuildStatusFromLifecycleCommandType)(o);n&&(t(ev,(0,i.produce)(a,e=>{e.status=n})),t(A.deploymentModeAtom,(0,D.getDeploymentModeFromBuildStatus)(n)))}if(o===u.SendDeploymentLifecycleCommandType.UpdateDeploymentFeatureConfig){let a=e(ev);if(!a)return void t(e0,"No current build found");let n=(0,D.getBuildStatusFromLifecycleCommandType)(o);n&&(t(ev,(0,i.produce)(a,e=>{e.status=n})),t(A.deploymentModeAtom,(0,D.getDeploymentModeFromBuildStatus)(n)))}try{await (0,y.sendDeploymentLifecycleCommandMutation)({...a,buildId:r,replId:n}),o===u.SendDeploymentLifecycleCommandType.Destroy&&t(eG)}catch(a){let e="Failed to send deployment lifecycle command";a instanceof Error?e=a.message:"string"==typeof a&&(e=a),t(e0,e)}});function e7(){let e=(0,k.default)(),a=(0,b.useSet)(e5);return(0,t.useCallback)(async t=>{await a({replId:e,args:t})},[a,e])}let e8=(0,n.atom)(null,async(e,t)=>{let a=e(X);if(!a)return void t(e0,"No deployment found");let n=e(eC);if(!n)return void t(e0,"No deployment in progress found");try{await (0,y.cancelInProgressDeploymentsBuildMutation)({buildId:n.id,targetDeploymentId:a})}catch(e){t(e0,e.message);return}t(eC,void 0),t(A.deploymentModeAtom,v.DeploymentMode.Ready);let r=e(ev);r&&(r.status===u.HostingBuildStatus.Success||r.status===u.HostingBuildStatus.Failed)||(t(ev,(0,i.produce)(n,e=>{e.status=u.HostingBuildStatus.Failed})),t(eh,n.artifacts??[]))});function te(){return(0,b.useSet)(e8)}function tt(){return(0,b.useSet)(eF)}function ta(){let{show:e}=(0,w.useGlobalModal)(),a=eD(),i=eE(),n=J(),r=el(),o=en(),s=(0,k.default)(),l=eg(),{isAgentStackRepl:d}=(0,I.useIsAgentStackRepl)(),{agentStackPlatformType:c}=(0,N.useAgentStackPlatformType)(),p=(0,B.default)(i?.id),m=(0,t.useRef)(void 0),g=a?.status===u.HostingBuildStatus.Success,f=a?.id===p.current,y=!!n,S=r?`https://${r}.replit.app`:null;(0,t.useEffect)(()=>{g&&f&&a?.id&&m.current!==a.id&&(m.current=a.id,l&&!y&&S&&o?e("FreeDeployExpirationModal",{deploymentUrl:S}):d&&c===u.AgentStackPlatformType.Slack?e("SlackAgentStackPostDeployModal",{replId:s}):d&&c===u.AgentStackPlatformType.TimeBased?e("TimeBasedAgentStackPostDeployModal"):d&&c===u.AgentStackPlatformType.Telegram&&e("TelegramAgentStackPostDeployModal",{replId:s}))},[c,g,a?.id,o,S,l,d,y,f,s,e])}}]);
+
+//# debugId=b06e7ec8-d907-917b-df5e-3b4f795ad15b
+//# sourceMappingURL=224c69f6ddf41b9f.js.map

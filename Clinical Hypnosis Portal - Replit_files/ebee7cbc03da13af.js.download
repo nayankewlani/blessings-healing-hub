@@ -1,0 +1,163 @@
+;!function(){try { var e="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof global?global:"undefined"!=typeof window?window:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&((e._debugIds|| (e._debugIds={}))[n]="145e31da-0859-debc-ead8-ebf8d67b7ab3")}catch(e){}}();
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,849165,e=>{"use strict";var t=e.i(389959);e.i(877212);var r=e.i(924908);e.i(908320);var i=e.i(342469);function n(){let e=(0,r.useYapper)(),n=(0,t.useMemo)(()=>{let t=async(t,r)=>e.classifyInitialUserPrompt(t,r),r=async t=>e.uploadStackSelectionFile({fileName:t.path.split("/").pop()||t.path,mimeType:t.mimeType,file:t.file});return new i.Classifier({classifyFn:t,uploadFile:r,isClosed:()=>{let t=e.status.current;return"closed"===t||"error"===t}})},[e]);return(0,t.useEffect)(()=>()=>{n.destroy()},[n]),n}e.s(["useClassifier",()=>n])},170710,e=>{"use strict";var t=e.i(276385),r=e.i(341048),i=e.i(389959);e.i(242933);var n=e.i(790164);class a{state=new n.ObservableState(null);timeoutId=null;start=e=>{this.clearTimeout(),this.state.set({prompt:e}),this.timeoutId=setTimeout(this.remove,2e4)};clearTimeout(){this.timeoutId&&(clearTimeout(this.timeoutId),this.timeoutId=null)}update=e=>{let t=this.state.current?.prompt;t&&this.state.set({prompt:t,repl:e})};remove=()=>{this.clearTimeout(),this.state.set(null)}}let s=(0,i.createContext)(null),o=(0,r.default)(()=>e.A(556827).then(e=>e.LoadingStateOverlay),{loadableGenerated:{modules:[148805]},ssr:!1});function l(e){let r=(0,i.useRef)();return r.current||(r.current=new a),(0,t.jsxs)(s.Provider,{value:r.current,children:[e.children,(0,t.jsx)(o,{state:r.current.state})]})}function d(){return(0,i.useContext)(s)}e.s(["WorkspaceLoadingProvider",()=>l,"useWorkspaceLoadingState",()=>d],170710)},170784,e=>{"use strict";var t=e.i(389959),r=e.i(992785);function i({repl:e,currentUser:t,asViewer:r}){return{asViewer:r,repl:{__typename:"Repl",authorizations:e.authorizations,id:e.id,language:e.language},currentUser:t?{__typename:"CurrentUser",id:t.id,username:t.username,isSubscribed:t.isSubscribed}:void 0}}function n(e){let n=e?i({...e}):null,a=(0,t.useRef)(n);return(0,r.default)(n,a.current)||(a.current=n),a.current}e.s(["createConnectContext",()=>i,"useMemoizedConnectContext",()=>n])},122965,e=>{"use strict";var t=e.i(389959),r=e.i(775973),i=e.i(98816);function n(){let e=(0,r.useLDClient)(),n=(0,i.default)(e);return(0,t.useCallback)(()=>{var e;let t;return e=n.current,!Number.isFinite(t=parseInt(e?.variation("flag-container-retry-minimum-ms",0),10))||t<0?0:t},[n])}e.s(["useFlaggedRetrier",()=>n])},929423,e=>{"use strict";let t=async({dbName:e,version:t,onUpgrade:r})=>new Promise((i,n)=>{let a=indexedDB.open(e,t);a.onerror=()=>n(Error(`Failed to open database: ${a.error?.message}`)),a.onsuccess=()=>i(a.result),r&&(a.onupgradeneeded=e=>{let{target:t}=e;t instanceof IDBOpenDBRequest&&t.result?r(t.result):n(Error("Invalid target during upgrade."))})}),r=async({db:e,storeName:t,mode:r,operation:i})=>new Promise((n,a)=>{if(!e.objectStoreNames.contains(t))return a(Error(`Object store "${t}" does not exist in the database.`));let s=e.transaction([t],r),o=i(s.objectStore(t));o.onsuccess=()=>n(o.result),o.onerror=()=>a(Error(`Transaction error: ${o.error?.message}`)),s.onabort=()=>a(Error("Transaction was aborted.")),s.onerror=()=>a(Error("Transaction encountered an error."))}),i="LandingPageAgentAttachments",n=null,a=async()=>n||(n=t({dbName:"ReplitAgentAttachments",version:1,onUpgrade:e=>{e.objectStoreNames.contains(i)||e.createObjectStore(i,{keyPath:"id",autoIncrement:!0})}})),s=async e=>{let t=await a(),n={file:e,name:e.name,type:e.type,lastModified:e.lastModified};return await (({db:e,storeName:t,data:i})=>r({db:e,storeName:t,mode:"readwrite",operation:e=>e.add(i)}))({db:t,storeName:i,data:n})},o=async()=>(({db:e,storeName:t})=>r({db:e,storeName:t,mode:"readonly",operation:e=>e.getAll()}))({db:await a(),storeName:i}),l=async()=>(({db:e,storeName:t})=>r({db:e,storeName:t,mode:"readwrite",operation:e=>e.clear()}))({db:await a(),storeName:i}),d=async()=>{try{await l()}catch(e){return}};e.s(["addFile",0,s,"clearAllIndexedDbAttachments",0,d,"getAllFiles",0,o],929423)},364674,e=>{"use strict";var t=e.i(435106),r=e.i(910951),i=e.i(576106),n=e.i(82259);e.i(877212);var a=e.i(600637),s=e.i(267710),o=e.i(805763),l=e.i(63846),d=e.i(629536);e.i(242933);var u=e.i(790164),c=e.i(709485),g=e.i(993796),p=e.i(441329),m=e.i(858248),A=e.i(509908);function h({currentUserUsername:e,currentUserEmail:h,currentUserTimeCreated:y,updatePromptConnectionStatus:x}){let _=(0,p.useIsInBonsaiWebview)(),E=(0,g.useFlag)({controlName:"flag-everything-everywhere",default:!1});return async function({prompt:g,uploadedFiles:p,requestedStackBlueprint:T,newOutputsRequested:S,replId:U,currentUserId:f,orgId:v,customStackReplId:B,themeConfig:R,initialBuildMode:I,agentChatMode:C,agentInitialBuildTier:w,autonomyLevel:N,modelProfile:b,webSearchEnabled:P,imageGenerationEnabled:O,enableAutomatedTesting:j,source:D}){let L=(0,t.createClientId)({currentUserId:f}),F=new t.ChatConnection({clientId:L,serverId:a.AI_CHAT_SERVER_ID,isClientActiveObservable:new u.ObservableState(!0),getEndpoint:async()=>{let e=await (0,s.auth)(U,L,v),t=new URL((0,l.getAiEndpoint)());return t.searchParams.set("auth_token",e),t},onProtocolError:e=>{throw Error(`Failed to send agent prompt. Protocol error: ${e.message}`)},onRetriesExceeded:()=>{throw Error("Unable to connect. Please try again later.")}});F.status.subscribe(e=>{x(e)});let M=(0,i.createSessionRequest)({sessionType:n.SessionType.AGENT_SESSION,replId:U}),k=await F.service.createSession.rpc(M);if(!k.ok)throw Error("Failed to send agent prompt. Session creation failed.");let q=k.payload.sessionId,K=k.payload.sessionCreationEventId,$=(0,r.createEventRequest)({session:q,parent:K,model:n.ModelType.ADVANCED,sender:{id:f,membership:n.MembershipType.CORE,timeCreated:new Date(y)},addToChild:!0,data:{kind:"message",message:g,uploadedFiles:p,requestedStackBlueprint:T,newOutputsRequested:E?S:void 0,intent:n.MessageAction.AGENT,customStackReplId:B,themeConfig:R,agentConfig:{webSearchEnabled:P??!0,imageGenerationEnabled:O??!0,initialBuildMode:I,agentMode:C,agentInitialBuildTier:w,autonomyLevel:N,modelProfile:b,...void 0!==j&&{enableAutomatedTesting:j}}}});F.service.createEvent.rpc($.request);let G=T?(0,d.getStackOptionFromBlueprint)(T):void 0;(0,m.track)(c.events.START_WITH_AI_USED,{action:"created_agent_session",prompt:g,attachments:p,repl_id:U,username:e,email:h,is_mobile:_,has_agent:!0,session_id:q,langsmith_url:(0,o.generateAiSessionLangSmithUrl)(q,n.SessionType.AGENT_SESSION),...D&&{source:D},...G&&{selected_stack:{key:G,customStackReplId:B}}}),(0,A.trackAgentAnalyticsEvent)({action:"created_new_session",sessionId:q})}}e.s(["useSendAgentPrompt",()=>h])},2e3,e=>{"use strict";var t=e.i(750854),r=e.i(389959),i=e.i(973245),n=e.i(279042),a=e.i(655366),s=e.i(951262),o=e.i(304277);e.i(566901);let l={},d=i.gql`
+    mutation CreateAgentReplCreateRepl($input: CreateReplInput!) {
+  createRepl(input: $input, isTitleAutoGenerated: false) {
+    __typename
+    ... on Repl {
+      id
+      title
+      ...ReplLinkRepl
+      ...CrosisContextRepl
+    }
+    ... on UserError {
+      message
+    }
+  }
+}
+    ${n.ReplLinkReplFragmentDoc}
+${a.CrosisContextReplFragmentDoc}`,u=i.gql`
+    query CreateAgentReplCurrentUser {
+  currentUser {
+    id
+    username
+    ...CrosisContextCurrentUser
+    replCount {
+      ... on ReplCount {
+        count
+      }
+    }
+  }
+}
+    ${a.CrosisContextCurrentUserFragmentDoc}`;var c=e.i(82259),g=e.i(634759),p=e.i(377772),m=e.i(830675);let A={},h=i.gql`
+    mutation GenerateAgentReplIcon($prompt: String!, $replId: String!) {
+  generateReplIcon(input: {prompt: $prompt, replId: $replId}) {
+    ... on GenerateReplIconResult {
+      repl {
+        id
+        iconUrl
+      }
+    }
+  }
+}
+    `;var y=e.i(364674),x=e.i(993796),_=e.i(650587),E=e.i(222342),T=e.i(929423),S=e.i(441329),U=e.i(221586),f=e.i(956111),v=e.i(858248),B=e.i(709485),R=e.i(1324),I=e.i(792e3),C=e.i(170784),w=e.i(122965),N=e.i(534518),b=e.i(399978);e.i(377085);var P=e.i(357167),O=e.i(170710),j=e.i(185591);function D({currentUser:e}){let i,[n,a]=(0,r.useState)("idle"),N=(0,f.useQueryParam)("folderId","string"),b=(0,S.useIsInBonsaiWebview)(),{showError:P}=(0,E.default)(),[D]=(i={...l,...void 0},s.useMutation(d,i)),{currentUser:F}=function(){let e,{data:t,error:r,loading:i}=(e={...l,...void 0},o.useQuery(u,e));return r?{loading:!1,currentUser:null,errorCode:500}:t?.currentUser?{loading:!1,currentUser:t.currentUser,errorCode:null}:i?{loading:!0,currentUser:null,errorCode:null}:{loading:!1,currentUser:null,errorCode:403}}(),M=(0,w.useFlaggedRetrier)(),k=(0,t.useRouter)(),q=(0,R.default)(),K=(0,x.useFlag)({controlName:"flag-killswitch-agent"}),$=(0,x.useFlag)({controlName:"flag-agent-teamwork",default:!1}),G=(0,O.useWorkspaceLoadingState)(),z=e=>{a("idle"),P(e.message),(0,p.sendErrorToSentry)(e),G?.remove()},[V,W]=(0,r.useState)("disconnected"),H=(0,y.useSendAgentPrompt)({currentUserUsername:e.username,currentUserEmail:e.email,currentUserTimeCreated:e.timeCreated,updatePromptConnectionStatus:e=>{W(e)}}),Q=function(){var e;let t,[r]=(e={onError:e=>{m.captureException(e)}},t={...A,...e},s.useMutation(h,t));return({prompt:e,attachments:t,replId:i})=>{r({variables:{prompt:e+(t.length>0?`
+
+With attachments: ${t.map(e=>e.path).join(", ")}`:""),replId:i}})}}(),Y="flag-electron-orbital-dance-party",J=(0,x.useFlag)({controlName:Y}),X=(0,_.useIsMobile)();return{createAgentRepl:async function({prompt:t,attachments:r,requestedStackBlueprint:i,newOutputsRequested:n,isPrivate:s,orgId:o,customStackReplId:l,isExpertMode:d=!1,themeConfig:u,initialBuildMode:p,appThemeId:m,agentInitialBuildTier:A,autonomyLevel:h,modelProfile:y,webSearchEnabled:x,imageGenerationEnabled:_,enableAutomatedTesting:E,source:S,grabbyExtensionVersion:f,...R}){if(K){P("This feature is currently unavailable."),a("idle");return}(0,U.clearAiPromptLocalStorage)(),await (0,T.clearAllIndexedDbAttachments)(),a("creating_repl");let w=p===c.AgentInitialBuildMode.AGENT_INITIAL_BUILD_MODE_DESIGN,O=R.isInPlanningPhase??(!l&&!d&&!w),V=r&&r.length>0,W=(O||$)&&!X&&!V;W&&(J&&G?.start({text:t,attachments:r}),(0,v.track)(B.events.EXPERIMENT_VARIANT_ASSIGNED,{experimentName:Y,variant:J}));let Z=i===g.StackBlueprint.STACK_BLUEPRINT_AGENT,ee=await D({variables:{input:{aiPromptText:t,aiPromptAttachmentPaths:r.map(e=>e.path),folderId:N,isPrivate:s,orgId:o,originId:l,detachFromProject:!!l,isInPlanningPhase:!!$||O,isExpertMode:d,isAgentStack:Z,initialStackBlueprint:void 0!==i?({[g.StackBlueprint.STACK_BLUEPRINT_NONE]:"STACK_BLUEPRINT_NONE",[g.StackBlueprint.STACK_BLUEPRINT_FLASK_VANILLA_JS]:"STACK_BLUEPRINT_FLASK_VANILLA_JS",[g.StackBlueprint.STACK_BLUEPRINT_PYTHON_API]:"STACK_BLUEPRINT_PYTHON_API",[g.StackBlueprint.STACK_BLUEPRINT_STREAMLIT]:"STACK_BLUEPRINT_STREAMLIT",[g.StackBlueprint.STACK_BLUEPRINT_FULLSTACK_JS]:"STACK_BLUEPRINT_FULLSTACK_JS",[g.StackBlueprint.STACK_BLUEPRINT_GAMESTACK_JS]:"STACK_BLUEPRINT_GAMESTACK_JS",[g.StackBlueprint.STACK_BLUEPRINT_CUSTOM]:"STACK_BLUEPRINT_CUSTOM",[g.StackBlueprint.STACK_BLUEPRINT_EXPO]:"STACK_BLUEPRINT_EXPO",[g.StackBlueprint.STACK_BLUEPRINT_AGENT]:"STACK_BLUEPRINT_AGENT",[g.StackBlueprint.STACK_BLUEPRINT_MOCKUP_JS]:"STACK_BLUEPRINT_MOCKUP_JS",[g.StackBlueprint.STACK_BLUEPRINT_BEST_EFFORT_FALLBACK]:"STACK_BLUEPRINT_BEST_EFFORT_FALLBACK",[g.StackBlueprint.STACK_BLUEPRINT_VIDEO_JS]:"STACK_BLUEPRINT_VIDEO_JS"})[i]:void 0,isWebDesignMockup:w,grabbyExtensionVersion:f}}});if(ee.errors)return void z(Error(ee.errors.map(e=>e.message).join(", ")));if(!ee.data)return void z(Error("Expected data from createRepl graphql mutation"));if("Repl"!==ee.data.createRepl.__typename)return void z(Error(ee.data.createRepl.message));let et=ee.data.createRepl;if(Q({prompt:t,attachments:r,replId:et.id}),J&&W&&G?.update(et),V){let e=(0,C.createConnectContext)({repl:et,currentUser:F}),t=(0,I.default)({onUnrecoverableError:e=>{a("idle"),P(e.message)}});t.connect({context:e,getMinimumRetryDelayMs:M}),a("configuring_repl"),await L({hasAttachments:V,attachments:r,container:t,handleError:z})}try{await H({prompt:t,uploadedFiles:r.map(({path:e,file:t})=>({path:e,mimeType:t.type})),requestedStackBlueprint:i,newOutputsRequested:n,replId:et.id,currentUserId:e.id,orgId:o,customStackReplId:l,themeConfig:u,initialBuildMode:p,agentChatMode:O?c.AgentMode.AGENT_MODE_INITIAL_PLANNING:c.AgentMode.AGENT_MODE_GENERAL,agentInitialBuildTier:A,autonomyLevel:h,modelProfile:y,webSearchEnabled:x,imageGenerationEnabled:_,enableAutomatedTesting:E,source:S})}catch(e){z(e instanceof Error?e:Error(String(e)));return}a("opening_repl");let er={enterInAgentMode:O,enterInExpertMode:d,appThemeId:m},ei=(0,j.replLinkProps)(et,er);b?window.location.href=(0,j.replLinkFullUrl)(et,er):await k.push({...ei.href,pathname:q},ei.as),a("idle")},status:n,agentPromptRiverConnectionStatus:V}}async function L({hasAttachments:e,container:t,attachments:r,handleError:i}){if(!e)return;let n=(0,N.default)({container:t});await (0,b.uploadFiles)({parentPath:P.ATTACHED_ASSETS_PATH,files:r.map(({file:e})=>e),fs:n,onError:e=>{i(Error(`Error uploading ${e.path}: ${e.error}`))}})}e.s(["useCreateAgentRepl",()=>D],2e3)},508536,e=>{"use strict";var t=e.i(276385),r=e.i(389959),i=e.i(368964),n=e.i(549645),a=e.i(706323),s=e.i(765219),o=e.i(78433),l=e.i(446530),d=e.i(173703),u=e.i(613355),c=e.i(140487),g=e.i(91720),p=e.i(739521),m=e.i(960178),A=e.i(625484);let h=(0,l.cssRecord)({ubbBannedContainer:[u.rcss.textAlign.center],buttonContainer:[{"@media (max-width: 600px)":{flexDirection:"column"}}]});function y({context:e}){let[l,u]=(0,r.useState)(!1),y="org"===e.type&&e.orgDealContext?.dealType!==i.OrgDealType.Trial&&e.orgDealContext?.dealType!==i.OrgDealType.EnterpriseTrial&&e?.canEditPaymentMethod||"user"===e.type,{headingText:x,subheadingText:_}=(0,o.getUbbSuspensionDescription)("org"===e.type?{type:"org",isAdmin:e.isAdmin,isSuspended:e.isSuspended,orgDealContext:e.orgDealContext}:{type:"user",isSuspended:e.isSuspended});return(0,t.jsxs)(A.View,{gap:12,align:"center",css:h.ubbBannedContainer,children:[(0,t.jsx)(m.Text,{variant:"subheadDefault",children:x}),(0,t.jsx)(m.Text,{children:_}),y?(0,t.jsx)(d.ShadesSurface,{children:(0,t.jsxs)(A.View,{row:!0,css:h.buttonContainer,gap:12,children:[(0,t.jsx)(A.View,{gap:8,children:(0,t.jsx)(g.ButtonLink,{iconLeft:(0,t.jsx)(a.default,{}),text:"View and pay invoices",href:"org"===e.type?`/orb-customer-portal/org/${e.orgId}`:"/orb-customer-portal",target:"_blank"})}),(0,t.jsx)(A.View,{gap:8,children:(0,t.jsx)(c.Button,{iconLeft:(0,t.jsx)(n.default,{}),text:"Update payment method",colorway:"primary",onClick:()=>u(!0)})})]})}):null,(0,t.jsx)(p.Modal,{isOpen:l,onRequestClose:()=>u(!1),children:(0,t.jsx)(s.PaymentMethodForm,{onDone:()=>{u(!1)},onBack:async()=>u(!1)})})]})}e.s(["default",()=>y])},516308,e=>{"use strict";var t=e.i(276385),r=e.i(417751),i=e.i(310158),n=e.i(760129),a=e.i(973245),s=e.i(304277);e.i(566901);let o={},l=a.gql`
+    query AgentInputReachedHardLimit($orgId: String) {
+  currentUser {
+    id
+    usageInterval {
+      ... on UsageInterval {
+        endDate
+      }
+      ... on Error {
+        message
+      }
+    }
+    org(orgId: $orgId) {
+      ... on Org {
+        id
+        usageInterval {
+          ... on UsageInterval {
+            endDate
+          }
+          ... on Error {
+            message
+          }
+        }
+      }
+    }
+  }
+}
+    `;var d=e.i(269848),u=e.i(40916),c=e.i(446530),g=e.i(613355),p=e.i(140487),m=e.i(396776),A=e.i(960178),h=e.i(625484);let y=({isOrg:e})=>(0,t.jsx)(A.Text,{css:_.overlayTitle,variant:"subheadDefault",children:e?"Your workspace has hit its monthly usage budget.":"You've hit your monthly usage budget."}),x=({isOrg:e,isOrgMemberWithoutEditPermission:a,endOfBillingPeriod:s})=>{let o=(0,n.parseISO)(s),l=(0,i.isValid)(o)?` on ${(0,r.format)(o,"MMM do, hh:mm aaa")}`:"";return e?a?(0,t.jsxs)(A.Text,{variant:"small",children:["To continue using the Agent now, please contact your admin to request an increase in the usage budget. Otherwise, your usage will reset",l," when the next billing period begins."]}):(0,t.jsxs)(A.Text,{variant:"small",children:["To continue using the Agent now, increase your budget. Otherwise, your workspace's usage will reset",l," when the next billing period begins."]}):(0,t.jsxs)(A.Text,{children:["To continue using the Agent now, increase your budget. Otherwise, your usage will reset",l," when the next billing period begins."]})},_=(0,c.cssRecord)({overlayContainer:[g.rcss.maxWidth("100%")],overlayText:[g.rcss.textAlign.center,g.rcss.maxWidth(800),g.rcss.colWithGap(8)],overlayTitle:[g.rcss.fontWeight.bold],loadingAndErrorWrapper:[g.rcss.display.flex,g.rcss.flex.growAndShrink(1),g.rcss.center,g.rcss.minHeight(200)]});e.s(["AgentInputReachedHardLimit",0,({onIncreaseBudget:e,canEditUsageLimit:r,orgId:i})=>{var n;let a,c,g=void 0!==i,A=g&&!r,{data:E,loading:T,error:S}=(n={variables:{orgId:i}},c={...o,...n},s.useQuery(l,c));return(a=g?E?.currentUser?.org.__typename==="Org"&&"UsageInterval"===E.currentUser.org.usageInterval.__typename?E.currentUser.org.usageInterval.endDate:"":E?.currentUser?.usageInterval?.__typename==="UsageInterval"?E.currentUser.usageInterval.endDate:"",T)?(0,t.jsx)(h.View,{css:_.loadingAndErrorWrapper,children:(0,t.jsx)(d.default,{})}):S?(0,t.jsx)(h.View,{css:_.loadingAndErrorWrapper,children:(0,t.jsx)(h.View,{children:(0,t.jsx)(m.StatusBanner,{colorway:"red",text:"Something went wrong."})})}):(0,t.jsxs)(h.View,{css:_.overlayContainer,gap:16,align:"center",justify:"center",children:[(0,t.jsxs)(h.View,{css:_.overlayText,children:[(0,t.jsx)(y,{isOrg:g}),(0,t.jsx)(x,{isOrg:g,isOrgMemberWithoutEditPermission:A,endOfBillingPeriod:a})]}),A?null:(0,t.jsx)(p.Button,{text:"Increase usage budget",onClick:e,iconLeft:(0,t.jsx)(u.default,{}),colorway:"primary"})]})}],516308)},813190,e=>{"use strict";var t=e.i(973245),r=e.i(850176),i=e.i(23293),n=e.i(696683),a=e.i(304277);e.i(566901);let s={},o=t.gql`
+    fragment StartWithAiOrgMetadata on Org {
+  id
+  name
+}
+    `,l=t.gql`
+    fragment StartWithAiUsageBudget on UsageBasedBillingBudget {
+  id
+  hasReachedBudget
+}
+    `,d=t.gql`
+    fragment StartWithAiOrgUsageLimitAuthorization on OrgAuthorizations {
+  editUsageLimit {
+    isAuthorized
+    message
+  }
+}
+    `,u=t.gql`
+    query StartWithAi {
+  currentUser {
+    id
+    username
+    firstName
+    email
+    isVerified
+    ...AiProviderCurrentUser
+    ...ReplOwnerCurrentUser
+  }
+}
+    ${r.AiProviderCurrentUserFragmentDoc}
+${i.ReplOwnerCurrentUserFragmentDoc}`;function c(e){let t={...s,...e};return a.useQuery(u,t)}let g=t.gql`
+    query StartWithAiUsageLimits($orgId: String) {
+  currentUser {
+    id
+    usageBasedBillingBudget {
+      __typename
+      ... on UsageBasedBillingBudget {
+        ...StartWithAiUsageBudget
+      }
+      ... on Error {
+        message
+      }
+    }
+    customer {
+      ...EditUsageBasedBillingAlertsFormCustomerAlerts
+    }
+    org(orgId: $orgId) {
+      __typename
+      ... on Org {
+        ...StartWithAiOrgMetadata
+        authorizations {
+          ...StartWithAiOrgUsageLimitAuthorization
+        }
+        groups(input: {types: [system_viewers]}) {
+          ... on OrgGroupConnection {
+            items {
+              id
+              type
+              isMember
+            }
+          }
+        }
+        usageBasedBillingBudget {
+          __typename
+          ... on UsageBasedBillingBudget {
+            ...StartWithAiUsageBudget
+          }
+          ... on Error {
+            message
+          }
+        }
+        customer {
+          ... on Customer {
+            ...EditUsageBasedBillingAlertsFormCustomerAlerts
+          }
+          ... on Error {
+            message
+          }
+        }
+      }
+      ... on Error {
+        message
+      }
+    }
+  }
+}
+    ${l}
+${n.EditUsageBasedBillingAlertsFormCustomerAlertsFragmentDoc}
+${o}
+${d}`;function p(e){let t={...s,...e};return a.useQuery(g,t)}e.s(["StartWithAiDocument",0,u,"StartWithAiUsageLimitsDocument",0,g,"useStartWithAiQuery",()=>c,"useStartWithAiUsageLimitsQuery",()=>p])},673573,383737,473822,986905,132728,183662,e=>{"use strict";var t=e.i(276385),r=e.i(396776),i=e.i(625484);e.s(["AgentInputErrorDeterminingBudget",0,()=>(0,t.jsx)(i.View,{children:(0,t.jsx)(i.View,{children:(0,t.jsx)(r.StatusBanner,{colorway:"red",text:"Error determining remaining budget. Please try again later."})})})],673573);var n=e.i(629536),a=e.i(596139),s=e.i(418725),o=e.i(960178);e.s(["AgentInputFreemiumQuotaExceeded",0,()=>(0,t.jsxs)(i.View,{gap:8,align:"center",children:[(0,t.jsxs)(o.Text,{color:"dimmer",children:["You've reached your ",a.freePlanName," usage limit"]}),(0,t.jsx)(s.default,{context:"agent_freemium_quota",colorway:"primary",variant:"outlined",text:`Upgrade to ${a.corePlanName} to continue using ${n.AGENT_NAME}`,modalHeadingText:`Upgrade to ${a.corePlanName} to continue using ${n.AGENT_NAME}`,modalSubHeadingText:`You've reached your ${a.freePlanName} usage limit`})]})],383737),e.s(["AgentInputFreemiumTemporarilyUnavailable",0,()=>(0,t.jsxs)(i.View,{gap:12,align:"center",children:[(0,t.jsxs)(o.Text,{variant:"subheadDefault",children:[n.AGENT_NAME," is currently experiencing high demand and is temporarily unavailable for ",a.freePlanName," plan users."]}),(0,t.jsxs)(o.Text,{children:["Please try again later, or upgrade to ",a.corePlanName," for immediate access."]}),(0,t.jsx)(s.default,{context:"agent_freemium_quota",colorway:"primary",variant:"default",text:`Upgrade to ${a.corePlanName} to continue using ${n.AGENT_NAME}`,modalHeadingText:`Upgrade to ${a.corePlanName} to continue using ${n.AGENT_NAME}`,modalSubHeadingText:`${n.AGENT_NAME} is currently experiencing high demand and is temporarily unavailable for ${a.freePlanName} plan users.`})]})],473822);var l=e.i(755748);e.s(["AgentInputFreeReplLimitExceeded",0,()=>(0,t.jsxs)(i.View,{gap:12,align:"center",children:[(0,t.jsx)(l.default,{size:32}),(0,t.jsx)(o.Text,{variant:"subheadDefault",children:"You've hit your limit of free Apps"}),(0,t.jsx)(s.default,{context:"repl_limit_upsell",colorway:"primary",variant:"default",text:`Upgrade to ${a.corePlanName} for unlimited Apps`,modalHeadingText:`Upgrade to ${a.corePlanName} for unlimited Apps`,modalSubHeadingText:"You've hit your limit for Apps"})]})],986905),e.s(["AgentInputKillswitch",0,()=>(0,t.jsx)(i.View,{children:(0,t.jsx)(r.StatusBanner,{colorway:"red",text:"This feature is currently unavailable. Please try again later."})})],132728);var d=e.i(389959),u=e.i(414779),c=e.i(269848),g=e.i(995691),p=e.i(541508),m=e.i(446530),A=e.i(613355),h=e.i(140487),y=e.i(751273);let x=()=>(0,t.jsx)(i.View,{children:(0,t.jsx)(r.StatusBanner,{colorway:"warning",text:"You do not have permission to create an app"})}),_=({orgId:e,orgName:n,currentUserId:a})=>{let[s,l]=(0,d.useState)(!1),{data:m,loading:A,error:x}=(0,u.useOrgViewerUpgradeRequestQuery)({variables:{orgId:e,upgradeRequestInput:{userId:a,status:"PENDING"}}}),_=m?.currentUser?.org.__typename==="Org"&&null!==m.currentUser.org.upgradeRequest;return A?(0,t.jsx)(i.View,{css:E.loadingAndErrorWrapper,children:(0,t.jsx)(c.default,{})}):x?(0,t.jsx)(i.View,{css:E.loadingAndErrorWrapper,children:(0,t.jsx)(i.View,{children:(0,t.jsx)(r.StatusBanner,{colorway:"red",text:"Something went wrong."})})}):(0,t.jsxs)(i.View,{css:E.overlayContainer,gap:16,justify:"center",align:"center",children:[(0,t.jsx)(g.default,{size:24}),(0,t.jsx)(o.Text,{css:E.overlayText,children:"As a viewer you can access apps but you can't create them. To create apps, you need to request an upgrade to a full seat from your workspace admin."}),(0,t.jsx)(y.Tooltip,{tooltip:"You already have a pending upgrade request. Please wait for your admin to respond.",isDisabled:!_,children:(0,t.jsx)(h.Button,{text:"Request upgrade from admin",isDisabled:_,variant:"default",colorway:"primary",onClick:()=>l(!0)})}),(0,t.jsx)(p.default,{isOpen:s,orgId:e,orgName:n,onClose:()=>l(!1),onSuccess:()=>l(!1)})]})},E=(0,m.cssRecord)({loadingAndErrorWrapper:[A.rcss.display.flex,A.rcss.flex.growAndShrink(1),A.rcss.center],overlayContainer:[A.rcss.maxWidth("100%")],overlayText:[A.rcss.textAlign.center,A.rcss.maxWidth(600),A.rcss.colWithGap(8)]});e.s(["AgentInputNoCreationPermission",0,({owner:e,currentUserId:r})=>{let i="Org"===e.__typename;return"Org"===e.__typename&&"OrgGroupConnection"===e.groups.__typename&&void 0!==e.groups.items.find(e=>"system_viewers"===e.type&&e.isMember)?(0,t.jsx)(_,{orgId:i?e.id:"",orgName:e.name,currentUserId:r}):(0,t.jsx)(x,{})}],183662)},135958,175195,e=>{"use strict";var t,r=e.i(368964),i=e.i(813190),n=e.i(968783),a=e.i(312782);function s(){let e,t,r,s,{orgId:o}=(0,n.useCurrentUserStoredOrgContext)(),l=void 0!==o,{data:d,loading:u,error:c}=(0,i.useStartWithAiUsageLimitsQuery)({variables:{orgId:o},context:{noBatch:!0},ssr:!1});if(u)return{status:"loading"};let g=!0;if(l){e=!!d?.currentUser&&"Org"===d.currentUser.org.__typename&&d.currentUser.org.usageBasedBillingBudget?.__typename==="UsageBasedBillingBudget"&&d.currentUser.org.usageBasedBillingBudget.hasReachedBudget,g=!!d?.currentUser&&"Org"===d.currentUser.org.__typename&&d.currentUser.org.authorizations?.__typename==="OrgAuthorizations"&&d.currentUser.org.authorizations.editUsageLimit.isAuthorized,t=d?.currentUser?.org.__typename==="Org"?d.currentUser.org:void 0;let i=d?.currentUser?.org.__typename==="Org"&&"Customer"===d.currentUser.org.customer.__typename?d.currentUser.org.customer:void 0;if(i){let e=(0,a.extractCustomerAlerts)(i);s=e.customerId,r=e.alerts}}else{e=!!d?.currentUser&&d.currentUser.usageBasedBillingBudget?.__typename==="UsageBasedBillingBudget"&&d.currentUser.usageBasedBillingBudget.hasReachedBudget;let t=d?.currentUser?.customer;if(t){let e=(0,a.extractCustomerAlerts)(t);s=e.customerId,r=e.alerts}}let p=c?"Failed to load usage data":void 0;return p?{status:"error",error:p}:{status:"success",hasReachedBudget:e,canEditUsageLimit:g,org:t,usageBasedBillingAlerts:r,customerId:s}}function o(e){return"CurrentUser"===e.__typename?"OrgAuthorizations"===e.personalOrgAuthorizations.__typename?e.personalOrgAuthorizations:void 0:"Org"===e.__typename?e.authorizations:void 0}e.s(["getAgentAuthorizationsForOwner",()=>o,"useBillingBudgetStatus",()=>s],175195);var l=e.i(173532),d=e.i(993796),u=e.i(882029),c=e.i(573605),g=((t={}).AgentKillswitch="Agent killswitch",t.ErrorDeterminingBudget="Error determining budget",t.BudgetExceeded="Budget exceeded",t.EmailVerificationRequired="Email verification required",t.FreeAgentUsageQuotaExceeded="Free Agent usage quota exceeded",t.FreeReplLimitExceeded="Free Repl limit exceeded",t.FreemiumTemporarilyUnavailable="Freemium temporarily unavailable",t.NoReplCreationPermissions="No Repl creation permissions",t.UserUBBBanned="User is UBB Banned",t.RequiresPaymentMethod="Requires payment method",t.PaymentDelinquent="Failed payment. Update payment method to continue using Agent.",t.UserUsageAlertThresholdExceeded="User usage alert threshold exceeded",t.GroupUsageAlertThresholdExceeded="Group usage alert threshold exceeded",t);function p(e,t){let{agentUsage:i,agentUsageV2:n,loading:a}=(0,c.useGetAgentFreeUsage)(),s="Org"===e.__typename?e.id:void 0,g=o(e),{loading:p,isUBBBanned:m}=(0,u.useIsUBBBanned)({orgId:s}),A=(0,l.useReplLimit)(),h=(0,d.useFlag)({controlName:"flag-killswitch-agent"}),y=(0,d.useFlag)({controlName:"flag-freemium-ai-load-shedder"}),x="CurrentUser"===e.__typename&&!e.isSubscribed,_="Org"===e.__typename&&!e.authorizations.createPrivateRepl.isAuthorized&&!e.authorizations.createPublicRepl.isAuthorized;if(!g||a||"loading"===t.status||"loading"===A.type||p)return{loading:!0,hasAccess:!1};if(h)return{loading:!1,hasAccess:!1,accessDeniedReason:"Agent killswitch"};if(m)return{loading:!1,hasAccess:!1,accessDeniedReason:"User is UBB Banned"};if("error"===t.status)return{loading:!1,hasAccess:!1,accessDeniedReason:"Error determining budget"};if(!g.paidAgent.isAuthorized&&g.paidAgent.code===r.OrgAuthorizationCode.InsufficientBudget)return{loading:!1,hasAccess:!1,accessDeniedReason:"Budget exceeded"};if(!g.paidAgent.isAuthorized&&!g.freeAgent.isAuthorized&&_)return{loading:!1,hasAccess:!1,accessDeniedReason:"No Repl creation permissions"};if(!g.freeAgent.isAuthorized&&g.freeAgent.code===r.OrgAuthorizationCode.RequiresEmailVerification)return{loading:!1,hasAccess:!1,accessDeniedReason:"Email verification required"};let E=n?n.isUnderQuota:i?.isUnderQuota;return x&&!E?{loading:!1,hasAccess:!1,accessDeniedReason:"Free Agent usage quota exceeded"}:"data"===A.type&&A.shouldBlockReplForm?{loading:!1,hasAccess:!1,accessDeniedReason:"Free Repl limit exceeded"}:y&&x?{loading:!1,hasAccess:!1,accessDeniedReason:"Freemium temporarily unavailable"}:g.paidAgent.code===r.OrgAuthorizationCode.RequiresPaymentMethod?{loading:!1,hasAccess:!1,accessDeniedReason:"Requires payment method"}:g.paidAgent.code===r.OrgAuthorizationCode.PaymentDelinquent?{loading:!1,hasAccess:!1,accessDeniedReason:"Failed payment. Update payment method to continue using Agent."}:g.paidAgent.code===r.OrgAuthorizationCode.UserUsageAlertThresholdExceeded?{loading:!1,hasAccess:!1,accessDeniedReason:"User usage alert threshold exceeded"}:g.paidAgent.code===r.OrgAuthorizationCode.GroupUsageAlertThresholdExceeded?{loading:!1,hasAccess:!1,accessDeniedReason:"Group usage alert threshold exceeded"}:{loading:!1,hasAccess:!0}}e.s(["AgentAccessDeniedReason",()=>g,"useAgentReplCreationAccess",()=>p],135958)},527587,e=>{"use strict";var t=e.i(276385),r=e.i(750854),i=e.i(389959),n=e.i(368964),a=e.i(569910),s=e.i(673573),o=e.i(383737),l=e.i(473822),d=e.i(986905),u=e.i(132728),c=e.i(183662),g=e.i(516308),p=e.i(508536),m=e.i(135958),A=e.i(82464),h=e.i(968783),y=e.i(201411),x=e.i(78116),_=e.i(739521),E=e.i(871318);function T({agentAccessDeniedReason:e,owner:T,usageInfo:S,currentUserId:U}){let[f,v]=(0,i.useState)(!1),{orgRole:B,orgDealContext:R}=(0,h.useCurrentUserStoredOrgContext)(),I=(0,r.useRouter)();return e===m.AgentAccessDeniedReason.BudgetExceeded?(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(g.AgentInputReachedHardLimit,{orgId:"Org"===T.__typename?T.id:void 0,canEditUsageLimit:"success"===S.status&&S.canEditUsageLimit,onIncreaseBudget:()=>v(!0)}),(0,t.jsx)(_.Modal,{isOpen:f,onRequestClose:()=>v(!1),children:"success"===S.status&&void 0!==S.customerId?(0,t.jsx)(y.EditUsageBasedBillingAlertsForm,{org:S.org,customerId:S.customerId,initialSettings:S.usageBasedBillingAlerts,onDone:()=>v(!1)}):null})]}):e===m.AgentAccessDeniedReason.FreeAgentUsageQuotaExceeded?(0,t.jsx)(o.AgentInputFreemiumQuotaExceeded,{}):e===m.AgentAccessDeniedReason.ErrorDeterminingBudget?(0,t.jsx)(s.AgentInputErrorDeterminingBudget,{}):e===m.AgentAccessDeniedReason.AgentKillswitch?(0,t.jsx)(u.AgentInputKillswitch,{}):e===m.AgentAccessDeniedReason.PaymentDelinquent?(0,t.jsx)(p.default,{context:"Org"===T.__typename?{type:"org",orgId:T.id,isAdmin:B===n.SystemOrgGroupType.SystemAdmins,canEditPaymentMethod:B===n.SystemOrgGroupType.SystemAdmins,isSuspended:!1,orgDealContext:R}:{type:"user",isSuspended:!1}}):e===m.AgentAccessDeniedReason.FreeReplLimitExceeded?(0,t.jsx)(d.AgentInputFreeReplLimitExceeded,{}):e===m.AgentAccessDeniedReason.EmailVerificationRequired?(0,t.jsx)(A.default,{onEmailVerified:()=>{I.reload()}}):e===m.AgentAccessDeniedReason.FreemiumTemporarilyUnavailable?(0,t.jsx)(l.AgentInputFreemiumTemporarilyUnavailable,{}):e===m.AgentAccessDeniedReason.NoReplCreationPermissions?(0,t.jsx)(c.AgentInputNoCreationPermission,{owner:T,currentUserId:U}):e===m.AgentAccessDeniedReason.UserUBBBanned?(0,t.jsx)(p.default,{context:"Org"===T.__typename?{type:"org",orgId:T.id,isAdmin:B===n.SystemOrgGroupType.SystemAdmins,canEditPaymentMethod:T.authorizations.editPaymentMethod.isAuthorized,isSuspended:!0,orgDealContext:R}:{type:"user",isSuspended:!0}}):e===m.AgentAccessDeniedReason.RequiresPaymentMethod?(0,t.jsx)(E.default,{owner:"Org"===T.__typename?{type:"org",slug:T.slug}:void 0}):e===m.AgentAccessDeniedReason.UserUsageAlertThresholdExceeded?(0,t.jsx)(x.OrgAlertThresholdExceededMessage,{type:"user",orgSlug:"Org"===T.__typename?T.slug:void 0}):e===m.AgentAccessDeniedReason.GroupUsageAlertThresholdExceeded?(0,t.jsx)(x.OrgAlertThresholdExceededMessage,{type:"group",orgSlug:"Org"===T.__typename?T.slug:void 0}):void(0,a.default)(e)}e.s(["AgentEntryPointOverlay",()=>T])}]);
+
+//# debugId=145e31da-0859-debc-ead8-ebf8d67b7ab3
+//# sourceMappingURL=adce73bf7532b2b1.js.map

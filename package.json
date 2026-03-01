@@ -1,0 +1,20 @@
+{
+  "name": "blessings-healling-hub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "admin-script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "NAYAN KEWLANI",
+  "license": "ISC",
+  "dependencies": {
+    "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
+    "express": "^5.2.1",
+    "pg": "^8.19.0",
+    "zod": "^4.3.6"
+  }
+}

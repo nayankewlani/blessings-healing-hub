@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blessings - Institute of Clinical Hypnosis</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container flex-between h-20">
+            <a href="/" class="logo flex-center gap-2">
+                <div class="logo-icon"><img src="log1.png",alt="logo image",class="lgImage" height=55px></div>
+                <span>Blessings Healing Hub</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#courses">Courses</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="admin.html" class="admin-link">Admin</a>
+            </nav>
+            <button class="btn btn-primary rounded-full">Start Journey</button>
+        </div>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="container grid-2 gap-8 items-center">
+                <div>
+                    <span class="badge">Empowering Mental Health Practitioners</span>
+                    <h1>Master the Art of <span class="gradient-text">Deep Healing</span></h1>
+                    <p>Develop advanced practitioner skills through our diploma and certification courses.</p>
+                    <div class="flex gap-4">
+                        <a href="#courses" class="btn btn-primary rounded-full px-8">Explore Courses</a>
+                        <button class="btn btn-outline rounded-full px-8">Consultation</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="photo1.jpg" alt="Therapy">
+                </div>
+            </div>
+        </section>
+        <section class="stats">
+            <div class="container grid-3 text-center">
+                <div class="stat-item">
+                    <h2 id="stat-years">10+</h2>
+                    <p>Years in Operation</p>
+                </div>
+                <div class="stat-item">
+                    <h2 id="stat-trained">1,400+</h2>
+                    <p>Practitioners Trained</p>
+                </div>
+                <div class="stat-item">
+                    <h2 id="stat-lives">280k+</h2>
+                    <p>Lives Touched</p>
+                </div>
+            </div>
+        </section>
+        <section id="courses" class="courses-section">
+            <div class="container">
+                <div class="text-center mb-16">
+                    <h2>Specialized Training Programs</h2>
+                    <p>Practical, result-oriented courses for psychologists and coaches.</p>
+                </div>
+                <div id="courses-grid" class="grid-3 gap-8">
+                    <!-- Courses will be loaded here -->
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="contact-section">
+            <div class="container max-w-5xl glass-panel grid-5 overflow-hidden">
+                <div class="contact-info col-2">
+                    <h2>Get in Touch</h2>
+                    <p>Ready to transform your practice? Fill out the form below.</p>
+                </div>
+                <div class="contact-form-container col-3 p-10">
+                    <form id="lead-form" class="flex-col gap-6">
+                        <div class="grid-2 gap-6">
+                            <input type="text" name="name" placeholder="Full Name" required>
+                            <input type="text" name="phone" placeholder="Phone Number">
+                        </div>
+                        <input type="email" name="email" placeholder="Email Address" required>
+                        <textarea name="message" placeholder="How can we help you?" required></textarea>
+                        <button type="submit" class="btn btn-primary w-full py-4">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

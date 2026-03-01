@@ -1,0 +1,292 @@
+;!function(){try { var e="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof global?global:"undefined"!=typeof window?window:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&((e._debugIds|| (e._debugIds={}))[n]="b383a8dd-59b2-227b-c8da-96812785aac6")}catch(e){}}();
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,927196,845411,e=>{"use strict";var t=e.i(276385),r=e.i(389959),i=e.i(973245),a=e.i(613141);let l={},n=i.gql`
+    subscription CurrentUserReplAgentStatuses {
+  currentUserReplAgentStatuses {
+    replId
+    statusV2
+    label
+    updatedAt
+    appImageUrl
+  }
+}
+    `;e.i(242933);var s=e.i(279606);e.i(925218);var o=e.i(112077);let d=(0,r.createContext)(null);function u({children:e}){let i,u=(0,o.useCreateObservable)(new Map);i={...l,onData:({data:{data:e}})=>{(e=>{if(!e?.currentUserReplAgentStatuses)return;let t=new Map(e.currentUserReplAgentStatuses.map(e=>[e.replId,{statusV2:e.statusV2,label:e.label,updatedAt:e.updatedAt,appImageUrl:e.appImageUrl}]));u.set(t)})(e)}},a.useSubscription(n,i);let p=(0,r.useMemo)(()=>s.Observable.from(u),[u]);return(0,t.jsx)(d.Provider,{value:p,children:e})}function p(){let e=(0,r.useContext)(d);if(null===e)throw Error("useCurrentUserAgentStatus must be used within an AgentStatusProvider");return e}e.s(["AgentStatusContext",0,d,"AgentStatusProvider",()=>u,"default",()=>p],927196);var c=e.i(992785);function g(e){let t=p();return(0,r.useMemo)(()=>t.select(t=>{let r=t.get(e.id);return r?{status:r.statusV2,label:r.label,appImageUrl:r.appImageUrl}:e.latestAgentStatus?{status:e.latestAgentStatus.statusV2,label:e.latestAgentStatus.label,appImageUrl:e.latestAgentStatus.appImageUrl}:null},c.default),[t,e.id,e.latestAgentStatus])}e.s(["useReplAgentStatus",()=>g],845411)},26124,e=>{"use strict";var t=e.i(276385),r=e.i(651739),i=e.i(222342),a=e.i(557862);function l({repl:e,onDeleteRequested:l,onDone:n}){let{showConfirm:s,showError:o}=(0,i.default)(),[d,u]=(0,r.useDeleteReplDialogReplDeleteMutation)({onCompleted:e=>{"Repl"===e.deleteRepl.__typename?(s("App scheduled for deletion"),l?.(),n?.()):o("Something went wrong")},onError:e=>o(e.message),variables:{id:e.id},update:(e,t)=>{t.data?.deleteRepl.id&&(e.evict({id:e.identify(t.data.deleteRepl)}),e.gc())}});return(0,t.jsx)(a.default,{name:e.title,entityType:"App",isDeleting:u.loading,delete:()=>{u.loading||d()},hideModal:()=>n?.()})}e.s(["DeleteReplDialog",()=>l])},976606,444876,498695,e=>{"use strict";var t=e.i(973245),r=e.i(564203),i=e.i(951262);let a={},l=t.gql`
+    fragment AppCardApp on Repl {
+  id
+  title
+  iconUrl
+  url
+  isCurrentUserStarred
+  user {
+    id
+    ...OrgReplCreator
+  }
+  deploymentMetadata {
+    ... on DeploymentMetadata {
+      id
+      url
+      timeDeployed
+    }
+  }
+}
+    ${r.OrgReplCreatorFragmentDoc}`,n=t.gql`
+    mutation UpdateStarredApps($input: UpdateStarredAppsInput!) {
+  updateStarredApps(input: $input) {
+    ... on Org {
+      __typename
+      id
+      currentUserStarredApps {
+        ... on StarredApp {
+          id
+          repl {
+            id
+            ...AppCardApp
+          }
+        }
+      }
+      currentUserRecentOrgApps {
+        id
+        ...AppCardApp
+      }
+    }
+    ... on NotFoundError {
+      message
+    }
+    ... on UserError {
+      message
+    }
+    ... on UnauthorizedError {
+      message
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    ${l}`;function s(e){let t={...a,...e};return i.useMutation(n,t)}e.s(["AppCardAppFragmentDoc",0,l,"useUpdateStarredAppsMutation",()=>s],444876);let o=t.gql`
+    fragment CurrentUserRecentApps on Org {
+  currentUserRecentOrgApps {
+    ... on Repl {
+      id
+      ...AppCardApp
+    }
+  }
+}
+    ${l}`;e.s(["CurrentUserRecentAppsFragmentDoc",0,o],498695);let d={},u=t.gql`
+    mutation TrackOrgAppOpen($input: TrackOrgAppOpenInput!) {
+  trackOrgAppOpen(input: $input) {
+    ... on Org {
+      id
+      ...CurrentUserRecentApps
+    }
+  }
+}
+    ${o}`;var p=e.i(709485),c=e.i(968783),g=e.i(858248);e.s(["default",0,()=>{let e,{orgId:t,orgRole:r}=(0,c.useCurrentUserStoredOrgContext)(),[a]=(e={...d,...void 0},i.useMutation(u,e));return{trackAppOpen:e=>{t&&(a({variables:{input:{orgId:t,replId:e}}}),(0,g.track)(p.events.ORG_APP_VIEWED,{replId:e,context:(0,c.getOrgTrackingContext)({id:t}),orgRole:r}))}}}],976606)},564203,e=>{"use strict";var t=e.i(973245),r=e.i(304277);e.i(566901);let i={},a=t.gql`
+    fragment OrgReplCreator on User {
+  id
+  displayName
+  username
+  image
+}
+    `,l=t.gql`
+    query UserSelectorSearch($orgId: String!, $searchInput: OrgMembersInput!) {
+  currentUser {
+    __typename
+    id
+    org(orgId: $orgId) {
+      __typename
+      ... on Org {
+        id
+        members(input: $searchInput) {
+          __typename
+          ... on Error {
+            message
+          }
+          ... on OrgMemberConnection {
+            __typename
+            items {
+              member {
+                id
+                user {
+                  id
+                  ...OrgReplCreator
+                }
+              }
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    ${a}`;function n(e){let t={...i,...e};return r.useQuery(l,t)}let s=t.gql`
+    query UserSelectorGetUser($id: Int!) {
+  user(id: $id) {
+    id
+    ...OrgReplCreator
+  }
+}
+    ${a}`;e.s(["OrgReplCreatorFragmentDoc",0,a,"UserSelectorGetUserDocument",0,s,"useUserSelectorSearchQuery",()=>n])},651739,e=>{"use strict";var t=e.i(973245),r=e.i(951262);let i={},a=t.gql`
+    fragment DeleteReplDialogRepl on Repl {
+  id
+  title
+}
+    `,l=t.gql`
+    mutation DeleteReplDialogReplDelete($id: String!) {
+  deleteRepl(id: $id) {
+    id
+  }
+}
+    `;function n(e){let t={...i,...e};return r.useMutation(l,t)}e.s(["DeleteReplDialogReplFragmentDoc",0,a,"useDeleteReplDialogReplDeleteMutation",()=>n])},997931,e=>{"use strict";var t=e.i(973245),r=e.i(651739),i=e.i(312087),a=e.i(532049),l=e.i(17009),n=e.i(951262);let s={},o=t.gql`
+    fragment ComponentsReplActionsFeaturedRepl on Repl {
+  id
+  isPrivate
+  isFeaturedRepl
+  publicForkCount
+  timeUpdated
+  org {
+    id
+  }
+}
+    `,d=t.gql`
+    fragment ComponentsReplActions on Repl {
+  id
+  url
+  title
+  slug
+  user {
+    id
+    username
+  }
+  ...DeleteReplDialogRepl
+  ...EditReplFormRepl
+  ...ComponentsReplActionsFeaturedRepl
+  ...TransferReplToOrgDialogRepl
+  ...LeaveMultiplayerReplDialogRepl
+  owner {
+    __typename
+    ... on Team {
+      id
+    }
+    ... on User {
+      id
+    }
+  }
+  org {
+    id
+  }
+  isStarred
+  isStackTemplate
+  authorizations {
+    deleteRepl {
+      isAuthorized
+    }
+    editFolder {
+      isAuthorized
+    }
+    fork {
+      isAuthorized
+    }
+    removeSelf {
+      isAuthorized
+    }
+    star {
+      isAuthorized
+    }
+  }
+}
+    ${r.DeleteReplDialogReplFragmentDoc}
+${i.EditReplFormReplFragmentDoc}
+${o}
+${a.TransferReplToOrgDialogReplFragmentDoc}
+${l.LeaveMultiplayerReplDialogReplFragmentDoc}`,u=t.gql`
+    mutation ReplActionsUpdateRepl($input: UpdateReplInput!) {
+  updateRepl(input: $input) {
+    repl {
+      id
+      isStarred
+    }
+  }
+}
+    `;function p(e){let t={...s,...e};return n.useMutation(u,t)}let c=t.gql`
+    mutation AddOrgStackTemplate($orgId: String!, $replId: String!, $order: Float) {
+  addOrgStackTemplate(orgId: $orgId, replId: $replId, order: $order) {
+    success
+    message
+    repl {
+      id
+      isStackTemplate
+    }
+  }
+}
+    `;function g(e){let t={...s,...e};return n.useMutation(c,t)}let m=t.gql`
+    mutation RemoveOrgStackTemplate($orgId: String!, $replId: String!) {
+  removeOrgStackTemplate(orgId: $orgId, replId: $replId) {
+    success
+    message
+    repl {
+      id
+      isStackTemplate
+    }
+  }
+}
+    `;function h(e){let t={...s,...e};return n.useMutation(m,t)}let f=t.gql`
+    mutation ReplActionsMoveToFolder($replIds: [String!]!, $folderIds: [String!]!, $destFolderId: String!) {
+  moveItemsToFolder(
+    replIds: $replIds
+    folderIds: $folderIds
+    destFolderId: $destFolderId
+  ) {
+    ... on Repl {
+      __typename
+      id
+      folderId
+    }
+  }
+}
+    `;function x(e){let t={...s,...e};return n.useMutation(f,t)}e.s(["ComponentsReplActionsFragmentDoc",0,d,"useAddOrgStackTemplateMutation",()=>g,"useRemoveOrgStackTemplateMutation",()=>h,"useReplActionsMoveToFolderMutation",()=>x,"useReplActionsUpdateReplMutation",()=>p])},851231,2343,e=>{"use strict";var t=e.i(276385),r=e.i(368964),i=e.i(399245),a=e.i(414761),l=e.i(976606),n=e.i(848969);function s({deployment:e,icon:s=(0,t.jsx)(i.default,{})}){let{trackAppOpen:o}=(0,l.default)(),d=(0,a.useDeploymentLink)(e);return e.repl.config.isAgentStack?(0,t.jsx)(n.IconButtonLink,{href:d.href,alt:"Automation: no accessible url",disabled:!0,children:s}):e.currentBuild.provider===r.HostingBuildProvider.Cron?(0,t.jsx)(n.IconButtonLink,{href:d.href,alt:"Scheduled Jobs have no accessible url",disabled:!0,children:s}):(0,t.jsx)(n.IconButtonLink,{onClick:()=>{o(e.repl.id)},href:d.href,alt:"Go to site",target:"_blank",children:s})}e.s(["DeploymentSiteLink",()=>s],851231);var o=e.i(327516),d=e.i(182409),u=e.i(995691),p=e.i(379334),c=e.i(928838),g=e.i(446530),m=e.i(613355),h=e.i(960178),f=e.i(751273),x=e.i(625484);let v=(0,g.cssRecord)({dim:[m.rcss.color.foregroundDimmer]});function j({deployment:e,isPrivate:a=!1,isOrg:l=!1,small:n=!0}){if(!e)if(a)return(0,t.jsx)(f.Tooltip,{tooltip:l?"Internal to your organization":"Only you can see and edit this App",children:(0,t.jsxs)(x.View,{css:v.dim,row:!0,gap:4,align:"center",children:[(0,t.jsx)(u.default,{size:n?12:16}),(0,t.jsx)(h.Text,{variant:n?"small":void 0,multiline:!1,children:"Private"})]})});else return(0,t.jsx)(f.Tooltip,{tooltip:"Anyone on Replit can view and remix this App",children:(0,t.jsxs)(x.View,{css:v.dim,row:!0,gap:4,align:"center",children:[(0,t.jsx)(i.default,{size:n?12:16}),(0,t.jsx)(h.Text,{variant:n?"small":void 0,multiline:!1,children:"Public"})]})});let{currentBuild:s}=e,{title:g,color:m}=c.buildStatuses[s.status],j=(0,o.default)(new Date(s.timeCreated),Date.now(),{addSuffix:!0}),R=`Published ${j} by ${s.user?.displayName??p.DELETED_USER_DISPLAY_NAME}`,S=s.status===r.HostingBuildStatus.Success?"Published":g;return(0,t.jsx)(f.Tooltip,{tooltip:R,children:(0,t.jsxs)(x.View,{row:!0,gap:4,align:"center",children:[(0,t.jsx)(d.default,{size:n?12:16,color:m}),(0,t.jsx)(h.Text,{color:"dimmer",variant:n?"small":void 0,multiline:!1,children:S})]})})}e.s(["StatusBadge",()=>j],2343)},52715,e=>{"use strict";var t=e.i(276385),r=e.i(17009),i=e.i(122400),a=e.i(452412),l=e.i(222342),n=e.i(960178);function s({repl:e,onLeave:s,onCancel:o}){let{showConfirm:d,showError:u}=(0,l.default)(),[p,{loading:c}]=(0,r.useLeaveMultiplayerReplDialogRemoveMutation)({variables:{id:e.id},refetchQueries:["CurrentUserRepls"],onCompleted(){d("App removed"),s()},onError(e){u(e.message)}});return(0,t.jsx)(a.default,{title:"Leave multiplayer App",confirmLabel:"Yes, leave this App",isDestructive:!0,loading:c,confirmIcon:(0,t.jsx)(i.default,{}),onCancel:o,onConfirm:()=>{c||p()},children:(0,t.jsxs)(n.Text,{children:["Are you sure you want to leave this multiplayer App (",e.title,")? You will no longer be able to access its content."]})})}e.s(["LeaveMultiplayerReplDialog",()=>s])},532195,e=>{"use strict";var t=e.i(276385),r=e.i(750854),i=e.i(389959),a=e.i(368964),l=e.i(973245),n=e.i(304277);e.i(566901);let s={},o=l.gql`
+    fragment ReplsDashboardMoveItemReplFolder on ReplFolder {
+  id
+  pathnames
+  folderType
+  name
+  parentId
+  timeCreated
+}
+    `,d=l.gql`
+    query ReplsDashboardMoveItemModalFolder($id: String!, $teamId: Int) {
+  currentUser {
+    id
+    replFolder(id: $id, teamId: $teamId) {
+      id
+      folders {
+        id
+        ...ReplsDashboardMoveItemReplFolder
+      }
+    }
+  }
+}
+    ${o}`;var u=e.i(657929),p=e.i(302905),c=e.i(143524),g=e.i(269848),m=e.i(46654),h=e.i(967629),f=e.i(480028),x=e.i(446530),v=e.i(613355),j=e.i(140487),R=e.i(960178),S=e.i(625484);let k={__typename:"ReplFolder",id:"__ROOT_ID__",name:"(home)/",pathnames:["(home)/"],canEdit:!1,timeCreated:null},y=(0,x.cssRecord)({folderPicker:[v.rcss.height(250),v.rcss.overflow("auto"),v.rcss.borderRadius(4),v.rcss.border({color:f.tokens.outlineDimmest})]}),C=(0,h.css)({"&":{height:"40px",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0 10px"},"&:hover":{cursor:"pointer",backgroundColor:f.tokens.backgroundRoot},".small-folder-icon-container":{height:"20px",width:"20px",display:"flex",justifyContent:"center",alignItems:"center"},".small-back-folder-icon":{transform:"rotate(90deg)",width:"17px"},".small-folder-icon":{width:"20px"},".small-folder-title":{display:"flex",alignItems:"center"},".small-folder-title a":{marginLeft:"20px",borderBottom:"none",color:"inherit"},".small-folder-time":{fontSize:"12px",color:f.tokens.foregroundDimmer},"&.is-selected:hover,.is-selected":{backgroundColor:f.tokens.accentPrimaryDefault,color:f.tokens.backgroundHigher},".is-selected .small-folder-time":{color:"inherit"}}),T=({folder:e,onSelect:r,onNavigate:i,isSelected:a,isBack:l=!1})=>(0,t.jsxs)("div",{clsx:[{"is-selected":a}],onClick:()=>{r&&r(e)},css:C,children:[(0,t.jsxs)("div",{className:"small-folder-title",children:[(0,t.jsx)("div",{className:"small-folder-icon-container",children:l?(0,t.jsx)("div",{className:"small-back-folder-icon",children:(0,t.jsx)(u.default,{})}):(0,t.jsx)("div",{className:"small-folder-icon",children:(0,t.jsx)(p.default,{})})}),(0,t.jsx)("a",{onClick:t=>i?i(e,t):()=>{},children:e.name})]}),(0,t.jsx)("div",{className:"small-folder-time",children:e.timeCreated?(0,m.ago)(e.timeCreated):""})]});e.s(["default",0,e=>{var l;let o,{item:u,isRepl:p,teamId:m,hideModal:h}=e,f=/\/@([^/]*)/.exec(r.default.asPath||""),x=f?f[1]:null,v=m&&x?{__typename:"ReplFolder",id:`__TEAM__${m}__`,name:`@${x}`,pathnames:[`@${x}`],canEdit:!1,timeCreated:null}:k,[C,_]=(0,i.useState)(null),[b,A]=(0,i.useState)(v),[w,I]=(0,i.useState)([]),{data:D,loading:O}=(l={fetchPolicy:"cache-and-network",variables:{id:b.id,teamId:m},ssr:!1,notifyOnNetworkStatusChange:!0},o={...s,...l},n.useQuery(d,o)),F=e=>{e===C?_(null):_(e)},U=(e,t)=>{t.stopPropagation(),e.pathnames.length>b.pathnames.length?w.push(b):w.pop(),A(e),_(e),I(w)},M=async()=>{let t=[],r=[];p?t.push(u.id):r.push(u.id),e.onSubmit({variables:{destFolderId:C?C.id:"",replIds:t,folderIds:r,teamId:m}}),h()},P=(D?.currentUser?.replFolder?.folders||[]).filter(e=>("Unnamed"!==e.name||null!==e.parentId)&&e.folderType===a.ReplFolderTypes.Default&&(!!p||e.id!==u.id)).map(e=>({...e,pathnames:e.pathnames.slice(1)})),z=w[w.length-1]||v,$=C?C.id:"",E="name"in u?u.name:u.title;return(0,t.jsxs)(S.View,{gap:8,tag:"form",onSubmit:e=>{e.preventDefault(),M()},children:[(0,t.jsxs)(R.Text,{children:["Move ",E," to:"]}),(0,t.jsxs)(S.View,{css:y.folderPicker,children:[b.pathnames&&b.pathnames.join()!==v.pathnames.join()?(0,t.jsx)(T,{folder:{...z,name:"(up one level)"},isBack:!0,onNavigate:U,isSelected:$===z.id}):null,P?P.map(e=>(0,t.jsx)(T,{folder:e,onSelect:F,onNavigate:U,isSelected:e.id===$},`move-folder-${e.id}`)):null]}),(0,t.jsxs)(R.Text,{children:["Moving to:"," ",C?C.pathnames[C.pathnames.length-1]:b.pathnames[b.pathnames.length-1]||"(home)/"]}),(0,t.jsxs)(S.View,{row:!0,gap:8,justify:"end",children:[O?null:(0,t.jsx)(j.Button,{text:"Cancel",onClick:()=>h()}),(0,t.jsx)(j.Button,{colorway:"primary",iconLeft:O?(0,t.jsx)(g.default,{}):(0,t.jsx)(c.default,{}),disabled:O,text:p?"Move App":"Move folder",type:"submit"})]})]})}],532195)},847253,e=>{"use strict";var t=e.i(276385),r=e.i(389959),i=e.i(368964),a=e.i(973245),l=e.i(951262);let n={},s=a.gql`
+    mutation TransferReplWithinOrgDialogTransfer($input: TransferReplWithinOrgInput!) {
+  transferReplWithinOrg(input: $input) {
+    ... on Repl {
+      id
+      user {
+        id
+      }
+    }
+    ... on NotFoundError {
+      message
+    }
+    ... on UnauthorizedError {
+      message
+    }
+    ... on UserError {
+      message
+    }
+  }
+}
+    `;var o=e.i(269848),d=e.i(612343),u=e.i(222342),p=e.i(306694),c=e.i(140487),g=e.i(960178),m=e.i(625484);function h({repl:e,orgId:a,hideModal:h}){let f,x=`group-search-${(0,r.useId)()}`,[v,j]=(0,r.useState)(),[R,S]=(0,r.useState)(""),{showError:k,showConfirm:y}=(0,u.default)(),[C,{loading:T}]=(f={...n,...void 0},l.useMutation(s,f)),_=async()=>{if(!v)return;let t=await C({variables:{input:{replId:e.id,newOwnerOrgGroupId:v.id}}});t.data?.transferReplWithinOrg.__typename==="Repl"?(y("Repl transferred successfully"),h()):k(t.data?.transferReplWithinOrg.message)};return(0,t.jsxs)(m.View,{gap:24,children:[(0,t.jsxs)(g.Header,{variant:"subheadDefault",level:2,children:["Transfer ownership of ",e.title]}),(0,t.jsxs)(m.View,{gap:8,children:[(0,t.jsxs)(g.Text,{children:["Select another member of your workspace to transfer to. The selected user will become the primary owner of ",e.title," and will be displayed as the app creator in your workspace's app directory."]}),(0,t.jsx)(m.View,{grow:!0,shrink:!0,children:(0,t.jsx)(p.default,{inputId:x,orgId:a,types:[i.OrgGroupType.SystemIndividual],selectedGroups:v?[v]:[],value:R,setValue:S,onSelect:e=>{j(e),S(e.name)},onClear:()=>j(void 0),placeholder:"Select a user"})})]}),(0,t.jsxs)(m.View,{row:!0,gap:12,justify:"end",children:[(0,t.jsx)(c.Button,{text:"Cancel",onClick:h}),(0,t.jsx)(c.Button,{dataCy:"transfer-repl-dialog-confirm-button",disabled:T||!v,iconLeft:T?(0,t.jsx)(o.default,{}):(0,t.jsx)(d.default,{}),onClick:_,text:"Transfer app",colorway:"primary"})]})]})}e.s(["TransferReplWithinOrgDialog",()=>h],847253)},972777,e=>{"use strict";var t=e.i(276385),r=e.i(389959),i=e.i(532049),a=e.i(269848),l=e.i(450265),n=e.i(416298),s=e.i(222342),o=e.i(664152),d=e.i(714165),u=e.i(140487),p=e.i(85742),c=e.i(12034),g=e.i(396776),m=e.i(960178),h=e.i(625484);function f({repl:e,onDone:f}){let x=`org-select-${(0,r.useId)()}`,[v,j]=(0,r.useState)(""),{showError:R,showConfirm:S}=(0,s.default)(),{data:k,loading:y,error:C}=(0,i.useTransferReplToOrgDialogOrgsQuery)(),[T,{loading:_}]=(0,i.useTransferReplToOrgDialogTransferMutation)(),b=k?.currentUser?.orgs?.__typename==="CurrentUserOrganizationConnection"?k.currentUser.orgs.items.map(e=>({id:e.org.id,name:e.org.name,slug:e.org.slug,image:e.org.image??null})):[],A=b.find(e=>e.id===v),w=async()=>{if(!A)return void R("Please select a workspace");try{let t=await T({variables:{orgId:A.id,replIds:[e.id]}}),r=t.data?.transferReplToOrganization;r?.__typename==="TransferReplToOrganizationSuccess"?(S(`Successfully started transfer of "${e.title}" to ${A.name}.`),f()):r?.__typename==="UserError"||r?.__typename==="TooManyRequestsError"?R(r.message||"Failed to transfer repl"):R("Unexpected response from server")}catch(e){R("Failed to transfer repl. Please try again."),o.logger.error("Replit TransferReplToOrgDialog error:",e)}},I=()=>{f()};if(y)return(0,t.jsxs)(h.View,{gap:24,align:"center",children:[(0,t.jsxs)(m.Header,{variant:"subheadDefault",level:2,children:["Transfer ",e.title," to Organization"]}),(0,t.jsx)(a.default,{})]});if(C||k?.currentUser?.orgs?.__typename!=="CurrentUserOrganizationConnection"&&k?.currentUser?.orgs?.__typename){let r=C?.message||(k?.currentUser?.orgs?.__typename==="NotFoundError"||k?.currentUser?.orgs?.__typename==="UserError"?k.currentUser.orgs.message:"Failed to load workspaces");return(0,t.jsxs)(h.View,{gap:24,children:[(0,t.jsxs)(m.Header,{variant:"subheadDefault",level:2,children:["Transfer ",e.title," to Organization"]}),(0,t.jsx)(m.Text,{children:r}),(0,t.jsx)(h.View,{row:!0,gap:12,justify:"end",children:(0,t.jsx)(u.Button,{text:"Close",onClick:I})})]})}return 0===b.length?(0,t.jsxs)(h.View,{gap:24,children:[(0,t.jsxs)(m.Header,{variant:"subheadDefault",level:2,children:["Transfer ",e.title," to Organization"]}),(0,t.jsx)(m.Text,{children:"You don't belong to any organizations. You need to be a member of an organization to transfer repls to it."}),(0,t.jsx)(h.View,{row:!0,gap:12,justify:"end",children:(0,t.jsx)(u.Button,{text:"Close",onClick:I})})]}):(0,t.jsxs)(h.View,{gap:24,children:[(0,t.jsxs)(m.Header,{variant:"subheadDefault",level:2,children:["Transfer ",e.title," to Organization"]}),(0,t.jsxs)(h.View,{gap:8,children:[(0,t.jsxs)(m.Text,{children:['Select an organization to transfer "',e.title,'" to. This action is irreversible and the app will no longer belong to you.']}),(0,t.jsx)(g.StatusBanner,{colorway:"warning",text:"Linked account secrets will not be transferred. You'll need to re-link them in the destination workspace.",icon:(0,t.jsx)(n.default,{})}),(0,t.jsxs)(h.View,{gap:4,children:[(0,t.jsx)("label",{htmlFor:x,children:(0,t.jsx)(m.Text,{color:"dimmer",variant:"small",children:"Destination Organization"})}),(0,t.jsx)(c.Select,{id:x,"aria-label":"Select workspace",placeholder:"Choose a workspace...",selectedKey:v,onSelectionChange:e=>j(e),isDisabled:_,children:b.map(e=>(0,t.jsx)(p.ListBoxItem,{id:e.id,label:`${e.name} (@${e.slug})`,icon:(0,t.jsx)(d.Avatar,{src:e.image,size:16,username:e.name})},e.id))})]}),(0,t.jsx)(m.Text,{color:"dimmer",variant:"small",children:"The transfer occurs in the background and may take some time to complete."})]}),(0,t.jsxs)(h.View,{row:!0,gap:12,justify:"end",children:[(0,t.jsx)(u.Button,{text:"Cancel",onClick:I,disabled:_}),(0,t.jsx)(u.Button,{dataCy:"transfer-repl-to-org-dialog-confirm-button",disabled:_||!v,iconLeft:_?(0,t.jsx)(a.default,{}):(0,t.jsx)(l.default,{}),onClick:w,text:"Transfer to Workspace",colorway:"primary"})]})]})}e.s(["TransferReplToOrgDialog",()=>f])},732955,e=>{"use strict";var t,r,i=e.i(276385),a=e.i(389959),l=e.i(997931),n=e.i(368964),s=e.i(122400),o=e.i(204977),d=e.i(712771),u=e.i(143524),p=e.i(75916),c=e.i(828322),g=e.i(869472),m=e.i(898039),h=e.i(908628),f=e.i(491194),x=e.i(612343),v=e.i(450265),j=e.i(47503),R=e.i(968783),S=e.i(222342),k=e.i(187505),y=e.i(773240),C=e.i(26124),T=e.i(236379),_=e.i(52715),b=e.i(532195),A=e.i(847253),w=e.i(136540),I=e.i(119274),D=e.i(739521),O=e.i(464092),F=e.i(185591),U=e.i(972777),M=((t=M||{}).CoverPage="CoverPage",t.Delete="Delete",t.Edit="Edit",t.Leave="Leave",t.TransferWithinOrg="TransferWithinOrg",t.TransferPersonalToOrg="TransferPersonalToOrg",t.MoveToFolder="MoveToFolder",t.Fork="Fork",t.Feature="Feature",t.Pin="Pin",t.Unpin="Unpin",t.MarkAsStack="MarkAsStack",t.UnmarkAsStack="UnmarkAsStack",t),P=((r=P||{}).Delete="Delete",r.Edit="Edit",r.Fork="Fork",r.Feature="Feature",r.Leave="Leave",r.TransferWithinOrg="TransferWithinOrg",r.TransferPersonalToOrg="TransferPersonalToOrg",r.MoveToFolder="MoveToFolder",r.MarkAsStack="MarkAsStack",r.UnmarkAsStack="UnmarkAsStack",r);function z({repl:e,onDeleteRequested:t}){let{trackClick:r}=(0,k.useTrackClick)(),[M,P]=(0,a.useState)(null),z=(0,j.useCurrentUserId)(),{fork:$,isForking:E}=(0,O.useForkContext)(),{orgRole:V}=(0,R.useCurrentUserStoredOrgContext)(),{showNotice:L,showError:q}=(0,S.default)(),B=(0,R.useIsCurrentOrgEnterprise)(),[W,{loading:G}]=(0,l.useReplActionsUpdateReplMutation)(),[N]=(0,l.useReplActionsMoveToFolderMutation)(),[H,{loading:Y}]=(0,l.useAddOrgStackTemplateMutation)({onCompleted:e=>{e.addOrgStackTemplate?.success?L(e.addOrgStackTemplate.message||"Successfully pinned template"):q(e.addOrgStackTemplate?.message||"Failed to pin template")},onError:e=>{q(`Error pinning template: ${e.message}`)}}),[Q,{loading:K}]=(0,l.useRemoveOrgStackTemplateMutation)({onCompleted:e=>{e.removeOrgStackTemplate?.success?L(e.removeOrgStackTemplate?.message||"Successfully removed pinned template"):q(e.removeOrgStackTemplate?.message||"Failed to remove pinned template")},onError:e=>{q(`Error removing pinned template: ${e.message}`)}}),J=e.authorizations,X=e.org?.__typename==="Org",Z=e.owner?.id===z,ee=V===n.SystemOrgGroupType.SystemAdmins,et=J.editFolder.isAuthorized,er=X&&B&&ee,ei=[{label:"Cover page",value:"CoverPage",link:(0,F.replViewLinkProps)(e),icon:(0,i.jsx)(d.default,{})},...J.star.isAuthorized&&e.isStarred?[{label:"Unpin from top",value:"Unpin",icon:(0,i.jsx)(g.default,{})}]:[],...J.star.isAuthorized&&!e.isStarred?[{label:"Pin to top",value:"Pin",icon:(0,i.jsx)(g.default,{})}]:[],...J.editMetadata.isAuthorized?[{label:"Edit details",value:"Edit",icon:(0,i.jsx)(o.default,{})}]:[],...X&&(Z||ee)?[{label:"Transfer Owner",value:"TransferWithinOrg",icon:(0,i.jsx)(x.default,{})}]:[],...Z&&!X?[{label:"Transfer To Workspace",value:"TransferPersonalToOrg",icon:(0,i.jsx)(v.default,{})}]:[],...et?[{label:"Move to folder",value:"MoveToFolder",icon:(0,i.jsx)(u.default,{})}]:[],...J.fork.isAuthorized?[{label:"Remix",value:"Fork",icon:(0,i.jsx)(m.default,{})}]:[],...X&&!e.isPrivate?[{label:e.isFeaturedRepl?"Remove from Featured Apps":"Feature on Profile",value:"Feature",icon:(0,i.jsx)(h.default,{})}]:[],...er&&!e.isStackTemplate?[{label:"Pin to Agent input box",value:"MarkAsStack",icon:(0,i.jsx)(p.default,{})}]:[],...er&&e.isStackTemplate?[{label:"Unpin from Agent input box",value:"UnmarkAsStack",icon:(0,i.jsx)(p.default,{})}]:[],...J.removeSelf.isAuthorized?[{label:"Leave",value:"Leave",isDestructive:!0,icon:(0,i.jsx)(s.default,{})}]:[],...J.deleteRepl.isAuthorized?[{label:"Delete",value:"Delete",isDestructive:!0,icon:(0,i.jsx)(f.default,{})}]:[]];return(0,i.jsxs)(i.Fragment,{children:[(0,i.jsx)(I.PopupMenu,{trigger:(0,i.jsx)(w.IconButton,{tooltipBehavior:"hidden",size:24,alt:"App Actions",children:(0,i.jsx)(c.default,{size:16})}),onAction:t=>{switch(t){case"CoverPage":break;case"Edit":P("Edit");break;case"TransferWithinOrg":P("TransferWithinOrg");break;case"TransferPersonalToOrg":P("TransferPersonalToOrg");break;case"MoveToFolder":P("MoveToFolder");break;case"Leave":P("Leave");break;case"Delete":P("Delete");break;case"Fork":E||$();break;case"Feature":P("Feature");break;case"Pin":case"Unpin":{if(G)break;let t=!e.isStarred;W({variables:{input:{id:e.id,isStarred:t}},optimisticResponse:{__typename:"RootMutationType",updateRepl:{__typename:"UpdateReplPayload",repl:{__typename:"Repl",id:e.id,isStarred:t}}},refetchQueries:["CurrentUserRepls"],onError:e=>{q(e.message)}});break}case"MarkAsStack":e.org?.id&&!Y&&(r({productArea:"design_systems",target:"pin_app_to_agent_input_menu_item"}),H({variables:{orgId:e.org.id,replId:e.id}}));break;case"UnmarkAsStack":e.org?.id&&!K&&(r({productArea:"design_systems",target:"unpin_app_from_agent_input_menu_item"}),Q({variables:{orgId:e.org.id,replId:e.id}}))}},children:ei.map(e=>(0,i.jsx)(I.MenuItem,{id:e.value,label:e.label,icon:e.icon,isDestructive:e.isDestructive,...e.link?{href:e.link.href,as:e.link.as}:{}},e.value))}),(0,i.jsx)(D.Modal,{isOpen:"Leave"===M,onRequestClose:()=>P(null),children:(0,i.jsx)(_.LeaveMultiplayerReplDialog,{repl:e,onCancel:()=>P(null),onLeave:()=>{P(null),t?.()}})}),(0,i.jsx)(D.Modal,{isOpen:"Delete"===M,onRequestClose:()=>P(null),children:(0,i.jsx)(C.DeleteReplDialog,{repl:e,onDone:()=>P(null),onDeleteRequested:t})}),(0,i.jsx)(D.Modal,{isOpen:"Edit"===M,onRequestClose:()=>P(null),children:(0,i.jsx)(T.EditReplForm,{repl:e,onDone:()=>P(null)})}),e.org?.id?(0,i.jsx)(D.Modal,{isOpen:"TransferWithinOrg"===M,onRequestClose:()=>P(null),children:(0,i.jsx)(A.TransferReplWithinOrgDialog,{repl:e,orgId:e.org?.id,hideModal:()=>P(null)})}):null,(0,i.jsx)(D.Modal,{isOpen:"TransferPersonalToOrg"===M,onRequestClose:()=>P(null),children:(0,i.jsx)(U.TransferReplToOrgDialog,{repl:e,onDone:()=>P(null)})}),(0,i.jsx)(D.Modal,{isOpen:"MoveToFolder"===M,onRequestClose:()=>P(null),children:(0,i.jsx)(b.default,{isRepl:!0,item:e,teamId:void 0,hideModal:()=>P(null),onSubmit:e=>{N({variables:{replIds:e.variables.replIds,folderIds:e.variables.folderIds,destFolderId:e.variables.destFolderId},refetchQueries:["CurrentUserRepls","ReplsFiltersFolderList"],onCompleted:()=>{L("App moved successfully")},onError:e=>{q(e.message)}})}})}),(0,i.jsx)(D.Modal,{isOpen:"Feature"===M,onRequestClose:()=>P(null),centered:!0,maxWidth:650,children:(0,i.jsx)(y.default,{isFeatured:e.isFeaturedRepl,repl:e,orgId:e.org?.id,onCompleted:()=>P(null)})})]})}function $({repl:e,trackingContext:t,onDeleteRequested:r}){return(0,i.jsx)(O.ForkContextProvider,{forkParams:{trackingData:{forkSource:t}},repl:e,children:(0,i.jsx)(z,{repl:e,onDeleteRequested:r})})}e.s(["ReplActions",()=>$])},166404,e=>{e.v({appImage:"ShadesReplCard-module__iEL5tG__appImage",iconContainer:"ShadesReplCard-module__iEL5tG__iconContainer",overlayedClickTargets:"ShadesReplCard-module__iEL5tG__overlayedClickTargets",pinBadge:"ShadesReplCard-module__iEL5tG__pinBadge",root:"ShadesReplCard-module__iEL5tG__root",smallIconContainer:"ShadesReplCard-module__iEL5tG__smallIconContainer",title:"ShadesReplCard-module__iEL5tG__title"})},603934,e=>{e.v({agentRunningPill:"ReplCard-module__E-1cRq__agentRunningPill",appImage:"ReplCard-module__E-1cRq__appImage",iconContainer:"ReplCard-module__E-1cRq__iconContainer",overlayedClickTargets:"ReplCard-module__E-1cRq__overlayedClickTargets",pinBadge:"ReplCard-module__E-1cRq__pinBadge","pulse-blurple":"ReplCard-module__E-1cRq__pulse-blurple",replTitle:"ReplCard-module__E-1cRq__replTitle",root:"ReplCard-module__E-1cRq__root",smallIconContainer:"ReplCard-module__E-1cRq__smallIconContainer"})},732729,e=>{"use strict";e.s(["AgentStatus",()=>q,"ReplCard",()=>z,"ReplCardUI",()=>V],732729);var t=e.i(276385),r=e.i(612866),i=e.i(750854),a=e.i(389959),l=e.i(368964);e.i(925218);var n=e.i(267103),s=e.i(641555),o=e.i(752539),d=e.i(252204),u=e.i(757053),p=e.i(416298),c=e.i(851231),g=e.i(546833),m=e.i(46654),h=e.i(228108),f=e.i(2343),x=e.i(826516),v=e.i(173703),j=e.i(714165),R=e.i(136540),S=e.i(624782),k=e.i(960178),y=e.i(751273),C=e.i(625484),T=e.i(732955),_=e.i(185591),b=e.i(166404);function A({repl:e,isOrg:i=!1,showPinBadge:a=!1,onTogglePin:l,agentStatus:n,trackingContext:s,onDeleteRequested:o}){let d=(0,_.replLinkProps)(e,{initialPaneType:null!=e.project?"project":void 0}),u=(0,x.usePressedProps)();return(0,t.jsxs)(C.View,{tag:"li",clsx:[b.default.root,g.shades.button("halfElevated")],...u,children:[(0,t.jsx)(w,{repl:e,agentStatus:n,isStarred:a&&e.isStarred&&e.authorizations.star.isAuthorized,onTogglePin:l}),(0,t.jsxs)(C.View,{grow:!0,shrink:!0,gap:6,p:12,children:[(0,t.jsxs)(C.View,{row:!0,gap:8,align:"start",justify:"space-between",children:[(0,t.jsx)(C.View,{grow:!0,shrink:!0,row:!0,gap:8,align:"center",children:(0,t.jsxs)(C.View,{grow:!0,shrink:!0,children:[(0,t.jsx)(r.default,{...d,clsx:b.default.title,children:(0,t.jsx)(k.Text,{multiline:!1,translate:"no",children:e.title})}),(0,t.jsx)(k.Text,{multiline:!1,variant:"small",color:"dimmest",children:(0,m.ago)(e.timeUpdated)})]})}),(0,t.jsx)(C.View,{clsx:b.default.overlayedClickTargets,children:(0,t.jsx)(T.ReplActions,{repl:e,trackingContext:s,onDeleteRequested:o?()=>o(e.id):void 0})})]}),i&&e.user?(0,t.jsx)(r.default,{href:`/@${e.user.username}`,clsx:b.default.overlayedClickTargets,children:(0,t.jsxs)(C.View,{row:!0,align:"center",gap:4,children:[(0,t.jsx)(j.Avatar,{size:16,username:e.user.username,src:"image"in e.user?e.user.image:null}),(0,t.jsx)(k.Text,{variant:"small",color:"dimmer",multiline:!1,children:e.user.username})]})}):null,(0,t.jsx)(I,{repl:e,isOrg:i,agentStatus:n})]})]})}function w({repl:e,agentStatus:r,isStarred:i,onTogglePin:a}){let l=(0,s.useObservableMemo)(()=>r?.select(e=>e?.appImageUrl),[r])||e.latestAgentScreenshotUrl;return(0,t.jsxs)(v.ShadesSurface,{clsx:b.default.appImage,style:l?{backgroundImage:`url(${l})`}:void 0,border:!0,children:[i?(0,t.jsx)(C.View,{clsx:b.default.pinBadge,children:(0,t.jsx)(R.IconButton,{alt:"Unpin from top",size:24,onClick:()=>a?.(e.id,!1),children:(0,t.jsx)(u.default,{size:16})})}):null,(0,t.jsx)(C.View,{align:"center",justify:"center",clsx:{[b.default.smallIconContainer]:l,[b.default.iconContainer]:!l},children:(0,t.jsx)(h.ReplIconWithPlaceholder,{alt:e.title,size:l?24:64,iconUrl:e.iconUrl,isLoading:!e.iconUrl})})]})}function I({repl:e,isOrg:i,...a}){return(0,t.jsxs)(C.View,{row:!0,gap:4,align:"center",justify:"space-between",children:[e.hostingDeployment?.__typename==="HostingDeployment"?(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(r.default,{clsx:b.default.overlayedClickTargets,...(0,_.replLinkProps)(e,{initialPaneType:"deployments"}),children:(0,t.jsx)(f.StatusBadge,{deployment:e.hostingDeployment,isPrivate:e.isPrivate,isOrg:i})}),(0,t.jsx)(C.View,{clsx:b.default.overlayedClickTargets,children:(0,t.jsx)(c.DeploymentSiteLink,{deployment:e.hostingDeployment,icon:(0,t.jsx)(d.default,{})})})]}):(0,t.jsx)(f.StatusBadge,{isPrivate:e.isPrivate,isOrg:i}),i&&"viewFileContents"in e.authorizations&&e.authorizations.viewFileContents.isAuthorized&&!e.authorizations.editFileContents.isAuthorized?(0,t.jsx)(y.Tooltip,{clsx:b.default.overlayedClickTargets,tooltip:e.authorizations.editFileContents.code===l.ReplAuthorizationCode.InsufficientPermissions?"You don't have permission to edit this App. To open it in the project editor, request permissions from the creator or an admin.":e.authorizations.editFileContents.message,children:(0,t.jsx)(S.Pill,{colorway:"blurple",text:"Read-only"})}):(0,t.jsx)(t.Fragment,{children:a.agentStatus?(0,t.jsx)(q,{agentStatus:a.agentStatus}):null})]})}var D=e.i(927196),O=e.i(845411),F=e.i(480028),U=e.i(703774),M=e.i(585225),P=e.i(603934);function z(e){return(0,a.useContext)(D.AgentStatusContext)?(0,t.jsx)($,{...e}):(0,t.jsx)(E,{...e})}function $(e){let r=(0,O.useReplAgentStatus)(e.repl);return(0,t.jsx)(E,{...e,agentStatus:r})}function E(e){return(0,M.useIsShadesSupported)()?(0,t.jsx)(A,{...e}):(0,t.jsx)(V,{...e})}function V({repl:e,isOrg:a=!1,showPinBadge:l=!1,onTogglePin:n,trackingContext:s,onDeleteRequested:o,agentStatus:d}){let u=(0,_.replLinkProps)(e,{initialPaneType:null!=e.project?"project":void 0}),p=(0,i.useRouter)(),{isDarkColorScheme:c}=(0,U.useTheme)();return(0,t.jsxs)(v.ShadesSurface,{elevate:!!c&&"1x",clsx:P.default.root,tag:"li",onKeyDown:e=>{("Enter"===e.key||" "===e.key)&&(e.preventDefault(),p.push(u.href))},children:[(0,t.jsx)(B,{repl:e,agentStatus:d,isStarred:l&&e.isStarred&&e.authorizations.star.isAuthorized,onTogglePin:n}),(0,t.jsxs)(C.View,{grow:!0,shrink:!0,gap:6,p:12,children:[(0,t.jsxs)(C.View,{row:!0,gap:8,align:"start",justify:"space-between",children:[(0,t.jsx)(C.View,{grow:!0,shrink:!0,row:!0,gap:8,align:"center",children:(0,t.jsxs)(C.View,{grow:!0,shrink:!0,children:[(0,t.jsx)(r.default,{...u,clsx:P.default.replTitle,children:(0,t.jsx)(k.Text,{multiline:!1,translate:"no",children:e.title})}),(0,t.jsx)(k.Text,{multiline:!1,variant:"small",color:"dimmest",children:(0,m.ago)(e.timeUpdated)})]})}),(0,t.jsx)(C.View,{clsx:P.default.overlayedClickTargets,children:(0,t.jsx)(T.ReplActions,{repl:e,trackingContext:s,onDeleteRequested:o?()=>o(e.id):void 0})})]}),a&&e.user?(0,t.jsx)(r.default,{href:`/@${e.user.username}`,clsx:P.default.overlayedClickTargets,children:(0,t.jsxs)(C.View,{row:!0,align:"center",gap:4,children:[(0,t.jsx)(j.Avatar,{size:16,username:e.user.username,src:"image"in e.user?e.user.image:null}),(0,t.jsx)(k.Text,{variant:"small",color:"dimmer",multiline:!1,children:e.user.username})]})}):null,(0,t.jsx)(L,{repl:e,isOrg:a,agentStatus:d})]})]})}function L({repl:e,isOrg:i,...a}){return(0,t.jsxs)(C.View,{row:!0,gap:4,align:"center",justify:"space-between",children:[e.hostingDeployment?.__typename==="HostingDeployment"?(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(r.default,{clsx:P.default.overlayedClickTargets,...(0,_.replLinkProps)(e,{initialPaneType:"deployments"}),children:(0,t.jsx)(f.StatusBadge,{deployment:e.hostingDeployment,isPrivate:e.isPrivate,isOrg:i})}),(0,t.jsx)(C.View,{clsx:P.default.overlayedClickTargets,children:(0,t.jsx)(c.DeploymentSiteLink,{deployment:e.hostingDeployment,icon:(0,t.jsx)(d.default,{})})})]}):(0,t.jsx)(f.StatusBadge,{isPrivate:e.isPrivate,isOrg:i}),i&&"viewFileContents"in e.authorizations&&e.authorizations.viewFileContents.isAuthorized&&!e.authorizations.editFileContents.isAuthorized?(0,t.jsx)(y.Tooltip,{clsx:P.default.overlayedClickTargets,tooltip:e.authorizations.editFileContents.code===l.ReplAuthorizationCode.InsufficientPermissions?"You don't have permission to edit this App. To open it in the project editor, request permissions from the creator or an admin.":e.authorizations.editFileContents.message,children:(0,t.jsx)(S.Pill,{colorway:"blurple",text:"Read-only"})}):(0,t.jsx)(t.Fragment,{children:a.agentStatus?(0,t.jsx)(q,{agentStatus:a.agentStatus}):null})]})}function q(e){let r,i,a=(0,n.useObservable)(e.agentStatus);if(!a)return null;let s=a?.label,d=F.tokens.foregroundDimmest;switch(a?.status){case l.AgentStatusV2.Running:i="blurple";break;case l.AgentStatusV2.PausedWithRequest:i="primary",r=(0,t.jsx)(o.default,{color:d,size:12});break;case l.AgentStatusV2.PausedWithError:i="red",d=F.tokens.foregroundDefault,r=(0,t.jsx)(p.default,{color:d,size:12})}return(0,t.jsx)(S.Pill,{colorway:i,text:s,iconRight:r,clsx:a?.status===l.AgentStatusV2.Running?P.default.agentRunningPill:void 0})}function B({repl:e,agentStatus:r,isStarred:i,onTogglePin:a}){let l=(0,s.useObservableMemo)(()=>r?.select(e=>e?.appImageUrl),[r])||e.latestAgentScreenshotUrl;return(0,t.jsxs)(v.ShadesSurface,{clsx:P.default.appImage,style:l?{backgroundImage:`url(${l})`}:void 0,children:[i?(0,t.jsx)(C.View,{clsx:P.default.pinBadge,children:(0,t.jsx)(R.IconButton,{alt:"Unpin from top",size:24,onClick:()=>a?.(e.id,!1),children:(0,t.jsx)(u.default,{size:16})})}):null,(0,t.jsx)(C.View,{align:"center",justify:"center",clsx:{[P.default.smallIconContainer]:l,[P.default.iconContainer]:!l},children:(0,t.jsx)(h.ReplIconWithPlaceholder,{alt:e.title,size:l?24:64,iconUrl:e.iconUrl,isLoading:!e.iconUrl})})]})}}]);
+
+//# debugId=b383a8dd-59b2-227b-c8da-96812785aac6
+//# sourceMappingURL=954ab5f5a24989bc.js.map

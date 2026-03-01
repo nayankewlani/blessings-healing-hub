@@ -1,0 +1,252 @@
+;!function(){try { var e="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof global?global:"undefined"!=typeof window?window:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&((e._debugIds|| (e._debugIds={}))[n]="4d692271-1767-6237-1ab2-e3972d8a4eac")}catch(e){}}();
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,315315,e=>{"use strict";let t=e=>{let t=new Date(e),s=t.getMonth()+1,r=t.getDate(),a=t.getFullYear();return`${s}/${r}/${a}`};e.s(["formatDate",0,t,"formatDateTime",0,e=>{let s=new Date(e),r=s.getHours(),a=s.getMinutes(),i="AM";return r>=12&&(i="PM"),0==(r%=12)&&(r="12"),a<10&&(a="0"+a),t(e)+` ${r}:${a} ${i}`}])},258941,e=>{"use strict";var t=e.i(276385),s=e.i(269848),r=e.i(140487),a=e.i(960178),i=e.i(625484);function n({prompt:e,desc:n,confirmText:o,loading:l=!1,onCancel:c,onConfirm:d,danger:u,icon:m}){return(0,t.jsxs)(i.View,{gap:24,children:[(0,t.jsx)(a.Header,{level:3,variant:"headerDefault",children:e}),(0,t.jsx)(a.Text,{children:n}),(0,t.jsxs)(i.View,{row:!0,gap:12,justify:"end",children:[c?(0,t.jsx)(r.Button,{disabled:l,onClick:c,text:"Cancel"}):null,(0,t.jsx)(r.Button,{colorway:u?"negative":"primary",disabled:l,onClick:d,text:o||"Ok",iconLeft:l?(0,t.jsx)(s.default,{}):m})]})]})}e.s(["default",()=>n])},354429,e=>{"use strict";e.s(["POSIX_ENV_VAR_ERROR",0,"Use only letters, numbers, and underscores (must start with a letter or underscore)","POSIX_ENV_VAR_PATTERN",0,/^[a-zA-Z_][a-zA-Z0-9_]*$/])},466640,e=>{"use strict";var t=e.i(276385),s=e.i(612866),r=e.i(389959),a=e.i(830675),i=e.i(417751),n=e.i(15053),o=e.i(973245),l=e.i(304277);e.i(566901);var c=e.i(951262);let d={},u=o.gql`
+    fragment SharedSecret on SharedSecret {
+  id
+  name
+  description
+  version
+  value
+  timeCreated
+  timeUpdated
+  links {
+    items {
+      id
+      resource {
+        __typename
+        ... on Repl {
+          id
+          url
+          title
+          iconUrl
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      nextCursor
+      previousCursor
+    }
+    totalCount
+  }
+  owner {
+    __typename
+    ... on User {
+      id
+    }
+  }
+}
+    `,m=o.gql`
+    query AccountSecrets($secretsInput: SecretsInput) {
+  currentUser {
+    id
+    secrets(input: $secretsInput) {
+      ... on SharedSecretConnection {
+        items {
+          ...SharedSecret
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          nextCursor
+          previousCursor
+        }
+      }
+    }
+  }
+}
+    ${u}`,p=o.gql`
+    mutation CreateSharedSecrets($input: CreateSharedSecretsInput!) {
+  createSharedSecrets(input: $input) {
+    __typename
+    ... on CreateSharedSecretsResult {
+      createdSecrets {
+        ...SharedSecret
+      }
+    }
+    ... on UnauthorizedError {
+      message
+    }
+    ... on UserError {
+      message
+    }
+  }
+}
+    ${u}`,h=o.gql`
+    mutation UpdateSharedSecrets($input: UpdateSharedSecretsInput!) {
+  updateSharedSecrets(input: $input) {
+    __typename
+    ... on UpdateSharedSecretsResult {
+      updatedSecrets {
+        ...SharedSecret
+      }
+    }
+    ... on NotFoundError {
+      message
+    }
+    ... on UnauthorizedError {
+      message
+    }
+    ... on UserError {
+      message
+    }
+  }
+}
+    ${u}`,f=o.gql`
+    mutation DeleteSharedSecret($id: ID!) {
+  deleteSharedSecret(id: $id) {
+    __typename
+    ... on DeleteSharedSecretResult {
+      __typename
+    }
+    ... on NotFoundError {
+      message
+    }
+    ... on UnauthorizedError {
+      message
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;var g=e.i(368964),x=e.i(204977),S=e.i(712771),y=e.i(979530),w=e.i(995691),j=e.i(40916),v=e.i(491194),C=e.i(709485),D=e.i(47503),b=e.i(222342),R=e.i(858248),T=e.i(354429),_=e.i(967629),V=e.i(480028),k=e.i(877249),E=e.i(446530),N=e.i(173703),P=e.i(613355),A=e.i(140487),U=e.i(258941),I=e.i(88619),$=e.i(939562),B=e.i(887877),F=e.i(136540),O=e.i(607278),z=e.i(818503),H=e.i(739521),q=e.i(604963),L=e.i(960178),M=e.i(795581),W=e.i(625484),K=e.i(418944);let Q=(0,E.cssRecord)({root:[P.rcss.gap(16)]}),X=(0,E.cssRecord)({root:[P.rcss.flex.column,P.rcss.p(8),P.rcss.colWithGap(8)],clickableText:[P.rcss.color.accentPrimaryStronger,P.rcss.display.flex,P.rcss.cursor.pointer],disclaimer:[P.rcss.gap(4)],list:[{li:[P.rcss.flex.row,P.rcss.align.center,P.rcss.gap(4)]}]}),G=({name:e,links:s,isOpen:a,onClose:i,onDelete:n,isLoading:o})=>{let[l,c]=(0,r.useState)(!1);return(0,t.jsx)(H.Modal,{isOpen:a,onRequestClose:()=>i(),css:Q.root,children:(0,t.jsx)(U.default,{prompt:`Delete ${e}?`,desc:(0,t.jsxs)(t.Fragment,{children:[s&&s.totalCount>0?(0,t.jsxs)(q.PopoverTrigger,{label:"affected-repls",isOpen:l,onOpenChange:c,children:[(0,t.jsxs)("div",{children:[s.totalCount," Repl",1===s.totalCount?"":"s"," ","will immediately lose access to this secret"]}),(0,t.jsx)(et,{links:s})]}):"No Apps are currently using this secret",(0,t.jsx)("br",{}),"This action cannot be undone."]}),onConfirm:n,onCancel:i,confirmText:"Yes, delete this secret",icon:(0,t.jsx)(v.default,{}),danger:!0,loading:o})})},Y=(0,_.css)([P.rcss.border({color:V.tokens.outlineDimmer,width:1,direction:"bottom"}),{"&:last-child":{borderBottom:"none"}}]),Z=(0,E.cssRecord)({titleWrapper:[P.rcss.align.baseline],section:[P.rcss.borderRadius(12),P.rcss.p(16),P.rcss.flex.column,P.rcss.gap(12),{'*[data-sensitive="true"]':{fontFamily:"text-security-disc"}}],secretList:[P.rcss.borderRadius(),P.rcss.overflow("hidden")],secretItem:[Y,P.rcss.align.center,P.rcss.p(8),P.rcss.display.grid,{gridTemplateColumns:"1fr 1fr 140px 50px",minWidth:0,overflow:"hidden",[`@media (max-width: ${k.BREAKPOINTS.mobileMax}px)`]:{gridTemplateColumns:"1fr 2fr auto",gridTemplateRows:"auto auto",gridTemplateAreas:`
+          "name name edit"
+          "value value timestamp"
+        `,gap:"8px"}}],secretValue:[P.rcss.display.grid,P.rcss.gap(4),P.rcss.overflow("hidden"),{gridTemplateColumns:"min-content minmax(50px, 1fr) min-content",minWidth:0,width:"100%","& > span":{whiteSpace:"nowrap",textOverflow:"ellipsis",overflow:"hidden",minWidth:0,display:"block",width:"100%"},[`@media (max-width: ${k.BREAKPOINTS.mobileMax}px)`]:{gridArea:"value"}}],secretValueWrapper:[P.rcss.overflow("hidden"),P.rcss.width("100%"),{textOverflow:"ellipsis",minWidth:0}],secretValueText:[P.rcss.overflow("hidden"),{textOverflow:"ellipsis",whiteSpace:"nowrap",display:"block",width:"100%",maxWidth:"100%",minWidth:0}],secretName:[P.rcss.overflow("hidden"),P.rcss.width("100%"),{textOverflow:"ellipsis",whiteSpace:"nowrap",display:"block",minWidth:0,maxWidth:"100%",[`@media (max-width: ${k.BREAKPOINTS.mobileMax}px)`]:{gridArea:"name",fontWeight:500}}],secretTimestamp:[P.rcss.color.foregroundDimmer,{[`@media (max-width: ${k.BREAKPOINTS.mobileMax}px)`]:{gridArea:"timestamp",textAlign:"right",fontSize:"0.75rem",whiteSpace:"nowrap"}}],emptyState:[P.rcss.center,P.rcss.border({color:V.tokens.outlineDefault,width:1,style:"dashed"}),P.rcss.borderRadius(4),P.rcss.py(24),P.rcss.px(12)],secretEditContainer:[{[`@media (max-width: ${k.BREAKPOINTS.mobileMax}px)`]:{gridArea:"edit",justifySelf:"end"}}]}),J=({value:e})=>{let[s,a]=(0,r.useState)(!1);return(0,t.jsxs)(W.View,{css:Z.secretValue,row:!0,align:"center","data-sensitive":!s,children:[(0,t.jsx)(I.CopyIconButton,{textToCopy:e}),(0,t.jsx)(W.View,{css:Z.secretValueWrapper,children:(0,t.jsx)("span",{css:Z.secretValueText,children:s?e:"****************"})}),(0,t.jsx)(F.IconButton,{onClick:()=>a(!s),alt:s?"Hide":"Show",children:s?(0,t.jsx)(y.default,{size:16}):(0,t.jsx)(S.default,{size:16})})]})},ee=(0,E.cssRecord)({root:[P.rcss.display.flex,P.rcss.flex.column,P.rcss.p(8),P.rcss.gap(8),Y,{borderBottomWidth:1,borderBottomStyle:"solid"}],formFields:[P.rcss.display.grid,P.rcss.gap(32),{gridTemplateColumns:"2fr 3fr"}],formField:[P.rcss.flex.column,P.rcss.gap(8)],formFieldLabel:[{label:[P.rcss.flex.row,P.rcss.align.center,P.rcss.gap(4)]}],disclaimer:[P.rcss.color.foregroundDimmer,{fontSize:V.tokens.fontSizeSmall,lineHeight:V.tokens.lineHeightSmall}],footer:[P.rcss.display.flex,P.rcss.flex.row,P.rcss.justify.spaceBetween],footerGroup:[P.rcss.display.flex,P.rcss.flex.row,P.rcss.gap(4)]}),et=({links:e})=>(0,t.jsxs)(W.View,{css:X.root,children:[(0,t.jsx)(L.Text,{children:"The following Apps will be affected:"}),(0,t.jsx)("ul",{css:X.list,children:e.items.map(e=>"Repl"===e.resource.__typename?(0,t.jsxs)("li",{children:[(0,t.jsx)(K.default,{size:16,iconUrl:e.resource.iconUrl,alt:e.resource.title}),(0,t.jsx)(s.default,{href:e.resource.url,target:"_blank",children:e.resource.title},e.id)]},e.id):null)}),(0,t.jsxs)(L.Text,{color:"dimmer",children:["Please refresh the App page, then Stop and Run the App",(0,t.jsx)("br",{})," to use the updated linked secrets."]})]}),es=({name:e,value:s,onSave:i,onCancel:n,onDelete:o,isNew:l,secrets:c})=>{let d=(0,r.useMemo)(()=>c.find(t=>t.name===e),[c,e]),u=d?.links,m=(0,b.default)(),[p,h]=(0,r.useState)(e),[f,g]=(0,r.useState)(s),[x,w]=(0,r.useState)(!0),[j,C]=(0,r.useState)(!1),[D,R]=(0,r.useState)(!1),[_,V]=(0,r.useState)(!1),k=(0,r.useMemo)(()=>null!==p.match(T.POSIX_ENV_VAR_PATTERN),[p]),E=(0,r.useMemo)(()=>!c.some(t=>t.name===p&&t.name!==e),[e,p,c]),[N,P]=(0,r.useState)(!1),[U,I]=(0,r.useState)(null);(0,r.useEffect)(()=>{E?!k&&p?I(T.POSIX_ENV_VAR_ERROR):I(null):I("Key must be unique")},[E,k,p]);let H=(0,r.useCallback)(async()=>{V(!0);try{await o()}catch(e){a.captureException(e),m.showError("Something went wrong. Please try again.")}V(!1)},[o,m]),L=(0,r.useCallback)(async()=>{if(E&&k){C(!0);try{await i({name:p,value:f})}catch(e){I(e.message)}C(!1)}},[E,k,p,f,i]);return(0,t.jsxs)(B.Form,{css:ee.root,onSubmit:e=>{e.preventDefault(),L()},children:[(0,t.jsxs)(W.View,{css:ee.formFields,children:[(0,t.jsx)(W.View,{css:ee.formField,children:(0,t.jsxs)(M.TextField,{validate:()=>E?!k&&p?T.POSIX_ENV_VAR_ERROR:void 0:"Key must be unique",validationBehavior:"aria",isRequired:!0,minLength:1,maxLength:128,name:"secretName",value:p,onChange:e=>h(e),isInvalid:null!==U,children:[(0,t.jsx)(z.Label,{color:"dimmer",multiline:!1,css:ee.formFieldLabel,children:"Key"}),(0,t.jsx)(O.Input,{autoFocus:!0,autoComplete:"off","data-1p-ignore":!0}),(0,t.jsx)($.FieldError,{children:U})]})}),(0,t.jsx)(W.View,{css:ee.formField,children:(0,t.jsxs)(M.TextField,{isRequired:!0,minLength:1,name:"secretValue",value:f,onChange:e=>g(e),children:[(0,t.jsxs)(z.Label,{color:"dimmer",multiline:!1,css:ee.formFieldLabel,children:["Value"," ",(0,t.jsx)(F.IconButton,{alt:x?"Hide":"Show",size:12,onClick:()=>w(!x),children:x?(0,t.jsx)(y.default,{}):(0,t.jsx)(S.default,{})})]}),(0,t.jsx)(O.Input,{"data-sensitive":x,autoComplete:"off"})]})})]}),(0,t.jsx)(W.View,{css:ee.disclaimer,children:(0,t.jsx)(t.Fragment,{children:u&&u.totalCount>0?(0,t.jsxs)(W.View,{css:X.disclaimer,row:!0,align:"center",children:[(0,t.jsxs)(q.PopoverTrigger,{label:"affected-repls",isOpen:N,onOpenChange:P,placement:"bottom start",children:[(0,t.jsxs)("span",{css:X.clickableText,children:[u.totalCount," Repl",1===u.totalCount?"":"s"," "]}),(0,t.jsx)(et,{links:u})]}),"will be affected by this change."]}):null})}),(0,t.jsxs)(W.View,{css:ee.footer,children:[l?(0,t.jsx)("div",{}):(0,t.jsx)(A.Button,{text:"Delete",colorway:"negative",onClick:()=>R(!0),iconLeft:(0,t.jsx)(v.default,{})}),(0,t.jsxs)(W.View,{css:ee.footerGroup,children:[(0,t.jsx)(A.Button,{text:"Cancel",onClick:n,disabled:j}),(0,t.jsx)(A.Button,{text:"Save",colorway:"primary",loading:j,disabled:!E||!k||!p.length,onClick:L,type:"submit"})]})]}),(0,t.jsx)(G,{name:e,links:u,isOpen:D,onClose:()=>R(!1),onDelete:H,isLoading:_})]})},er=()=>{var e;let t,s=(0,D.useCurrentUserId)(),{showError:r}=(0,b.default)(),[i,n]=(e={update(e,{data:t}){if(t?.createSharedSecrets?.__typename==="CreateSharedSecretsResult"){let r=t.createSharedSecrets.createdSecrets;e.modify({id:e.identify({__typename:"CurrentUser",id:s}),fields:{secrets(t={items:[]}){let s=r.map(t=>e.writeFragment({data:t,fragment:u}));return{...t,items:[...s,...t.items]}}}})}else t?.createSharedSecrets&&r(t.createSharedSecrets.message)},onError:e=>{r("Failed to create secret. Please try again."),a.captureException(e)}},t={...d,...e},c.useMutation(p,t));return[i,n]},ea=()=>{var e;let t,s=(0,D.useCurrentUserId)(),{showError:r}=(0,b.default)(),[i,n]=(e={update(e,{data:t}){if(t?.updateSharedSecrets?.__typename==="UpdateSharedSecretsResult"){let r=t.updateSharedSecrets.updatedSecrets;e.modify({id:e.identify({__typename:"CurrentUser",id:s}),fields:{secrets(t={items:[]}){let s=t.items.map(t=>{let s=r.find(e=>e.id===t.id);return s?e.writeFragment({data:s,fragment:u}):t});return{...t,items:s}}}})}else t?.updateSharedSecrets&&r(t.updateSharedSecrets.message)},onError:e=>{r("Failed to update secret. Please try again."),a.captureException(e)}},t={...d,...e},c.useMutation(h,t));return[i,n]},ei=({id:e,name:s,value:n,timeUpdated:o,onRemoveSecret:l,secrets:u,version:m})=>{let p="0"===m,[h,S]=(0,r.useState)(p),y=(0,r.useRef)(null),w=(0,r.useCallback)(()=>{setTimeout(()=>y.current?.focus(),0)},[]),[j]=er(),[v]=ea(),[T]=(()=>{var e;let t,s=(0,D.useCurrentUserId)(),{showError:r}=(0,b.default)(),[i,n]=(e={update(e,{data:t},{variables:a}){let i=a?.id;i&&t?.deleteSharedSecret?.__typename==="DeleteSharedSecretResult"?e.modify({id:e.identify({__typename:"CurrentUser",id:s}),fields:{secrets:(e={items:[]},{readField:t})=>({...e,items:e.items.filter(e=>t("id",e)!==i)})}}):t?.deleteSharedSecret&&"message"in t.deleteSharedSecret&&r(t.deleteSharedSecret.message)},onError:e=>{r("Failed to delete secret. Please try again."),a.captureException(e)}},t={...d,...e},c.useMutation(f,t));return[i,n]})(),_=(0,r.useCallback)(async t=>{p?(await j({variables:{input:{ownerType:g.SharedSecretOwnerType.Account,secrets:[t]}}}),(0,R.track)(C.events.SHARED_SECRETS_USED,{ownerType:"account",action:"create",source:"account"})):(await v({variables:{input:{ownerType:g.SharedSecretOwnerType.Account,secrets:[{...t,id:e}]}}}),(0,R.track)(C.events.SHARED_SECRETS_USED,{ownerType:"account",action:"update",source:"account"})),S(!1)},[j,e,p,v]),V=(0,r.useCallback)(()=>{S(!1),p?l():w()},[p,l,w]);return h||!o?(0,t.jsx)(es,{secrets:u,isNew:p,name:s,value:n,onDelete:async()=>{await T({variables:{id:e}}),(0,R.track)(C.events.SHARED_SECRETS_USED,{ownerType:"account",action:"delete",source:"account"}),l()},onSave:_,onCancel:V}):(0,t.jsxs)(W.View,{css:Z.secretItem,children:[(0,t.jsx)(W.View,{css:Z.secretName,children:s}),(0,t.jsx)(J,{value:n}),(0,t.jsxs)(W.View,{css:Z.secretTimestamp,children:["Updated ",(0,i.format)(new Date(o),"MM/dd/yy")]}),(0,t.jsx)(W.View,{css:Z.secretEditContainer,align:"end",children:(0,t.jsx)(F.IconButton,{alt:"Edit",onClick:()=>S(!0),ref:y,children:(0,t.jsx)(x.default,{})})})]})};function en({hideHeader:e=!1}){let s,{data:a}=(s={...d,...void 0},l.useQuery(m,s)),[i,o]=(0,r.useState)(a?.currentUser?.secrets?.__typename==="SharedSecretConnection"?a.currentUser.secrets.items:[]);(0,r.useEffect)(()=>{o(a?.currentUser?.secrets?.__typename==="SharedSecretConnection"?a.currentUser.secrets.items:[])},[a?.currentUser?.secrets]);let c=(0,r.useCallback)(()=>{o(e=>[{__typename:"SharedSecret",id:`temp-${(0,n.v4)()}`,name:"",value:"",timeUpdated:new Date().toISOString(),timeCreated:new Date().toISOString(),version:"0"},...e])},[]),u=(0,r.useCallback)(e=>{o(t=>t.filter((t,s)=>s!==e))},[]);return(0,t.jsxs)(W.View,{gap:8,children:[(0,t.jsxs)(W.View,{row:!0,justify:e?"end":"space-between",children:[e?null:(0,t.jsx)(W.View,{css:Z.titleWrapper,row:!0,gap:8,children:(0,t.jsx)(L.Text,{variant:"subheadBig",multiline:!1,children:"Account Secrets"})}),(0,t.jsx)(W.View,{align:"center",row:!0,gap:8,children:(0,t.jsx)(A.Button,{text:"New secret",iconLeft:(0,t.jsx)(j.default,{}),size:"small",colorway:"primary",onClick:c})})]}),(0,t.jsxs)(N.ShadesSurface,{css:Z.section,children:["Add secrets to your account to access them in any of your Apps.",0===i.length?(0,t.jsxs)(W.View,{css:Z.emptyState,gap:8,children:[(0,t.jsx)(w.default,{size:24,color:V.tokens.foregroundDimmest}),(0,t.jsx)(L.Text,{color:"dimmer",children:"You haven't added any account secrets yet."})]}):(0,t.jsx)(N.ShadesSurface,{css:Z.secretList,elevate:"2x",children:i.map((e,s)=>(0,t.jsx)(ei,{secrets:i,onRemoveSecret:()=>u(s),...e},e.id))})]})]})}e.s(["default",()=>en,"useCreateSharedSecretsWithCache",0,er,"useUpdateSharedSecretsWithCache",0,ea],466640)},591895,e=>{"use strict";var t=e.i(276385),s=e.i(210796),r=e.i(441329),a=e.i(446530),i=e.i(173703),n=e.i(613355),o=e.i(140487),l=e.i(960178),c=e.i(625484);let d=(0,a.cssRecord)({updateContent:[n.rcss.borderRadius(8)]});function u({feature:e,noticeText:a,userAgent:n,m:u}){return(0,t.jsx)(c.View,{grow:!0,shrink:!0,justify:"center",children:(0,t.jsxs)(i.ShadesSurface,{style:{margin:u??16},css:d.updateContent,p:16,gap:16,children:[(0,t.jsx)(l.Text,{variant:"subheadDefault",children:"Update required"}),(0,t.jsx)(l.Text,{color:"dimmer",children:a??`A newer version of the Replit app is required to use ${e},
+          please update to continue.`}),(0,t.jsx)(o.Button,{text:"Update",onClick:()=>{if(!n)return;let e=(0,r.getBonsaiDownloadUrl)({userAgent:n});e&&window.open(e,"_blank")},colorway:"primary",iconLeft:(0,t.jsx)(s.default,{})})]})})}e.s(["default",()=>u])},404527,e=>{"use strict";var t=e.i(276385),s=e.i(389959),r=e.i(973245),a=e.i(304277);e.i(566901);let i={},n=r.gql`
+    query GetDomainContactForPurchase {
+  getDomainContactForPurchase {
+    hasSavedContact
+    firstName
+    lastName
+    companyName
+    address1
+    address2
+    city
+    state
+    zip
+    country
+    phone
+    email
+  }
+}
+    `;var o=e.i(138716),l=e.i(269848),c=e.i(719335),d=e.i(604999),u=e.i(480028),m=e.i(703774);e.i(375581);var p=e.i(169099),h=e.i(584426),f=e.i(613355),g=e.i(960178),x=e.i(625484);function S({initialAddress:e,onAddressChange:r,onValidationChange:a}){let[i,n]=(0,s.useState)(!1),o=(0,s.useRef)("");(0,s.useEffect)(()=>{let t=JSON.stringify(e);o.current!==t&&(o.current=t,r(e))},[e,r]);let l=(0,s.useCallback)(e=>{let t=e.value.address,s=e.value.name,i=e.value.phone;a&&a(e.complete);let n="",o="";if(s&&"object"==typeof s)n=s.first_name||"",o=s.last_name||"";else if("string"==typeof s){let e=s.trim().split(/\s+/);e.length>1?(n=e[0],o=e.slice(1).join(" ")):n=s}let l=t?.state||"",c=t?.postal_code||"",d=t?.city||"",u=l,m=c,p=d;e.complete&&(l.trim()||(u="N/A"),c.trim()||(m="00000"),d.trim()||(p="N/A")),r({firstName:n,lastName:o,address1:t?.line1||"",address2:t?.line2||"",city:p,state:u,zip:m,country:t?.country||"",phone:i||""})},[r,a]),d=(0,s.useMemo)(()=>({mode:"billing",fields:{phone:"always"},validation:{phone:{required:"always"}},defaultValues:{firstName:e.firstName,lastName:e.lastName,phone:e.phone,address:{line1:e.address1,line2:e.address2,city:e.city,state:e.state,postal_code:e.zip,country:e.country}},display:{name:"split"}}),[e]);return i?(0,t.jsxs)(g.Text,{children:["Something went wrong loading the address form. Please contact us at"," ",(0,t.jsx)("a",{href:"mailto:support@replit.com",children:"support@replit.com"}),"."]}):(0,t.jsxs)(x.View,{gap:8,children:[(0,t.jsx)(x.View,{style:{display:"none"},children:(0,t.jsx)(c.PaymentElement,{})}),(0,t.jsx)(c.AddressElement,{onLoadError:()=>n(!0),options:d,onChange:l})]})}function y(e){let{isDarkColorScheme:s}=(0,m.useTheme)(),r=s?p.replitDark:h.replitLight,a={theme:s?"night":"stripe",variables:{colorPrimary:r.values.global.foregroundDefault,colorBackground:r.values.global.backgroundHigher,colorText:r.values.global.foregroundDefault,colorTextPlaceholder:r.values.global.foregroundDimmest,focusOutline:`2px solid ${r.values.global.accentPrimaryDefault}`,colorDanger:r.values.global.accentNegativeDefault,colorDangerText:r.values.global.accentNegativeDefault,fontFamily:"'IBM Plex Sans', sans-serif",spacingUnit:"0px",fontSizeBase:u.values.fontSizeDefault,focusBoxShadow:"0",borderRadius:u.values.space4,gridRowSpacing:u.values.space8},rules:{".Input":{boxShadow:"0px",fontSize:u.values.fontSizeDefault,lineHeight:u.values.lineHeightDefault,padding:`${u.values.space4} ${u.values.space8}`,outlineOffset:f.sharedFocusStyles.outlineOffset},".Label":{paddingBottom:u.values.space4,marginBottom:"0px",fontSize:u.values.fontSizeSmall,lineHeight:u.values.lineHeightSmall},".Block":{boxShadow:"0px"},".DropdownItem":{boxShadow:"0px"}}};return(0,t.jsx)(x.View,{children:(0,t.jsx)(d.default,{options:{appearance:a,mode:"setup",currency:"usd",payment_method_types:["card"]},children:(0,t.jsx)(S,{...e})})})}var w=e.i(446530),j=e.i(173703),v=e.i(140487),C=e.i(939562),D=e.i(887877),b=e.i(136540),R=e.i(607278),T=e.i(818503),_=e.i(624782),V=e.i(795581);let k=(0,w.cssRecord)({scrollArea:[{overflowY:"auto",minHeight:0,maxHeight:"100%"}],primaryActionButton:[f.rcss.py(12),{fontSize:u.tokens.fontSizeDefault}],root:[f.rcss.overflow("hidden")],relativeContainer:[{position:"relative",minHeight:0,maxHeight:"100%"}]});function E({selectedDomain:e,onSubmit:r,onBack:c,isSubmitting:d,preservedContactInfo:u,title:m="Domain registration contact",description:p="This information will be used for WHOIS records and domain registration. You can edit any field below.",submitButtonText:h,showBackButton:f=!0}){var S;let w,{data:E,loading:N}=(S={fetchPolicy:"network-only",skip:!!u,ssr:!1},w={...i,...S},a.useQuery(n,w)),[P,A]=(0,s.useState)({firstName:"",lastName:"",companyName:"",address1:"",address2:"",city:"",state:"",zip:"",country:"US",phone:"",email:""}),[U,I]=(0,s.useState)(!1),[$,B]=(0,s.useState)(!1);(0,s.useEffect)(()=>{if(u)A(u);else if(E?.getDomainContactForPurchase){let e=E.getDomainContactForPurchase;A({firstName:e.firstName,lastName:e.lastName,companyName:e.companyName||"",address1:e.address1,address2:e.address2||"",city:e.city,state:e.state,zip:e.zip,country:e.country,phone:e.phone,email:e.email})}},[E,u]);let F=(0,s.useCallback)(e=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e),[]),O=U&&$,z=(0,s.useCallback)(e=>{A(t=>({...t,...e}))},[]),H=(0,s.useMemo)(()=>({firstName:P.firstName||"",lastName:P.lastName||"",address1:P.address1||"",address2:P.address2||"",city:P.city||"",state:P.state||"",zip:P.zip||"",country:P.country||"US",phone:P.phone||""}),[P.firstName,P.lastName,P.address1,P.address2,P.city,P.state,P.zip,P.country,P.phone]);return((0,s.useEffect)(()=>{P.email&&B(F(P.email))},[P.email,F]),N)?(0,t.jsxs)(x.View,{align:"center",p:8,children:[(0,t.jsx)(l.default,{size:16}),(0,t.jsx)(g.Text,{children:"Loading your information..."})]}):(0,t.jsxs)(x.View,{p:8,gap:16,css:k.root,shrink:!0,children:[(0,t.jsxs)(x.View,{row:!0,gap:8,align:"center",children:[f?(0,t.jsx)(b.IconButton,{alt:"Go back",onClick:c,children:(0,t.jsx)(o.default,{})}):null,(0,t.jsx)(g.Header,{level:2,children:m}),(0,t.jsx)(_.Pill,{colorway:"primary",text:"Beta"})]}),(0,t.jsx)(x.View,{css:k.relativeContainer,shrink:!0,children:(0,t.jsxs)(x.View,{css:k.scrollArea,gap:16,children:[(0,t.jsx)(x.View,{gap:8,children:(0,t.jsx)(g.Text,{color:"dimmer",children:p})}),(0,t.jsxs)(D.Form,{onSubmit:e=>{e.preventDefault(),O&&r(P)},children:[(0,t.jsx)(j.ShadesSurface,{p:16,elevate:!1,children:(0,t.jsxs)(x.View,{gap:12,children:[(0,t.jsxs)(V.TextField,{name:"companyName",children:[(0,t.jsx)(T.Label,{children:"Company name (optional)"}),(0,t.jsx)(R.Input,{value:P.companyName??"",onChange:e=>A({...P,companyName:e.target.value}),disabled:d})]}),(0,t.jsx)(y,{initialAddress:H,onAddressChange:z,onValidationChange:I}),(0,t.jsxs)(V.TextField,{isRequired:!0,name:"email",type:"email",children:[(0,t.jsx)(T.Label,{children:"Email"}),(0,t.jsx)(R.Input,{value:P.email,onChange:e=>{let t=e.target.value;A({...P,email:t}),B(F(t))},disabled:d}),(0,t.jsx)(C.FieldError,{})]})]})}),(0,t.jsx)(x.View,{justify:"center",children:(0,t.jsx)(v.Button,{variant:"default",colorway:"positive",type:"submit",loading:d,text:h??`Continue with ${e.domainName}`,disabled:!O||d,css:k.primaryActionButton})})]})]})})]})}e.s(["ContactStep",()=>E],404527)},872062,e=>{"use strict";var t=e.i(973245),s=e.i(304277);e.i(566901);let r={},a=t.gql`
+    fragment Domains3Repl on Repl {
+  id
+  org {
+    id
+  }
+}
+    `,i=t.gql`
+    fragment DomainVerificationStatus on Domain {
+  state
+}
+    `,n=t.gql`
+    fragment Domains3Domain on Domain {
+  id
+  state
+  domain
+  managed
+  ...DomainVerificationStatus
+  dnsRecords {
+    id
+    answer
+    type
+    host
+  }
+  whois {
+    registrar
+    creationDate
+    expiryDate
+  }
+  currentDnsRecords {
+    A
+    TXT
+  }
+  renewalPriceCents
+  autorenew
+  timeCreated
+  purchaseDate
+  registrantEmailVerified
+  user {
+    id
+  }
+  missingClerkCnames {
+    hostname
+    expectedValue
+    currentValue
+  }
+}
+    ${i}`,o=t.gql`
+    fragment HostingDeploymentDomainsHostingDeployment on HostingDeployment {
+  id
+  currentBuild {
+    id
+    status
+  }
+  repl {
+    id
+    title
+    apexProxy
+  }
+  domains2 {
+    id
+    ...Domains3Domain
+    whois {
+      registrar
+      creationDate
+      expiryDate
+    }
+    currentDnsRecords {
+      A
+      TXT
+    }
+    renewalPriceCents
+    missingClerkCnames {
+      hostname
+      expectedValue
+      currentValue
+    }
+  }
+}
+    ${n}`,l=t.gql`
+    fragment PendingDomainsRepl on Repl {
+  id
+  pendingDomains {
+    domainName
+    status
+    message
+  }
+}
+    `,c=t.gql`
+    query Domains3Repl($id: String!) {
+  getRepl(id: $id) {
+    ...Domains3Repl
+  }
+}
+    ${a}`;function d(e){let t={...r,...e};return s.useQuery(c,t)}let u=t.gql`
+    query HostingDeploymentDomains($id: String!) {
+  hostingDeployment(id: $id) {
+    ... on HostingDeployment {
+      id
+      ...HostingDeploymentDomainsHostingDeployment
+    }
+  }
+}
+    ${o}`;function m(e){let t={...r,...e};return s.useQuery(u,t)}let p=t.gql`
+    query PrefetchLinkablePurchasedDomains {
+  currentUser {
+    id
+    domains(managed: true, onlyUnlinked: true) {
+      items {
+        id
+        domain
+      }
+    }
+  }
+}
+    `;function h(e){let t={...r,...e};return s.useQuery(p,t)}e.s(["Domains3DomainFragmentDoc",0,n,"HostingDeploymentDomainsDocument",0,u,"HostingDeploymentDomainsHostingDeploymentFragmentDoc",0,o,"PendingDomainsReplFragmentDoc",0,l,"useDomains3ReplQuery",()=>d,"useHostingDeploymentDomainsQuery",()=>m,"usePrefetchLinkablePurchasedDomainsQuery",()=>h])}]);
+
+//# debugId=4d692271-1767-6237-1ab2-e3972d8a4eac
+//# sourceMappingURL=acdda1bed225fd1f.js.map
